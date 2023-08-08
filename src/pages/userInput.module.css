@@ -16,55 +16,7 @@
     margin: 0 auto;
 }
 
-.labelContainer {
-    margin-bottom: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.inputContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
-}
-
-.errorContainer {
-    height: 18px;
-    width: 100%;
-}
-
-.label {
-    font-weight: bold;
-    font-size: 18px;
-    margin-right: 10px;
-    margin-bottom: 5px;
-    color: #555;
-}
-
-.input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    font-size: 16px;
-    width: 100%;
-    box-sizing: border-box;
-    transition: border-color 0.3s;
-}
-
-.input:focus {
-    border-color: #007BFF;
-}
-
-.error {
-    color: red;
-    font-size: 14px;
-    line-height: 18px;
-    font-style: italic
-}
-
-.signUpButton {
+.submitButton {
     font-size: 18px;
     font-weight: bold;
     padding: 10px 20px;
@@ -79,30 +31,30 @@
     box-sizing: border-box;
 }
 
-.signUpButton:disabled {
+.submitButton:disabled {
     background-color: #ccc;
     cursor: not-allowed;
 }
 
-.signUpButton:not(:disabled):hover {
+.submitButton:not(:disabled):hover {
     background-color: #0056b3;
     transform: scale(1.02);
 }
 
-.loginPrompt {
+.redirectPrompt {
     text-align: center;
     font-size: 16px;
     margin-top: 10px;
 }
 
-.loginLink {
+.redirectLink {
     color: #007BFF;
     cursor: pointer;
     text-decoration: underline;
     transition: color 0.3s;
 }
 
-.loginLink:hover {
+.redirectLink:hover {
     color: #0056b3;
 }
 
