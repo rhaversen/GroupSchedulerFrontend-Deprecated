@@ -29,13 +29,16 @@ function Login() {
     const handleValidation = (newFormData) => {
         const valid = Object.keys(validations).every(key => validations[key](newFormData[key]) === "");
         setIsFormValid(valid);
-    };
+    };    
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const { name, type, checked } = e.target;
+        const value = type === 'checkbox' ? checked : e.target.value;
         const newFormData = { ...formData, [name]: value };
         setFormData(newFormData);
-        setErrorMessages({ ...errorMessages, [`${name}Msg`]: validations[name](value) });
+        if (validations[name]) {
+            setErrorMessages({ ...errorMessages, [`${name}Msg`]: validations[name](value) });
+        }
         handleValidation(newFormData);
     };
 
@@ -60,6 +63,10 @@ function Login() {
             <form onSubmit={handleSubmit} className={styles.form}>
                 <InputField type="email" name="email" label="Email" autoComplete="email" value={formData.email} onChange={handleChange} errorMessage={errorMessages.emailMsg} />
                 <InputField type="password" name="password" label="Password" autoComplete="current-password" value={formData.password} onChange={handleChange} errorMessage={errorMessages.passwordMsg} />
+                <div className={styles.checkboxContainer}>
+                    <input type="checkbox" name="stayLoggedIn" checked={formData.stayLoggedIn} onChange={handleChange} />
+                    <label htmlFor="stayLoggedIn">Stay logged in</label>
+                </div>
                 <button type="submit" disabled={!isFormValid || isLoading} className={styles.submitButton}>
                     {isLoading ? 'Logging in...' : 'Log In'}
                 </button>

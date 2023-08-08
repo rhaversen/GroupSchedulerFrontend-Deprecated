@@ -16,6 +16,25 @@
     margin: 0 auto;
 }
 
+.checkboxContainer {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+}
+
+.checkboxContainer input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.checkboxContainer label {
+    font-weight: bold;
+    font-size: 16px;
+    margin-left: 10px;
+    color: #555;
+}
+
 .submitButton {
     font-size: 18px;
     font-weight: bold;
