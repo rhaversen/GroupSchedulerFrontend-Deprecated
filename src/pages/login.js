@@ -10,7 +10,8 @@ import InputField from '../components/inputField.js';
 function Login() {
     const [formData, setFormData] = useState({
         email: '',
-        password: ''
+        password: '',
+        stayLoggedIn: false
     });
     const [message, setMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -25,18 +26,17 @@ function Login() {
         password: value => (value ? "" : "Please enter your password."),
     };
 
-    const handleValidation = (name, value) => {
-        const validationMessage = validations[name](value);
-        setErrorMessages({ ...errorMessages, [`${name}Msg`]: validationMessage });
-        
-        const valid = Object.keys(validations).every(key => validations[key](formData[key]) === "");
+    const handleValidation = (newFormData) => {
+        const valid = Object.keys(validations).every(key => validations[key](newFormData[key]) === "");
         setIsFormValid(valid);
     };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-        handleValidation(name, value);
+        const newFormData = { ...formData, [name]: value };
+        setFormData(newFormData);
+        setErrorMessages({ ...errorMessages, [`${name}Msg`]: validations[name](value) });
+        handleValidation(newFormData);
     };
 
     const handleSubmit = async (e) => {
@@ -45,9 +45,10 @@ function Login() {
 
         try {
             setMessage('');
-            const response = await axios.post(process.env.NEXT_PUBLIC_API_URL + '/api/v1/login', formData);
+            const response = await axios.post(process.env.NEXT_PUBLIC_API_URL + '/api/v1/users/login', formData);
             setMessage('Login successful!');
         } catch (error) {
+            console.log(error);
             setMessage(error.response?.data.error || 'There was a problem with the server logging you in! Please try again later...');
         } finally {
             setIsLoading(false);
@@ -60,7 +61,7 @@ function Login() {
                 <InputField type="email" name="email" label="Email" autoComplete="email" value={formData.email} onChange={handleChange} errorMessage={errorMessages.emailMsg} />
                 <InputField type="password" name="password" label="Password" autoComplete="current-password" value={formData.password} onChange={handleChange} errorMessage={errorMessages.passwordMsg} />
                 <button type="submit" disabled={!isFormValid || isLoading} className={styles.submitButton}>
-                    {isLoading ? 'Logging in...' : 'Login'}
+                    {isLoading ? 'Logging in...' : 'Log In'}
                 </button>
             </form>
             <p className={styles.redirectPrompt}>
