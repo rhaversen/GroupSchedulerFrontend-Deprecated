@@ -1,15 +1,24 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import validator from 'validator';
+import Link from 'next/link';
 
-// Input component to be reused
-const InputField = ({ label, type, name, value, autoComplete, onChange, errorMessage }) => (
-    <div>
-        <label>{label}:</label>
-        <input type={type} name={name} autoComplete={autoComplete} value={value} onChange={onChange} />
-        {errorMessage && <span>{errorMessage}</span>}
-    </div>
-);
+
+import styles from './Signup.module.css';
+
+function InputField({ type, name, label, autoComplete, value, onChange, errorMessage }) {
+    return (
+        <div className={styles.labelContainer}>
+            <label className={styles.label}>{label}</label>
+            <div className={styles.inputContainer}>
+                <input className={styles.input} type={type} name={name} autoComplete={autoComplete} value={value} onChange={onChange} />
+                <div className={styles.errorContainer}>
+                    {errorMessage && <span className={styles.error}>{errorMessage}</span>}
+                </div>
+            </div>
+        </div>
+    );
+}
 
 function Signup() {
     const [formData, setFormData] = useState({
@@ -73,18 +82,20 @@ function Signup() {
     };
 
     return (
-        <div>
-            <h1>Signup</h1>
-            <form onSubmit={handleSubmit}>
-                <InputField label="Username" type="text" name="username" autoComplete="name" value={formData.username} onChange={handleChange} errorMessage={errorMessages.usernameMsg} />
-                <InputField label="Email" type="email" name="email" autoComplete="email" value={formData.email} onChange={handleChange} errorMessage={errorMessages.emailMsg} />
-                <InputField label="Password" type="password" name="password" autoComplete="new-password" onChange={handleChange} errorMessage={errorMessages.passwordMsg} />
-                <InputField label="Confirm password" type="password" name="confirmPassword" autoComplete="new-password" onChange={handleChange} errorMessage={errorMessages.confirmPasswordMsg} />
-                <button type="submit" disabled={!isFormValid || isLoading}>
-                    {isLoading ? 'Signing up...' : 'Signup'}
+        <div className={styles.container}>
+            <form onSubmit={handleSubmit} className={styles.form}>
+                <InputField type="text" name="username" label="Username" autoComplete="name" value={formData.username} onChange={handleChange} errorMessage={errorMessages.usernameMsg} />
+                <InputField type="email" name="email" label="Email" autoComplete="email" value={formData.email} onChange={handleChange} errorMessage={errorMessages.emailMsg} />
+                <InputField type="password" name="password" label="Password" autoComplete="new-password" onChange={handleChange} errorMessage={errorMessages.passwordMsg} />
+                <InputField type="password" name="confirmPassword" label="Confirm Password" autoComplete="new-password" onChange={handleChange} errorMessage={errorMessages.confirmPasswordMsg} />
+                <button type="submit" disabled={!isFormValid || isLoading} className={styles.signUpButton}>
+                    {isLoading ? 'Signing up...' : 'Sign Up'}
                 </button>
             </form>
-            {message && <p>{message}</p>}
+            <p className={styles.loginPrompt}>
+                Already have an account? <Link href="/login"><span className={styles.loginLink}>Login</span></Link>
+            </p>
+            {message && <p className={styles.message}>{message}</p>}
         </div>
     );
 }

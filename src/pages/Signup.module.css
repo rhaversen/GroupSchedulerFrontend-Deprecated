@@ -1,0 +1,115 @@
+/* Signup.module.css */
+.container {
+    font-family: Arial, sans-serif;
+}
+
+.header {
+    text-align: center;
+    color: #333;
+    font-size: 36px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.form {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.labelContainer {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.inputContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.errorContainer {
+    height: 18px;
+    width: 100%;
+}
+
+.label {
+    font-weight: bold;
+    font-size: 18px;
+    margin-right: 10px;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.input:focus {
+    border-color: #007BFF;
+}
+
+.error {
+    color: red;
+    font-size: 14px;
+    line-height: 18px;
+    font-style: italic
+}
+
+.signUpButton {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.signUpButton:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.signUpButton:not(:disabled):hover {
+    background-color: #0056b3;
+    transform: scale(1.02);
+}
+
+.loginPrompt {
+    text-align: center;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.loginLink {
+    color: #007BFF;
+    cursor: pointer;
+    text-decoration: underline;
+    transition: color 0.3s;
+}
+
+.loginLink:hover {
+    color: #0056b3;
+}
+
+.message {
+    font-size: 18px;
+    color: red;
+    text-align: center;
+    font-weight: 600;
+}
+
