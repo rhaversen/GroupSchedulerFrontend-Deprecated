@@ -10,7 +10,7 @@ function Confirm() {
     const router = useRouter();
     useEffect(() => {
         const code = router.query.code;
-        console.log('query code=' + code);
+        if (!router.isReady || !code) return;
 
         const confirmEmail = async () => {
             try {
@@ -24,7 +24,7 @@ function Confirm() {
         };
 
         confirmEmail();
-    }, [router.isReady, router.query.code]);
+    }, [router.isReady]);
 
     return (
         <div className={styles.container}>
