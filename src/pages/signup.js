@@ -65,7 +65,7 @@ function Signup() {
         try {
             setMessage('');
             const response = await axios.post(process.env.NEXT_PUBLIC_API_URL + '/api/v1/users', formData);
-            setMessage('Signup successful!');
+            setMessage(response.data.message);
         } catch (error) {
             setMessage(error.response?.data.error || 'There was a problem with the server signing you up! Please try again later...');
         } finally {
