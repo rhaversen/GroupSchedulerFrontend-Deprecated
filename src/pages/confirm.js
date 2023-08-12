@@ -9,12 +9,12 @@ function Confirm() {
     const [isSuccess, setIsSuccess] = useState(false);
     const router = useRouter();
     useEffect(() => {
-        const code = router.query.code;
-        if (!router.isReady || !code) return;
+        const userCode = router.query.userCode;
+        if (!router.isReady || !userCode) return;
 
         const confirmEmail = async () => {
             try {
-                await axios.post(process.env.NEXT_PUBLIC_API_URL + `/api/v1/users/confirm/${code}`);
+                await axios.post(process.env.NEXT_PUBLIC_API_URL + `/api/v1/users/confirm/${userCode}`);
                 setMessage('Confirmation successful! Your account has been activated.');
                 setIsSuccess(true);
             } catch (error) {
