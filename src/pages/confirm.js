@@ -5,7 +5,7 @@ import axios from 'axios';
 import styles from './userInput.module.css';
 
 function Confirm() {
-    const [message, setMessage] = useState('Confirming your email...');
+    const [message, setMessage] = useState('User code missing');
     const [isSuccess, setIsSuccess] = useState(false);
     const router = useRouter();
     useEffect(() => {
@@ -14,6 +14,8 @@ function Confirm() {
 
         const confirmEmail = async () => {
             try {
+                setMessage('Confirming your email...');
+                console.log(userCode)
                 await axios.post(process.env.NEXT_PUBLIC_API_URL + `/api/v1/users/confirm/${userCode}`);
                 setMessage('Confirmation successful! Your account has been activated.');
                 setIsSuccess(true);
