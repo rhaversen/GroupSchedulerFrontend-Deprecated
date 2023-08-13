@@ -45,7 +45,7 @@ function Login() {
 
     const shakeButton = () => {
         setShouldShake(true);
-        setTimeout(() => setShouldShake(false), 500);  // 900 milliseconds corresponds to the shake animation duration
+        setTimeout(() => setShouldShake(false), 500);  // 500 milliseconds corresponds to the shake animation duration
     }
 
     const handleSubmit = async (e) => {
