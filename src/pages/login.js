@@ -20,6 +20,7 @@ function Login() {
         emailMsg: '',
         passwordMsg: ''
     });
+    const [shouldShake, setShouldShake] = useState(false);
 
     const validations = {
         email: value => (validator.isEmail(value) ? "" : "Please enter a valid email."),
@@ -42,6 +43,11 @@ function Login() {
         handleValidation(newFormData);
     };
 
+    const shakeButton = () => {
+        setShouldShake(true);
+        setTimeout(() => setShouldShake(false), 500);  // 900 milliseconds corresponds to the shake animation duration
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
@@ -49,9 +55,9 @@ function Login() {
         try {
             setMessage('');
             const response = await axios.post(process.env.NEXT_PUBLIC_API_URL + '/api/v1/users/login', formData);
-            setMessage('Login successful!');
+            setMessage(response.data.message);
         } catch (error) {
-            console.log(error);
+            shakeButton();
             setMessage(error.response?.data.error || 'There was a problem with the server logging you in! Please try again later...');
         } finally {
             setIsLoading(false);
@@ -67,7 +73,9 @@ function Login() {
                     <input type="checkbox" name="stayLoggedIn" checked={formData.stayLoggedIn} onChange={handleChange} />
                     <label htmlFor="stayLoggedIn">Stay logged in</label>
                 </div>
-                <button type="submit" disabled={!isFormValid || isLoading} className={styles.submitButton}>
+                <button type="submit"
+                    disabled={!isFormValid || isLoading}
+                    className={`${styles.submitButton} ${shouldShake ? styles.shake : ''}`}>
                     {isLoading ? 'Logging in...' : 'Log In'}
                 </button>
             </form>

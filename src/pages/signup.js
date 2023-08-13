@@ -23,6 +23,7 @@ function Signup() {
         passwordMsg: '',
         confirmPasswordMsg: ''
     });
+    const [shouldShake, setShouldShake] = useState(false);
 
     const validations = {
         username: value => (value ? "" : "Please enter a username"),
@@ -58,6 +59,11 @@ function Signup() {
         handleValidation(newFormData);
     };
 
+    const shakeButton = () => {
+        setShouldShake(true);
+        setTimeout(() => setShouldShake(false), 500);  // 900 milliseconds corresponds to the shake animation duration
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
@@ -67,6 +73,7 @@ function Signup() {
             const response = await axios.post(process.env.NEXT_PUBLIC_API_URL + '/api/v1/users', formData);
             setMessage(response.data.message);
         } catch (error) {
+            shakeButton();
             setMessage(error.response?.data.error || 'There was a problem with the server signing you up! Please try again later...');
         } finally {
             setIsLoading(false);
@@ -80,7 +87,7 @@ function Signup() {
                 <InputField type="email" name="email" label="Email" autoComplete="email" value={formData.email} onChange={handleChange} errorMessage={errorMessages.emailMsg} />
                 <InputField type="password" name="password" label="Password" autoComplete="new-password" onChange={handleChange} errorMessage={errorMessages.passwordMsg} />
                 <InputField type="password" name="confirmPassword" label="Confirm Password" autoComplete="new-password" onChange={handleChange} errorMessage={errorMessages.confirmPasswordMsg} />
-                <button type="submit" disabled={!isFormValid || isLoading} className={styles.submitButton}>
+                <button type="submit" disabled={!isFormValid || isLoading} className={`${styles.submitButton} ${shouldShake ? styles.shake : ''}`}>
                     {isLoading ? 'Signing up...' : 'Sign Up'}
                 </button>
             </form>
