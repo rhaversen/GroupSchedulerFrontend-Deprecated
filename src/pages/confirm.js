@@ -15,7 +15,6 @@ function Confirm() {
         const confirmEmail = async () => {
             try {
                 setMessage('Confirming your email...');
-                console.log(userCode)
                 await axios.post(process.env.NEXT_PUBLIC_API_URL + `/api/v1/users/confirm/${userCode}`);
                 setMessage('Confirmation successful! Your account has been activated.');
                 setIsSuccess(true);
@@ -28,6 +27,10 @@ function Confirm() {
         confirmEmail();
     }, [router.isReady]);
 
+    const handleRedirectToLogin = () => {
+        router.push('/login');
+    };
+
     return (
         <div className={styles.container}>
             <div className={styles.form}>
@@ -38,6 +41,14 @@ function Confirm() {
                     <p className={styles.redirectPrompt}>
                         Having trouble? <a href="/support" className={styles.redirectLink}>Contact support</a>
                     </p>
+                )}
+                {isSuccess && (
+                    <button 
+                        className={styles.submitButton}
+                        onClick={handleRedirectToLogin}
+                    >
+                        Proceed to Login
+                    </button>
                 )}
             </div>
         </div>
