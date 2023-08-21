@@ -84,11 +84,22 @@
 
     .message {
         font: {
-            size: 18px;
-            weight: 600;
+            size: 16px;           /* Reduced font size for fitting */
+            weight: 500;          /* Lighter weight for a less aggressive appearance */
         }
         color: #007BFF;
         text-align: center;
+        border: 2px solid #007BFF;
+        border-radius: 5px;
+        padding: 5px 10px;
+        margin-top: 10px;
+        margin-left: auto;        /* Centers the box if it's not as wide as its container */
+        margin-right: auto;
+        max-width: 250px;         /* Setting a max-width slightly less than the form width */
+        background-color: #f2f4f8;
+        word-wrap: break-word;    /* Allows long words or links to wrap */
+        overflow: hidden;         /* Ensures nothing spills out */
+        text-overflow: ellipsis;  /* Adds ... if the message is truncated (only works for single line text) */
     }
 }
 
