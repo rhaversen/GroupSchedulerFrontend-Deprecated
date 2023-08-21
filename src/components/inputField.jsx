@@ -10,11 +10,10 @@ function InputField({ type, name, label, autoComplete, value, onChange, errorMes
                     type={type} name={name}
                     autoComplete={autoComplete}
                     value={value}
-                    onChange={onChange}
-                    style={{ color: color }} 
+                    onChange={onChange} 
                 />
                 <div className={styles.errorContainer}>
-                    {errorMessage && <span className={styles.error}>{errorMessage}</span>}
+                    {errorMessage && <span className={styles.error} style={{ color: color }}>{errorMessage}</span>}
                 </div>
             </div>
         </div>
