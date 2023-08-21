@@ -6,7 +6,10 @@
 
 .labelContainer {
     @include flex-column-start;
-    margin-bottom: 15px;
+    margin: {
+        top: 10px;
+        bottom: 20px;
+    }
 }
 
 .inputContainer {
