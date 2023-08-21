@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import Link from 'next/link';
 
 import styles from './userInput.module.css';
 
@@ -39,7 +40,7 @@ function Confirm() {
                 </p>
                 {!isSuccess && (
                     <p className={styles.redirectPrompt}>
-                        Having trouble? <a href="/support" className={styles.redirectLink}>Contact support</a>
+                        Having trouble? <Link href="/support" className={styles.redirectLink}>Contact support</Link>
                     </p>
                 )}
                 {isSuccess && (
