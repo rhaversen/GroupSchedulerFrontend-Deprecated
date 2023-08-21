@@ -1,10 +1,18 @@
+// Color variables
+$color-primary: #007bff;
+$color-primary-hover: #0056b3;
+$color-text-dark: #333;
+//$color-text-light: #555;
+$color-disabled: #ccc;
+$color-background-light: #f2f4f8;
+
 .container {
     font-family: Arial, sans-serif;
     margin-top: 50px;
 
     .header {
         text-align: center;
-        color: #333;
+        color: $color-text-dark;
         font: {
             size: 36px;
             weight: 600;
@@ -33,7 +41,7 @@
                 weight: bold;
                 size: 16px;
             }
-            color: #555;
+            color: $color-text-dark;
             margin-left: 10px;
         }
     }
@@ -44,7 +52,7 @@
             weight: bold;
         }
         padding: 10px 20px;
-        background-color: #007BFF;
+        background-color: $color-primary;
         color: white;
         border: none;
         border-radius: 4px;
@@ -55,12 +63,12 @@
         box-sizing: border-box;
 
         &:disabled {
-            background-color: #ccc;
+            background-color: $color-disabled;
             cursor: not-allowed;
         }
 
         &:not(:disabled):hover {
-            background-color: #0056b3;
+            background-color: $color-primary-hover;
             transform: scale(1.02);
         }
     }
@@ -72,34 +80,34 @@
     }
 
     .redirectLink {
-        color: #007BFF;
+        color: $color-primary;
         cursor: pointer;
         text-decoration: underline;
         transition: color 0.3s;
 
         &:hover {
-            color: #0056b3;
+            color: $color-primary-hover;
         }
     }
 
     .message {
         font: {
-            size: 16px;           /* Reduced font size for fitting */
-            weight: 500;          /* Lighter weight for a less aggressive appearance */
+            size: 16px;
+            weight: 500;
         }
-        color: #007BFF;
+        color: $color-primary;
         text-align: center;
-        border: 2px solid #007BFF;
+        border: 2px solid $color-primary;
         border-radius: 5px;
         padding: 5px 10px;
         margin-top: 10px;
-        margin-left: auto;        /* Centers the box if it's not as wide as its container */
+        margin-left: auto;
         margin-right: auto;
-        max-width: 250px;         /* Setting a max-width slightly less than the form width */
-        background-color: #f2f4f8;
-        word-wrap: break-word;    /* Allows long words or links to wrap */
-        overflow: hidden;         /* Ensures nothing spills out */
-        text-overflow: ellipsis;  /* Adds ... if the message is truncated (only works for single line text) */
+        max-width: 250px;
+        background-color: $color-background-light;
+        word-wrap: break-word;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }
 
