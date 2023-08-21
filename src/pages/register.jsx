@@ -1,5 +1,5 @@
 // External Packages
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import validator from 'validator';
 import Link from 'next/link';
@@ -28,22 +28,22 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL + '/api/v1/users' || '';
 function Register() {
     const validations = {
         username: {
-            validate: value => value ? true : 'Please enter a username',
+            validate: value => value ? true : <> Please enter a username </>,
         },
         email: {
-            validate: value => validator.isEmail(value) ? true : 'Please enter a valid email',
+            validate: value => validator.isEmail(value) ? true : <> Please enter a valid email </>,
         },
         password: {
             validate: value => {
-                if (!value) return 'Please enter a password';
+                if (!value) return <> Please enter a password </>;
                 const result = zxcvbn(value);
-                return result.score >= 2 ? true : `Hackers can crack your password in ${result.crackTimesDisplay.onlineNoThrottling10PerSecond}`;
+                return result.score > 2 ? true : <> Hackers can crack your password in {result.crackTimesDisplay.onlineNoThrottling10PerSecond} </>;
             },
         },        
         confirmPassword: {
             validate: (value, password) => {
-                if (!value) return 'Please confirm your password';
-                return value === password ? true : 'Passwords do not match';
+                if (!value) return <> Please confirm your password </>;
+                return value === password ? true : <> Passwords do not match </>;
             },
         }
     };
