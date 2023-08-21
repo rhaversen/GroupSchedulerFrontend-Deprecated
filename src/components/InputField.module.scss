@@ -1,37 +1,47 @@
-.labelContainer {
-    margin-bottom: 15px;
+@mixin flex-column-start {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 }
 
-.label {
-    font-weight: bold;
-    font-size: 18px;
-    margin-right: 10px;
-    margin-bottom: 5px;
-    color: #555;
+.labelContainer {
+    @include flex-column-start;
+    margin-bottom: 15px;
 }
 
 .inputContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    @include flex-column-start;
     width: 100%;
+}
+
+.label {
+    font: {
+        weight: bold;
+        size: 18px;
+    }
+    color: #555;
+    margin: {
+        right: 10px;
+        bottom: 5px;
+    }
 }
 
 .input {
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
     font-size: 16px;
     width: 100%;
+    border: {
+        width: 1px;
+        style: solid;
+        color: #ccc;
+        radius: 10px;
+    }
     box-sizing: border-box;
     transition: border-color 0.3s;
-}
 
-.input:focus {
-    border-color: #007BFF;
+    &:focus {
+        border-color: #007BFF;
+    }
 }
 
 .errorContainer {
@@ -41,7 +51,9 @@
 
 .error {
     color: red;
-    font-size: 14px;
+    font: {
+        size: 14px;
+        style: italic;
+    }
     line-height: 18px;
-    font-style: italic
 }

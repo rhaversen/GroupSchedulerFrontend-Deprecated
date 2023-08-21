@@ -1,87 +1,95 @@
 .container {
     font-family: Arial, sans-serif;
     margin-top: 50px;
-}
 
-.header {
-    text-align: center;
-    color: #333;
-    font-size: 36px;
-    font-weight: 600;
-    margin-bottom: 20px;
-}
+    .header {
+        text-align: center;
+        color: #333;
+        font: {
+            size: 36px;
+            weight: 600;
+        }
+        margin-bottom: 20px;
+    }
 
-.form {
-    max-width: 300px;
-    margin: 0 auto;
-}
+    .form {
+        max-width: 300px;
+        margin: 0 auto;
+    }
 
-.checkboxContainer {
-    display: flex;
-    align-items: center;
-    margin: 15px 0;
-}
+    .checkboxContainer {
+        display: flex;
+        align-items: center;
+        margin: 15px 0;
 
-.checkboxContainer input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-}
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
 
-.checkboxContainer label {
-    font-weight: bold;
-    font-size: 16px;
-    margin-left: 10px;
-    color: #555;
-}
+        label {
+            font: {
+                weight: bold;
+                size: 16px;
+            }
+            color: #555;
+            margin-left: 10px;
+        }
+    }
 
-.submitButton {
-    font-size: 18px;
-    font-weight: bold;
-    padding: 10px 20px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-}
+    .submitButton {
+        font: {
+            size: 18px;
+            weight: bold;
+        }
+        padding: 10px 20px;
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
 
-.submitButton:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
+        &:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
 
-.submitButton:not(:disabled):hover {
-    background-color: #0056b3;
-    transform: scale(1.02);
-}
+        &:not(:disabled):hover {
+            background-color: #0056b3;
+            transform: scale(1.02);
+        }
+    }
 
-.redirectPrompt {
-    text-align: center;
-    font-size: 16px;
-    margin-top: 10px;
-}
+    .redirectPrompt {
+        text-align: center;
+        font-size: 16px;
+        margin-top: 10px;
+    }
 
-.redirectLink {
-    color: #007BFF;
-    cursor: pointer;
-    text-decoration: underline;
-    transition: color 0.3s;
-}
+    .redirectLink {
+        color: #007BFF;
+        cursor: pointer;
+        text-decoration: underline;
+        transition: color 0.3s;
 
-.redirectLink:hover {
-    color: #0056b3;
-}
+        &:hover {
+            color: #0056b3;
+        }
+    }
 
-.message {
-    font-size: 18px;
-    color: #007BFF;
-    text-align: center;
-    font-weight: 600;
+    .message {
+        font: {
+            size: 18px;
+            weight: 600;
+        }
+        color: #007BFF;
+        text-align: center;
+    }
 }
 
 @keyframes shake {
