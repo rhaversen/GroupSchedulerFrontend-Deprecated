@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 import styles from './userInput.module.scss';
 
-import InputField from '../components/inputField.js';
+import InputField from '../components/inputField.jsx';
 
 function Login() {
     const [formData, setFormData] = useState({
