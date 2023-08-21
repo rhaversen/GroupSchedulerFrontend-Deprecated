@@ -22,6 +22,8 @@ const options = {
 };
 zxcvbnOptions.setOptions(options);
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL + '/api/v1/users' || '';
+
 const useForm = (initialValues, validations) => {
     const [values, setValues] = useState(initialValues);
     const [errors, setErrors] = useState({});
@@ -61,7 +63,7 @@ const useForm = (initialValues, validations) => {
         console.log(isTouched);
         console.log(formIsValid);
 
-    }, [values, isTouched]);
+    }, [values]);
 
     return {
         values,
@@ -98,8 +100,18 @@ function Register() {
             message: 'Please enter a password'
         },        
         confirmPassword: {
-            validate: (value, password) => value && value === password,
-            message: 'Passwords does not match'
+            validate: (value, password) => {
+                if (value === '') {
+                    validations.confirmPassword.message = 'Please confirm your password'
+                    return false;
+                }
+                if (value && value !== password) {
+                    validations.confirmPassword.message = 'Passwords do not match'
+                    return false;
+                }
+                return true;
+            },
+            message: 'Passwords do not match'
         }
     };
 
@@ -124,7 +136,7 @@ function Register() {
 
         try {
             setMessage('');
-            const response = await axios.post(process.env.NEXT_PUBLIC_API_URL + '/api/v1/users', formData);
+            const response = await axios.post(API_URL, formData);
             setMessage(response.data.message);
         } catch (error) {
             shakeButton();
