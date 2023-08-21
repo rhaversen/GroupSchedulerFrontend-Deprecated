@@ -8,7 +8,7 @@ import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common';
 import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en';
 
 // Local Modules
-import styles from './userInput.module.css';
+import styles from './userInput.module.scss';
 import InputField from '../components/inputField.jsx';
 
 // Setting up zxcvbn options

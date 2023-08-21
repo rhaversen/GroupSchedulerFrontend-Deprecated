@@ -1,4 +1,4 @@
-import styles from './InputField.module.css';
+import styles from './InputField.module.scss';
 
 function InputField({ type, name, label, autoComplete, value, onChange, errorMessage, color }) {
     return (

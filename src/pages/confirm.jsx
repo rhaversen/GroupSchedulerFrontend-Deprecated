@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import Link from 'next/link';
 
-import styles from './userInput.module.css';
+import styles from './userInput.module.scss';
 
 function Confirm() {
     const [message, setMessage] = useState('User code missing');

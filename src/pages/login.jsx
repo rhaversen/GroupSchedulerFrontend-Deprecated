@@ -3,7 +3,7 @@ import axios from 'axios';
 import validator from 'validator';
 import Link from 'next/link';
 
-import styles from './userInput.module.css';
+import styles from './userInput.module.scss';
 
 import InputField from '../components/inputField.js';
 
