@@ -1,67 +1,121 @@
-import { useState, useEffect } from 'react';
+// External Packages
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import validator from 'validator';
 import Link from 'next/link';
+import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core';
+import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common';
+import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en';
 
+// Local Modules
 import styles from './userInput.module.css';
+import InputField from '../components/inputField.jsx';
 
-import InputField from '../components/inputField.js';
+// Setting up zxcvbn options
+const options = {
+    translations: zxcvbnEnPackage.translations,
+    graphs: zxcvbnCommonPackage.adjacencyGraphs,
+    dictionary: {
+        ...zxcvbnCommonPackage.dictionary,
+        ...zxcvbnEnPackage.dictionary,
+    },
+};
+zxcvbnOptions.setOptions(options);
 
-function Signup() {
-    const [formData, setFormData] = useState({
+const useForm = (initialValues, validations) => {
+    const [values, setValues] = useState(initialValues);
+    const [errors, setErrors] = useState({});
+    const [isValid, setIsValid] = useState({});
+    const [formIsValid, setFormIsValid] = useState(false);
+    const [isTouched, setIsTouched] = useState({});
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setIsTouched(prev => ({ ...prev, [name]: true }));
+        setValues(prev => ({ ...prev, [name]: value }));
+    };
+
+    useEffect(() => {
+        const validationErrors = { ...errors };
+        const inputIsValid = { ...isValid };
+
+        for (const key in validations) {
+            if (values[key] !== undefined && isTouched[key]) {
+                if (key === 'confirmPassword') {
+                    inputIsValid[key] = validations[key].validate(values[key], values.password);
+                } else {
+                    inputIsValid[key] = validations[key].validate(values[key]);
+                }
+                validationErrors[key] = inputIsValid[key] ? '' : validations[key].message;
+            }
+        }
+        
+        setIsValid(inputIsValid);
+        setErrors(validationErrors);
+
+        const allFieldsValid = Object.keys(validations).every(key => {
+            return inputIsValid[key];
+        });
+        setFormIsValid(allFieldsValid);
+
+        console.log(isTouched);
+        console.log(formIsValid);
+
+    }, [values, isTouched]);
+
+    return {
+        values,
+        errors,
+        isValid,
+        formIsValid,
+        isTouched,
+        handleChange
+    };
+};
+
+function Register() {
+    const validations = {
+        username: {
+            validate: value => value !== '',
+            message: 'Please enter a username'
+        },
+        email: {
+            validate: validator.isEmail,
+            message: 'Please enter a valid email'
+        },
+        password: {
+            validate: value => {
+                const result = zxcvbn(value);
+                if (value === '') {
+                    return false;
+                }
+                if (result.score < 2) {
+                    validations.password.message = `Hackers can crack your password in ${result.crackTimesDisplay.onlineNoThrottling10PerSecond}`;
+                    return false;
+                }
+                return true;
+            },
+            message: 'Please enter a password'
+        },        
+        confirmPassword: {
+            validate: (value, password) => value && value === password,
+            message: 'Passwords does not match'
+        }
+    };
+
+    const [shouldShake, setShouldShake] = useState(false);
+    const [message, setMessage] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const { values: formData, errors, formIsValid, isTouched, handleChange } = useForm({
         username: '',
         email: '',
         password: '',
         confirmPassword: ''
-    });
-    const [message, setMessage] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [isFormValid, setIsFormValid] = useState(false);
-    const [errorMessages, setErrorMessages] = useState({
-        usernameMsg: '',
-        emailMsg: '',
-        passwordMsg: '',
-        confirmPasswordMsg: ''
-    });
-    const [shouldShake, setShouldShake] = useState(false);
-
-    const validations = {
-        username: value => (value ? "" : "Please enter a username"),
-        email: value => (validator.isEmail(value) ? "" : "Please enter a valid email."),
-        password: value => (validator.isStrongPassword(value) ? "" : "Password must be strong (e.g., contain letters, numbers, and symbols)."),
-        confirmPassword: value => (value && value === formData.password ? "" : "Passwords must match."),
-    };
-
-    const handleValidation = (newFormData) => {
-        const valid = Object.keys(validations).every(key => {
-            if (key === "confirmPassword" && !newFormData[key] && newFormData["password"]) {
-                return false;
-            }
-            return validations[key](newFormData[key]) === "";
-        });
-        setIsFormValid(valid);
-    };
+    }, validations);
     
-
-    useEffect(() => {
-        // Re-validate the confirmPassword field whenever the password changes, but only if confirmPassword is not empty
-        if (formData.confirmPassword !== "") {
-            setErrorMessages({ ...errorMessages, confirmPasswordMsg: validations.confirmPassword(formData.confirmPassword) });
-            handleValidation(formData);
-        }
-    }, [formData.password, formData.confirmPassword]);
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        const newFormData = { ...formData, [name]: value };
-        setFormData(newFormData);
-        setErrorMessages({ ...errorMessages, [`${name}Msg`]: validations[name](value) });
-        handleValidation(newFormData);
-    };
-
     const shakeButton = () => {
         setShouldShake(true);
-        setTimeout(() => setShouldShake(false), 500);  // 900 milliseconds corresponds to the shake animation duration
+        setTimeout(() => setShouldShake(false), 500);
     }
 
     const handleSubmit = async (e) => {
@@ -83,20 +137,57 @@ function Signup() {
     return (
         <div className={styles.container}>
             <form onSubmit={handleSubmit} className={styles.form}>
-                <InputField type="text" name="username" label="Username" autoComplete="name" value={formData.username} onChange={handleChange} errorMessage={errorMessages.usernameMsg} />
-                <InputField type="email" name="email" label="Email" autoComplete="email" value={formData.email} onChange={handleChange} errorMessage={errorMessages.emailMsg} />
-                <InputField type="password" name="password" label="Password" autoComplete="new-password" onChange={handleChange} errorMessage={errorMessages.passwordMsg} />
-                <InputField type="password" name="confirmPassword" label="Confirm Password" autoComplete="new-password" onChange={handleChange} errorMessage={errorMessages.confirmPasswordMsg} />
-                <button type="submit" disabled={!isFormValid || isLoading} className={`${styles.submitButton} ${shouldShake ? styles.shake : ''}`}>
+                <InputField
+                    type="text"
+                    name="username"
+                    label="Username"
+                    autoComplete="name"
+                    value={formData.username}
+                    onChange={handleChange}
+                    errorMessage={isTouched.username ? errors.username || '' : ''}
+                    color='red'
+                />
+                <InputField 
+                    type="email"
+                    name="email"
+                    label="Email"
+                    autoComplete="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    errorMessage={isTouched.username ? errors.email || '' : ''}
+                    color='red'
+                />
+                <InputField
+                    type="password"
+                    name="password"
+                    label="Password"
+                    autoComplete="new-password"
+                    onChange={handleChange}
+                    errorMessage={errors.password || ''}
+                    color='red'
+                />
+                <InputField
+                    type="password"
+                    name="confirmPassword"
+                    label="Confirm Password"
+                    autoComplete="new-password"
+                    onChange={handleChange}
+                    errorMessage={errors.confirmPassword || ''}
+                    color='red'
+                />
+                <button
+                    type="submit"
+                    disabled={!formIsValid || isLoading}
+                    className={`${styles.submitButton} ${shouldShake ? styles.shake : ''}`}>
                     {isLoading ? 'Signing up...' : 'Sign Up'}
                 </button>
             </form>
             <p className={styles.redirectPrompt}>
-                Already have an account? <Link href="/login"><span className={styles.redirectLink}>Login</span></Link>
+                Already have an account? <Link href="/login"><span className={styles.redirectLink}>Log In</span></Link>
             </p>
             {message && <p className={styles.message}>{message}</p>}
         </div>
     );
 }
 
-export default Signup;
+export default Register;
