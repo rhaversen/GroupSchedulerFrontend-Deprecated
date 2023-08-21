@@ -1,51 +1,43 @@
+// External Packages
 import { useState } from 'react';
 import axios from 'axios';
 import validator from 'validator';
 import Link from 'next/link';
 
+// Local Modules
 import styles from './userInput.module.scss';
-
 import InputField from '../components/inputField.jsx';
+import useUserInputForm from '../hooks/useUserInputForm.js';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL + '/api/v1/users/login' || '';
 
 function Login() {
-    const [formData, setFormData] = useState({
+    const validations = {
+        email: {
+            validate: value => validator.isEmail(value) ? true : <> Please enter a valid email </>,
+        },
+        password: {
+            validate: value => value ? true : <> Please enter your password </>,
+        }
+    };
+    
+    const [message, setMessage] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [shouldShake, setShouldShake] = useState(false);
+    const { values: formData, errors, formIsValid, handleChange } = useUserInputForm({
         email: '',
         password: '',
         stayLoggedIn: false
-    });
-    const [message, setMessage] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [isFormValid, setIsFormValid] = useState(false);
-    const [errorMessages, setErrorMessages] = useState({
-        emailMsg: '',
-        passwordMsg: ''
-    });
-    const [shouldShake, setShouldShake] = useState(false);
+    }, validations);
 
-    const validations = {
-        email: value => (validator.isEmail(value) ? "" : "Please enter a valid email."),
-        password: value => (value ? "" : "Please enter your password."),
-    };
-
-    const handleValidation = (newFormData) => {
-        const valid = Object.keys(validations).every(key => validations[key](newFormData[key]) === "");
-        setIsFormValid(valid);
-    };    
-
-    const handleChange = (e) => {
-        const { name, type, checked } = e.target;
-        const value = type === 'checkbox' ? checked : e.target.value;
-        const newFormData = { ...formData, [name]: value };
-        setFormData(newFormData);
-        if (validations[name]) {
-            setErrorMessages({ ...errorMessages, [`${name}Msg`]: validations[name](value) });
-        }
-        handleValidation(newFormData);
-    };
-
-    const shakeButton = () => {
+    const inputConfigs = [
+        { type: 'email', name: 'email', label: 'Email', autoComplete: 'email' },
+        { type: 'password', name: 'password', label: 'Password', autoComplete: 'current-password' }
+    ];
+    
+    const triggerErrorShake = () => {
         setShouldShake(true);
-        setTimeout(() => setShouldShake(false), 500);  // 500 milliseconds corresponds to the shake animation duration
+        setTimeout(() => setShouldShake(false), 500);
     }
 
     const handleSubmit = async (e) => {
@@ -54,10 +46,10 @@ function Login() {
 
         try {
             setMessage('');
-            const response = await axios.post(process.env.NEXT_PUBLIC_API_URL + '/api/v1/users/login', formData);
+            const response = await axios.post(API_URL, formData);
             setMessage(response.data.message);
         } catch (error) {
-            shakeButton();
+            triggerErrorShake();
             setMessage(error.response?.data.error || 'There was a problem with the server logging you in! Please try again later...');
         } finally {
             setIsLoading(false);
@@ -67,14 +59,25 @@ function Login() {
     return (
         <div className={styles.container}>
             <form onSubmit={handleSubmit} className={styles.form}>
-                <InputField type="email" name="email" label="Email" autoComplete="email" value={formData.email} onChange={handleChange} errorMessage={errorMessages.emailMsg} />
-                <InputField type="password" name="password" label="Password" autoComplete="current-password" value={formData.password} onChange={handleChange} errorMessage={errorMessages.passwordMsg} />
+                {inputConfigs.map(input => (
+                    <InputField
+                        key={input.name}
+                        type={input.type}
+                        name={input.name}
+                        label={input.label}
+                        autoComplete={input.autoComplete}
+                        value={formData[input.name]}
+                        onChange={handleChange}
+                        errorMessage={errors[input.name] || ''}
+                    />
+                ))}
                 <div className={styles.checkboxContainer}>
                     <input type="checkbox" name="stayLoggedIn" checked={formData.stayLoggedIn} onChange={handleChange} />
                     <label htmlFor="stayLoggedIn">Stay logged in</label>
                 </div>
-                <button type="submit"
-                    disabled={!isFormValid || isLoading}
+                <button
+                    type="submit"
+                    disabled={!formIsValid || isLoading}
                     className={`${styles.submitButton} ${shouldShake ? styles.shake : ''}`}>
                     {isLoading ? 'Logging in...' : 'Log In'}
                 </button>
