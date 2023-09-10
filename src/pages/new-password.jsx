@@ -9,7 +9,7 @@ import styles from './userInput.module.scss';
 import InputField from '../components/inputField.jsx';
 import useUserInputForm from '../hooks/useUserInputForm.js';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL + '/api/v1/users/request-new-password' || '';
+const API_URL = process.env.NEXT_PUBLIC_API_URL + '/api/v1/users/send-reset-password-email' || '';
 
 const validations = {
     email: {
