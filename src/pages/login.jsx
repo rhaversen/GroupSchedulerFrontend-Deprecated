@@ -10,7 +10,7 @@ import InputField from '../components/inputField.jsx';
 import useUserInputForm from '../hooks/useUserInputForm.js';
 import { useUser } from '../contexts/UserContext';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL + '/api/v1/users/login' || '';
+const API_URL = process.env.NEXT_PUBLIC_API_URL + '/api/v1/users/login-local' || '';
 
 const validations = {
     email: {
@@ -88,6 +88,9 @@ function Login() {
             </form>
             <p className={styles.redirectPrompt}>
                 Don't have an account? <Link href="/register"><span className={styles.redirectLink}>Sign Up</span></Link>
+            </p>
+            <p className={styles.redirectPrompt}>
+                Forgot your password? <Link href="/new-password"><span className={styles.redirectLink}>Set New Password</span></Link>
             </p>
             {message && <p className={styles.message}>{message}</p>}
         </div>
