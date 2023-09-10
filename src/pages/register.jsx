@@ -25,29 +25,36 @@ zxcvbnOptions.setOptions(options);
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL + '/api/v1/users' || '';
 
+const validations = {
+    username: {
+        validate: value => value ? true : <> Please enter a username </>,
+    },
+    email: {
+        validate: value => validator.isEmail(value) ? true : <> Please enter a valid email </>,
+    },
+    password: {
+        validate: value => {
+            if (!value) return <> Please enter a password </>;
+            const result = zxcvbn(value);
+            return result.score > 2 ? true : <> Hackers can crack your password in {result.crackTimesDisplay.onlineNoThrottling10PerSecond} </>;
+        },
+    },        
+    confirmPassword: {
+        validate: (value, password) => {
+            if (!value) return <> Please confirm your password </>;
+            return value === password ? true : <> Passwords do not match </>;
+        },
+    }
+};
+
+const inputConfigs = [
+    { type: 'text', name: 'username', label: 'Username', autoComplete: 'name' },
+    { type: 'email', name: 'email', label: 'Email', autoComplete: 'email' },
+    { type: 'password', name: 'password', label: 'Password', autoComplete: 'new-password' },
+    { type: 'password', name: 'confirmPassword', label: 'Confirm Password', autoComplete: 'new-password' },
+];
+
 function Register() {
-    const validations = {
-        username: {
-            validate: value => value ? true : <> Please enter a username </>,
-        },
-        email: {
-            validate: value => validator.isEmail(value) ? true : <> Please enter a valid email </>,
-        },
-        password: {
-            validate: value => {
-                if (!value) return <> Please enter a password </>;
-                const result = zxcvbn(value);
-                return result.score > 2 ? true : <> Hackers can crack your password in {result.crackTimesDisplay.onlineNoThrottling10PerSecond} </>;
-            },
-        },        
-        confirmPassword: {
-            validate: (value, password) => {
-                if (!value) return <> Please confirm your password </>;
-                return value === password ? true : <> Passwords do not match </>;
-            },
-        }
-    };
-    
     const [shouldShake, setShouldShake] = useState(false);
     const [message, setMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -58,13 +65,6 @@ function Register() {
         confirmPassword: ''
     }, validations);
 
-    const inputConfigs = [
-        { type: 'text', name: 'username', label: 'Username', autoComplete: 'name' },
-        { type: 'email', name: 'email', label: 'Email', autoComplete: 'email' },
-        { type: 'password', name: 'password', label: 'Password', autoComplete: 'new-password' },
-        { type: 'password', name: 'confirmPassword', label: 'Confirm Password', autoComplete: 'new-password' },
-    ];
-    
     const triggerErrorShake = () => {
         setShouldShake(true);
         setTimeout(() => setShouldShake(false), 500);
@@ -115,6 +115,12 @@ function Register() {
             {message && <p className={styles.message}>{message}</p>}
         </div>
     );
+}
+
+export async function getServerSideProps(context) {
+    // Check if user is already logged in or other server-side tasks
+    // For now, let's return an empty props
+    return { props: {} };
 }
 
 export default Register;

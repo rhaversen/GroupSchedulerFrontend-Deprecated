@@ -8,19 +8,27 @@ import Link from 'next/link';
 import styles from './userInput.module.scss';
 import InputField from '../components/inputField.jsx';
 import useUserInputForm from '../hooks/useUserInputForm.js';
+import { useUser } from '../contexts/UserContext';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL + '/api/v1/users/login' || '';
 
+const validations = {
+    email: {
+        validate: value => validator.isEmail(value) ? true : <> Please enter a valid email </>,
+    },
+    password: {
+        validate: value => value ? true : <> Please enter your password </>,
+    }
+};
+
+const inputConfigs = [
+    { type: 'email', name: 'email', label: 'Email', autoComplete: 'email' },
+    { type: 'password', name: 'password', label: 'Password', autoComplete: 'current-password' }
+];
+
 function Login() {
-    const validations = {
-        email: {
-            validate: value => validator.isEmail(value) ? true : <> Please enter a valid email </>,
-        },
-        password: {
-            validate: value => value ? true : <> Please enter your password </>,
-        }
-    };
-    
+    const { setUser } = useUser();  // Use the user context
+
     const [message, setMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [shouldShake, setShouldShake] = useState(false);
@@ -30,11 +38,6 @@ function Login() {
         stayLoggedIn: false
     }, validations);
 
-    const inputConfigs = [
-        { type: 'email', name: 'email', label: 'Email', autoComplete: 'email' },
-        { type: 'password', name: 'password', label: 'Password', autoComplete: 'current-password' }
-    ];
-    
     const triggerErrorShake = () => {
         setShouldShake(true);
         setTimeout(() => setShouldShake(false), 500);
@@ -48,6 +51,7 @@ function Login() {
             setMessage('');
             const response = await axios.post(API_URL, formData);
             setMessage(response.data.message);
+            setUser(response.data.user); // Assuming the backend sends user data on successful login.
         } catch (error) {
             triggerErrorShake();
             setMessage(error.response?.data.error || 'There was a problem with the server logging you in! Please try again later...');
@@ -88,6 +92,12 @@ function Login() {
             {message && <p className={styles.message}>{message}</p>}
         </div>
     );
+}
+
+export async function getServerSideProps(context) {
+    // Check if user is logged in here
+    // For now, let's return an empty props
+    return { props: {} };
 }
 
 export default Login;
