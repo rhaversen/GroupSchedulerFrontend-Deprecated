@@ -4,7 +4,7 @@ import moment from "moment";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import Modal from 'react-modal';
 
-import InputField from '../components/InputField.jsx';
+import InputField from '../components/inputField.jsx';
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
