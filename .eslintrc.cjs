@@ -5,10 +5,12 @@ module.exports = {
     },
     "extends": [
         "standard-with-typescript",
-        "plugin:react/recommended"
+        "plugin:react/recommended",
+        "next/core-web-vitals"
     ],
     "overrides": [
         {
+            "files": ["*.ts", "*.tsx"],  // This will apply the override to all TS files
             "env": {
                 "node": true
             },
@@ -25,17 +27,12 @@ module.exports = {
         "project": "./tsconfig.json"
     },
     "plugins": [
-        "react",
+        "react"
     ],
     "rules": {
-        'no-mutate-config-get/no-mutate-config-get': 'warn'
+        "indent": ["error", 4], // Standard ESLint indent rule
     },
     "settings": {
-        'import/resolver': {
-          node: {
-            paths: ['eslint-rules']
-          }
-        },
         "react": {
             "version": "detect"  // This will automatically detect and set the React version
         }
