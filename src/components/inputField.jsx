@@ -1,7 +1,7 @@
-import styles from './InputField.module.scss';
+import styles from './InputField.module.scss'
 
-function InputField({ type, name, label, autoComplete, value, onChange, errorMessage, color }) {
-    return (
+function InputField ({ type, name, label, autoComplete, value, onChange, errorMessage, color }) {
+  return (
         <div className={styles.labelContainer}>
             <label className={styles.label}>{label}</label>
             <div className={styles.inputContainer}>
@@ -10,14 +10,14 @@ function InputField({ type, name, label, autoComplete, value, onChange, errorMes
                     type={type} name={name}
                     autoComplete={autoComplete}
                     value={value}
-                    onChange={onChange} 
+                    onChange={onChange}
                 />
                 <div className={styles.errorContainer}>
-                    {errorMessage && <span className={styles.error} style={{ color: color }}>{errorMessage}</span>}
+                    {errorMessage && <span className={styles.error} style={{ color }}>{errorMessage}</span>}
                 </div>
             </div>
         </div>
-    );
+  )
 }
 
-export default InputField;
+export default InputField
