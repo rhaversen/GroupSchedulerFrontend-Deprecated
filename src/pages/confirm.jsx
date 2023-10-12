@@ -24,7 +24,6 @@ function Confirm() {
             setMessage('Confirmation successful! Your account has been activated.');
             setIsSuccess(true);
         } catch (error) {
-            console.log(error);
             setMessage(error.response?.data.error || 'There was a problem with the server confirming your email! Please try again later...');
         }
     };
