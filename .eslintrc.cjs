@@ -10,7 +10,7 @@ module.exports = {
     ],
     "overrides": [
         {
-            "files": ["*.ts", "*.tsx"],  // This will apply the override to all TS files
+            "files": ["*.js", "*.jsx", "*.ts", "*.tsx"],  // This will apply the override to all JS and TS files
             "env": {
                 "node": true
             },
@@ -29,9 +29,6 @@ module.exports = {
     "plugins": [
         "react"
     ],
-    "rules": {
-        "indent": ["error", 4], // Standard ESLint indent rule
-    },
     "settings": {
         "react": {
             "version": "detect"  // This will automatically detect and set the React version
