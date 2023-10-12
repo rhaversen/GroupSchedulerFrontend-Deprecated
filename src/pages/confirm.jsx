@@ -25,7 +25,7 @@ function Confirm() {
             setIsSuccess(true);
         } catch (error) {
             setMessage(error.response?.data.error || 'There was a problem with the server confirming your email! Please try again later...');
-        }
+        } // test
     };
 
     const handleRedirectToLogin = () => {
