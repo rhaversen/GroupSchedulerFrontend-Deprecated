@@ -1,26 +1,19 @@
-# Base Image
-FROM node:20
+# This dockerfile specifies the environment the production
+# code will be run in, along with what files are needed
+# for production
 
-# Create app user
-RUN useradd -m myappuser
+# Use an official Node.js runtime as the base image
+FROM node:20.8
 
-# Switch to app user
-USER myappuser
+# Set working directory
+WORKDIR /app
 
-# Set the working directory
-WORKDIR /home/myappuser/app
-
-# Copy package*.json first to leverage Docker caching
+# Copy the `.next` dist directory and package.json
+COPY .next/ ./.next/
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install
-
-# Copy the rest of your application code
-COPY . .
-
-# Build the app
-RUN npm run build
+# Install production dependencies
+RUN npm install --omit=dev
 
 # Expose the port Next.js runs on
 EXPOSE 3000
