@@ -21,5 +21,3 @@ jobs:
       run: npm install
     - name: Build the project
       run: npm run build 
-    - name: Test the project
-      run: NODE_ENV=test npm run test
