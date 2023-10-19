@@ -54,7 +54,7 @@ const inputConfigs = [
   { type: 'password', name: 'confirmPassword', label: 'Confirm Password', autoComplete: 'new-password' }
 ]
 
-function Register () {
+function Signup () {
   const [shouldShake, setShouldShake] = useState(false)
   const [message, setMessage] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -123,4 +123,4 @@ export async function getServerSideProps (context) {
   return { props: {} }
 }
 
-export default Register
+export default Signup

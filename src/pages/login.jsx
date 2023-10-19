@@ -87,7 +87,7 @@ function Login () {
                 </button>
             </form>
             <p className={styles.redirectPrompt}>
-                Don't have an account? <Link href="/register"><span className={styles.redirectLink}>Sign Up</span></Link>
+                Don't have an account? <Link href="/signup"><span className={styles.redirectLink}>Sign Up</span></Link>
             </p>
             <p className={styles.redirectPrompt}>
                 Forgot your password? <Link href="/new-password"><span className={styles.redirectLink}>Set New Password</span></Link>

@@ -73,7 +73,7 @@ function NewPassword () {
                 </button>
             </form>
             <p className={styles.redirectPrompt}>
-                Don't have an account? <Link href="/register"><span className={styles.redirectLink}>Sign Up</span></Link>
+                Don't have an account? <Link href="/signup"><span className={styles.redirectLink}>Sign Up</span></Link>
             </p>
             {message && <p className={styles.message}>{message}</p>}
         </div>
