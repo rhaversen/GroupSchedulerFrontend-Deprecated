@@ -2,16 +2,16 @@ import Head from 'next/head'
 import axios from 'axios'
 import { useEffect } from 'react'
 
-function Index() {
-    useEffect(() => {
-      axios.get(process.env.NEXT_PUBLIC_API_URL + '/')
-        .then(response => {
-          // Handle the response data here.
-        })
-        .catch(error => {
-          // Handle the error here.
-        });
-    }, []);
+function Index () {
+  useEffect(() => {
+    axios.get(process.env.NEXT_PUBLIC_API_URL + '/')
+      .then(response => {
+        // Handle the response data here.
+      })
+      .catch(error => {
+        // Handle the error here.
+      })
+  }, [])
 
   return (
         <div>
