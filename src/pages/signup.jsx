@@ -36,7 +36,7 @@ const validations = {
     validate: value => {
       if (!value) return <> Please enter a password </>
       const result = zxcvbn(value)
-      return result.score > 2 ? true : <> Hackers can crack your password in {result.crackTimesDisplay.onlineNoThrottling10PerSecond} </>
+      return result.score > 3 ? true : <> Hackers can crack your password in {result.crackTimesDisplay.offlineSlowHashing1e4PerSecond} </>
     }
   },
   confirmPassword: {
