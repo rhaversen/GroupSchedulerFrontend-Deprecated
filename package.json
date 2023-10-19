@@ -35,6 +35,8 @@
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^13.5.4",
+    "@types/react-big-calendar": "^1.8.2",
+    "@types/react-modal": "^3.16.2",
     "@typescript-eslint/parser": "^6.0.0",
     "eslint-config-standard-with-typescript": "^39.1.1"
   }
