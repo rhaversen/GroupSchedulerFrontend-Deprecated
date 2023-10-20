@@ -28,6 +28,10 @@ module.exports = {
         "sourceType": "module",
         "project": "./tsconfig.json"
     },
+    "rules": {
+        "indent": ["error", 4], // Standard ESLint indent rule
+        "@typescript-eslint/indent": ["error", 4]
+    },
     "plugins": [
         "react",
         "prettier"
