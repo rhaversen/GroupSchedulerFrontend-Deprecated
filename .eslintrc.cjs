@@ -6,7 +6,9 @@ module.exports = {
     "extends": [
         "standard-with-typescript",
         "plugin:react/recommended",
-        "next/core-web-vitals"
+        "next/core-web-vitals",
+        "plugin:prettier/recommended",
+        "prettier"
     ],
     "overrides": [
         {
@@ -27,7 +29,8 @@ module.exports = {
         "project": "./tsconfig.json"
     },
     "plugins": [
-        "react"
+        "react",
+        "prettier"
     ],
     "settings": {
         "react": {
