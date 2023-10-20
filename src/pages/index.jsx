@@ -43,8 +43,8 @@ export async function getServerSideProps (context) {
     if (!token) {
       return {
         redirect: {
-          destination: '/promo',
-          permanent: false // This means it's a 302 redirection
+          destination: '/landing',
+          permanent: true // This means it's a 301 redirection
         }
       }
     }
@@ -55,14 +55,14 @@ export async function getServerSideProps (context) {
       return {
         redirect: {
           destination: '/dashboard',
-          permanent: false
+          permanent: true
         }
       }
     } else {
       return {
         redirect: {
-          destination: '/promo',
-          permanent: false
+          destination: '/landing',
+          permanent: true
         }
       }
     }
@@ -70,8 +70,8 @@ export async function getServerSideProps (context) {
     console.error('Error validating token:', error)
     return {
       redirect: {
-        destination: '/promo',
-        permanent: false
+        destination: '/landing',
+        permanent: true
       }
     }
   }
