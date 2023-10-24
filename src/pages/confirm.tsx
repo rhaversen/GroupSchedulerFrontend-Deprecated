@@ -2,45 +2,62 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import Link from 'next/link'
-
 import styles from './userInput.module.scss'
 
-function Confirm () {
-  const [message, setMessage] = useState('Confirmation missing')
-  const [isSuccess, setIsSuccess] = useState(false)
-  const router = useRouter()
+const API_V1_URL = process.env.NEXT_PUBLIC_API_V1_URL ?? ''
 
-  useEffect(() => {
-    const userCode = router.query.userCode
-    if (!router.isReady || !userCode) return
+function Confirm (): JSX.Element {
+    const [message, setMessage] = useState<string>('Confirmation missing')
+    const [isSuccess, setIsSuccess] = useState<boolean>(false)
+    const router = useRouter()
 
-    confirmEmail(userCode)
-  }, [router.isReady])
+    useEffect(() => {
+        const userCode = router.query.userCode as string | undefined
+        if (!router.isReady || userCode === '' || userCode == null) return
 
-  const confirmEmail = async (userCode) => {
-    try {
-      setMessage('Confirming your email...')
-      await axios.post(process.env.NEXT_PUBLIC_API_URL + `/api/v1/users/confirm/${userCode}`)
-      setMessage('Confirmation successful! Your account has been activated.')
-      setIsSuccess(true)
-    } catch (error) {
-      setMessage(error.response?.data.error || 'There was a problem with the server confirming your email! Please try again later...')
-    } // test
-  }
+        confirmEmail(userCode)
+    }, [router.isReady, router.query.userCode])
 
-  const handleRedirectToLogin = () => {
-    router.push('/login')
-  }
+    const confirmEmail = (userCode: string): void => {
+        setMessage('Confirming your email...')
 
-  return (
+        axios.post(`${API_V1_URL}/api/v1/users/confirm/${userCode}`)
+            .then(response => {
+                if (response?.data?.message !== '') {
+                    setMessage(response.data.message)
+                } else {
+                    setMessage('Confirmation successful! Your account has been activated.')
+                }
+                setIsSuccess(true)
+            })
+            .catch(error => {
+                console.error('Error confirming email:', error)
+                setMessage('Confirmation unsuccessful. Please try again.')
+            })
+    }
+
+    const handleRedirectToLogin = (): void => {
+        router.push('/login')
+            .then(() => {
+            // handle success if needed
+            })
+            .catch(error => {
+                console.error('Navigation error:', error)
+            })
+    }
+
+    return (
         <div className={styles.container}>
             <div className={styles.form}>
-                <p className={styles.message}>
-                    {message}
-                </p>
+                <p className={styles.message}>{message}</p>
                 {!isSuccess && (
                     <p className={styles.redirectPrompt}>
-                        Having trouble? <Link href="/support"><span className={styles.redirectLink}>Contact support</span></Link>
+                        Having trouble?{' '}
+                        <Link href="/support">
+                            <span className={styles.redirectLink}>
+                                Contact support
+                            </span>
+                        </Link>
                     </p>
                 )}
                 {isSuccess && (
@@ -53,7 +70,7 @@ function Confirm () {
                 )}
             </div>
         </div>
-  )
+    )
 }
 
 export default Confirm
