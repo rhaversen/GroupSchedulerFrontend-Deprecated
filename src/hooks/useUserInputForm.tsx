@@ -1,6 +1,6 @@
-import { useEffect, useState, type ChangeEvent } from 'react'
+import React, { useEffect, useState, type ChangeEvent } from 'react'
 
-type Validations = Record<string, { validate: (value: any, password?: any) => boolean | string | JSX.Element }>
+type Validations = Record<string, { validate: (value: string, password?: string) => boolean }>
 
 interface UseUserInputFormReturn {
     values: Record<string, any>
@@ -11,7 +11,7 @@ interface UseUserInputFormReturn {
     handleChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
-const useUserInputForm = (initialValues: Record<string, any>, validations: Validations): UseUserInputFormReturn => {
+const useUserInputForm = (initialValues: Record<string, string | boolean>, validations: Validations): UseUserInputFormReturn => {
     const [values, setValues] = useState(initialValues)
     const [errors, setErrors] = useState({})
     const [fieldIsValid, setFieldIsValid] = useState<Record<string, boolean>>({})
@@ -31,16 +31,17 @@ const useUserInputForm = (initialValues: Record<string, any>, validations: Valid
 
         for (const key in validations) {
             if (values[key] !== undefined && isTouched[key]) {
-                const validationResult = validations[key].validate(
+                const isValidInput = validations[key].validate(
                     values[key],
                     values.password
                 )
-                if (validationResult === true) {
+
+                if (isValidInput === true) {
                     inputIsValid[key] = true
                     validationErrors[key] = ''
                 } else {
                     inputIsValid[key] = false
-                    validationErrors[key] = validationResult
+                    validationErrors[key] = isValidInput
                 }
             }
         }
