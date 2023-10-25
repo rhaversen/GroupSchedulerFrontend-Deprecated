@@ -9,7 +9,7 @@ function Landing (): JSX.Element {
                 <Image
                     className="background-image"
                     src="landing_lake.webp"
-                    alt="A serene lake representing peace and tranquility, perfect for planning your next event."
+                    alt="Whoops, looks like something went wrong, please reload the page. If the problem persists, please contact support."
                     draggable="false"
                 />
                 <div className="overlay-text">Your Text Here</div>
