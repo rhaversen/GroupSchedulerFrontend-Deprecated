@@ -47,7 +47,7 @@ class App extends Component {
     }
 
     onSelectEvent = (event) => {
-        // Code to confirm and handle deletion of the clicked event
+    // Code to confirm and handle deletion of the clicked event
         if (
             window.confirm(`Are you sure you want to delete "${event.title}"?`)
         ) {

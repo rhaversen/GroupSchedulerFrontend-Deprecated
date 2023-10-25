@@ -1,4 +1,5 @@
-import React, { useEffect, useState, type ChangeEvent } from 'react'
+import type React from 'react'
+import { useEffect, useState, type ChangeEvent } from 'react'
 
 type Validations = Record<string, { validate: (value: string, password?: string) => boolean }>
 
@@ -36,7 +37,7 @@ const useUserInputForm = (initialValues: Record<string, string | boolean>, valid
                     values.password
                 )
 
-                if (isValidInput === true) {
+                if (isValidInput) {
                     inputIsValid[key] = true
                     validationErrors[key] = ''
                 } else {

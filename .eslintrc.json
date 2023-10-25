@@ -3,13 +3,11 @@
       "next/core-web-vitals",
       "plugin:@typescript-eslint/recommended",
       "standard-with-typescript",
-      "plugin:react/recommended",
-      "plugin:prettier/recommended",
-      "prettier"
+      "plugin:react/recommended"
     ],
     "overrides": [
       {
-        "files": ["*.ts", "*.tsx"],
+        "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
         "parser": "@typescript-eslint/parser",
         "parserOptions": {
           "project": "./tsconfig.json",
@@ -18,8 +16,7 @@
         },
         "plugins": [
             "@typescript-eslint",
-            "react",
-            "prettier"
+            "react"
         ],
         "settings": {
             "react": {
@@ -27,7 +24,9 @@
             }
         },
         "rules": {
-          "@typescript-eslint/strict-boolean-expressions": ["error"]
+          "@typescript-eslint/strict-boolean-expressions": ["error"],
+          "indent": ["error", 4], // Standard ESLint indent rule
+          "@typescript-eslint/indent": ["error", 4] // TypeScript-specific indent rule
         }
       }
     ]
