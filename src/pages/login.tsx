@@ -1,5 +1,5 @@
 // External Packages
-import { type FormEvent, useState } from 'react'
+import React, { type FormEvent, useState } from 'react'
 import axios from 'axios'
 import validator from 'validator'
 import Link from 'next/link'
@@ -11,6 +11,7 @@ import InputField from '../components/inputField'
 import useUserInputForm from '../hooks/useUserInputForm'
 import { useUser } from '../contexts/UserContext'
 import { type GetServerSideProps, type GetServerSidePropsContext } from 'next'
+import { useRouter } from 'next/router'
 
 const API_V1_URL = process.env.NEXT_PUBLIC_API_V1_URL ?? ''
 
@@ -58,6 +59,7 @@ function Login (): JSX.Element {
         },
         validations
     )
+    const router = useRouter()
 
     const triggerErrorShake = (): void => {
         setShouldShake(true)

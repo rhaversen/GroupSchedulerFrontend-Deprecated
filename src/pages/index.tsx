@@ -2,6 +2,7 @@ import Head from 'next/head'
 import axios from 'axios'
 import cookie from 'cookie'
 import { type GetServerSidePropsContext, type GetServerSideProps } from 'next'
+import React from 'react'
 
 const API_V1_URL = process.env.NEXT_PUBLIC_API_V1_URL ?? ''
 
