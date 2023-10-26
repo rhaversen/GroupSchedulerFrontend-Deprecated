@@ -113,6 +113,13 @@ const Signup = (): ReactElement => {
         }, 500)
     }
 
+    const goToLogin = () => {
+        router.push('/login')
+            .catch((error) => {
+                console.error('Router push error:', error)
+            })
+    }
+
     const handleSubmit = (e: { preventDefault: () => void }): void => {
         e.preventDefault()
         setIsLoading(true)
@@ -167,9 +174,9 @@ const Signup = (): ReactElement => {
             </form>
             <p className={styles.redirectPrompt}>
                 Already have an account?{' '}
-                <Link href="/login">
-                    <span className={styles.redirectLink}>Log In</span>
-                </Link>
+                <span className={styles.redirectLink} onClick={goToLogin}>
+                    Log in
+                </span>
             </p>
             {(message !== '') && <p className={styles.message}>{message}</p>}
         </div>

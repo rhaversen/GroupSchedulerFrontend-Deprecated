@@ -87,6 +87,20 @@ function Login (): JSX.Element {
             })
     }
 
+    const goToSignup = () => {
+        router.push('/signup')
+            .catch((error) => {
+                console.error('Router push error:', error)
+            })
+    }
+
+    const goToNewPassword = () => {
+        router.push('/new-password')
+            .catch((error) => {
+                console.error('Router push error:', error)
+            })
+    }
+
     return (
         <div className={styles.container}>
             <form onSubmit={handleSubmit} className={styles.form}>
@@ -122,18 +136,16 @@ function Login (): JSX.Element {
                 </button>
             </form>
             <p className={styles.redirectPrompt}>
-                Don&apos;t have an account?{' '}
-                <Link href="/signup">
-                    <span className={styles.redirectLink}>Sign Up</span>
-                </Link>
+                Don't have an account?{' '}
+                <span className={styles.redirectLink} onClick={goToSignup}>
+                    Sign Up
+                </span>
             </p>
             <p className={styles.redirectPrompt}>
                 Forgot your password?{' '}
-                <Link href="/new-password">
-                    <span className={styles.redirectLink}>
-                        Set New Password
-                    </span>
-                </Link>
+                <span className={styles.redirectLink} onClick={goToNewPassword}>
+                    Set New Password
+                </span>
             </p>
             {message !== '' && <p className={styles.message}>{message}</p>}
         </div>
