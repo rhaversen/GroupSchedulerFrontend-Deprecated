@@ -1,3 +1,33 @@
 {
-  "extends": ["next/babel","next/core-web-vitals"]
-}
+    "extends": [
+      "next/core-web-vitals",
+      "plugin:@typescript-eslint/recommended",
+      "standard-with-typescript",
+      "plugin:react/recommended"
+    ],
+    "overrides": [
+      {
+        "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+        "parser": "@typescript-eslint/parser",
+        "parserOptions": {
+          "project": "./tsconfig.json",
+          "ecmaVersion": "latest",
+          "sourceType": "module"
+        },
+        "plugins": [
+            "@typescript-eslint",
+            "react"
+        ],
+        "settings": {
+            "react": {
+                "version": "detect"  // This will automatically detect and set the React version
+            }
+        },
+        "rules": {
+          "@typescript-eslint/strict-boolean-expressions": ["error"],
+          "indent": ["error", 4], // Standard ESLint indent rule
+          "@typescript-eslint/indent": ["error", 4] // TypeScript-specific indent rule
+        }
+      }
+    ]
+  }
