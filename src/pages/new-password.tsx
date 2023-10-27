@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import validator from 'validator'
-import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 // Local Modules
 import styles from './userInput.module.scss'
@@ -14,8 +14,8 @@ const API_V1_URL = process.env.NEXT_PUBLIC_API_V1_URL ?? ''
 
 const validations = {
     email: {
-        validate: (value: string): true | JSX.Element =>
-            validator.isEmail(value) ? true : <> Please enter a valid email </>
+        isValid: (values: Record<string, string | boolean>): boolean => validator.isEmail(values.email as string),
+        errors: (values: Record<string, string | boolean>) => !validator.isEmail(values.email as string) ? 'Please enter a valid email' : null
     }
 }
 
@@ -28,21 +28,28 @@ const inputConfigs = [
     }
 ]
 
+const initialValues: {
+    email: string
+} = {
+    email: ''
+}
+
 function NewPassword (): JSX.Element {
     const [message, setMessage] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [shouldShake, setShouldShake] = useState(false)
     const {
-        values: formData,
+        values,
         errors,
         formIsValid,
+        fieldIsValid,
+        isTouched,
         handleChange
     } = useUserInputForm(
-        {
-            email: ''
-        },
+        initialValues,
         validations
     )
+    const router = useRouter()
 
     const triggerErrorShake = (): void => {
         setShouldShake(true)
@@ -56,20 +63,30 @@ function NewPassword (): JSX.Element {
         setIsLoading(true)
         setMessage('')
 
-        axios.post(API_V1_URL, formData)
+        axios.post(API_V1_URL, values)
             .then(() => {
-                setMessage(
-                    'If you have signed up with this email, a password reset link has been sent to your email inbox'
-                )
+                setMessage('If you have signed up with this email, a password reset link has been sent to your email inbox')
             })
             .catch(() => {
+                setMessage('There was a problem with the server! Please try again later...')
                 triggerErrorShake()
-                setMessage(
-                    'There was a problem with the server! Please try again later...'
-                )
             })
             .finally(() => {
                 setIsLoading(false)
+            })
+    }
+
+    const goToSignup = (): void => {
+        router.push('/signup')
+            .catch((error) => {
+                console.error('Router push error:', error)
+            })
+    }
+
+    const goToLogin = (): void => {
+        router.push('/login')
+            .catch((error) => {
+                console.error('Router push error:', error)
             })
     }
 
@@ -83,9 +100,14 @@ function NewPassword (): JSX.Element {
                         name={input.name}
                         label={input.label}
                         autoComplete={input.autoComplete}
-                        value={formData[input.name]}
+                        value={values[input.name] as string} // Always an input field
                         onChange={handleChange}
-                        errorMessage={errors[input.name]}
+                        errorMessage={
+                            isTouched[input.name]
+                                ? errors[input.name]
+                                : ''
+                        }
+                        fieldIsValid={fieldIsValid[input.name] || !isTouched[input.name]}
                     />
                 ))}
                 <button
@@ -100,9 +122,15 @@ function NewPassword (): JSX.Element {
             </form>
             <p className={styles.redirectPrompt}>
                 Don&apos;t have an account?{' '}
-                <Link href="/signup">
-                    <span className={styles.redirectLink}>Sign Up</span>
-                </Link>
+                <span className={styles.redirectLink} onClick={goToSignup}>
+                    Sign Up
+                </span>
+            </p>
+            <p className={styles.redirectPrompt}>
+                Remember your password?{' '}
+                <span className={styles.redirectLink} onClick={goToLogin}>
+                    Log in
+                </span>
             </p>
             {message !== '' && <p className={styles.message}>{message}</p>}
         </div>

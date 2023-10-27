@@ -1,61 +1,60 @@
-import type React from 'react'
-import { useEffect, useState, type ChangeEvent } from 'react'
+import { useEffect, useState } from 'react'
 
-type Validations = Record<string, { validate: (value: string, password?: string) => boolean }>
+interface Validation {
+    isValid: (values: Record<string, string | boolean>) => boolean
+    errors: (values: Record<string, string | boolean>) => string | null
+}
 
-interface UseUserInputFormReturn {
-    values: Record<string, any>
-    errors: Record<string, string>
+  type Validations = Record<string, Validation>
+
+interface UseUserInputFormReturnType {
+    values: Record<string, string | boolean>
+    errors: Record<string, string | null>
     fieldIsValid: Record<string, boolean>
     formIsValid: boolean
     isTouched: Record<string, boolean>
-    handleChange: (e: ChangeEvent<HTMLInputElement>) => void
+    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-const useUserInputForm = (initialValues: Record<string, string | boolean>, validations: Validations): UseUserInputFormReturn => {
+const useUserInputForm = (
+    initialValues: Record<string, string | boolean>,
+    validations: Validations
+): UseUserInputFormReturnType => {
+    const initialFieldState = Object.fromEntries(
+        Object.keys(initialValues).map((name) => [name, false])
+    )
     const [values, setValues] = useState(initialValues)
-    const [errors, setErrors] = useState({})
-    const [fieldIsValid, setFieldIsValid] = useState<Record<string, boolean>>({})
+    const [errors, setErrors] = useState<Record<string, string | null>>({})
     const [formIsValid, setFormIsValid] = useState(false)
-    const [isTouched, setIsTouched] = useState<Record<string, boolean>>({})
+    const [fieldIsValid, setFieldIsValid] = useState(initialFieldState)
+    const [isTouched, setIsTouched] = useState(initialFieldState)
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const { name, type } = e.target
-        const value = type === 'checkbox' ? e.target.checked : e.target.value
+        let value: string | boolean
+        if (type === 'checkbox') {
+            value = e.target.checked
+        } else {
+            value = e.target.value
+        }
         setIsTouched((prev) => ({ ...prev, [name]: true }))
         setValues((prev) => ({ ...prev, [name]: value }))
     }
 
     useEffect(() => {
-        const validationErrors: Record<string, string | false | JSX.Element> = { ...errors }
-        const inputIsValid = { ...fieldIsValid }
+        const validationErrors: Record<string, string | null> = {}
+        const validFields: Record<string, boolean> = {}
 
-        for (const key in validations) {
-            if (values[key] !== undefined && isTouched[key]) {
-                const isValidInput = validations[key].validate(
-                    values[key],
-                    values.password
-                )
-
-                if (isValidInput) {
-                    inputIsValid[key] = true
-                    validationErrors[key] = ''
-                } else {
-                    inputIsValid[key] = false
-                    validationErrors[key] = isValidInput
-                }
-            }
+        for (const key in values) {
+            const validation = validations[key]
+            validFields[key] = validation.isValid(values)
+            validationErrors[key] = validation.errors(values)
         }
 
-        setFieldIsValid(inputIsValid)
+        setFieldIsValid(validFields)
         setErrors(validationErrors)
-
-        const allFieldsValid = Object.keys(validations).every((key) => {
-            return inputIsValid[key]
-        })
-
-        setFormIsValid(allFieldsValid)
-    }, [values, validations, errors, fieldIsValid, isTouched])
+        setFormIsValid(Object.values(validFields).every(Boolean))
+    }, [values, isTouched, validations])
 
     return {
         values,

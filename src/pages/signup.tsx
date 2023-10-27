@@ -2,15 +2,17 @@
 import React, { useState, type ReactElement } from 'react'
 import axios from 'axios'
 import validator from 'validator'
-import Link from 'next/link'
 import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
 import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en'
+import { useRouter } from 'next/router'
+import cookie from 'cookie'
 
 // Local Modules
 import styles from './userInput.module.scss'
 import InputField from '../components/inputField'
 import useUserInputForm from '../hooks/useUserInputForm'
+import { useUser } from '../contexts/UserContext'
 import { type GetServerSideProps, type GetServerSidePropsContext } from 'next'
 
 // Setting up zxcvbn options
@@ -28,33 +30,33 @@ const API_V1_URL = process.env.NEXT_PUBLIC_API_V1_URL ?? ''
 
 const validations = {
     username: {
-        validate: (value: string) =>
-            value !== '' ? true : <> Please enter a username </>
+        isValid: (values: Record<string, string | boolean>): boolean => (values.username as string) !== '',
+        errors: (values: Record<string, string | boolean>) => (values.username as string) === '' ? 'Please enter a username' : null
     },
     email: {
-        validate: (value: string) =>
-            validator.isEmail(value) ? true : <> Please enter a valid email </>
+        isValid: (values: Record<string, string | boolean>): boolean => validator.isEmail(values.email as string),
+        errors: (values: Record<string, string | boolean>) => !validator.isEmail(values.email as string) ? 'Please enter a valid email' : null
     },
     password: {
-        validate: (value: string) => {
-            if (value === '') return <> Please enter a password </>
-            const result = zxcvbn(value)
-            return (result.score > 3
-                ? (true)
-                : (
-                    <>
-                        {' '}
-                    Hackers can crack your password in{' '}
-                        {result.crackTimesDisplay.offlineSlowHashing1e4PerSecond}{' '}
-                    </>
-                )
-            )
+        isValid: (values: Record<string, string | boolean>): boolean => {
+            const result = zxcvbn(values.password as string)
+            return (result.score > 2)
+        },
+        errors: (values: Record<string, string | boolean>) => {
+            const result = zxcvbn(values.password as string)
+            let output = `Hackers can crack your password in ${result.crackTimesDisplay.onlineNoThrottling10PerSecond}.\n`
+            if (result.feedback.suggestions.length > 0) {
+                output += `Password suggestions: \n ${result.feedback.suggestions.join('\n')}`
+            }
+            return output
         }
     },
     confirmPassword: {
-        validate: (value: string, password: string) => {
-            if (value === '') return <> Please confirm your password </>
-            return value === password ? true : <> Passwords do not match </>
+        isValid: (values: Record<string, string | boolean>): boolean => (values.confirmPassword as string) === (values.password as string),
+        errors: (values: Record<string, string | boolean>) => {
+            if ((values.confirmPassword as string) === '') return 'Please confirm your password'
+            if ((values.confirmPassword as string) !== (values.password as string)) return 'Passwords do not match'
+            return null
         }
     }
 }
@@ -87,24 +89,34 @@ const inputConfigs = [
 ]
 
 const Signup = (): ReactElement => {
+    const { setUser } = useUser()
+    const initialValues: {
+        username: string
+        email: string
+        password: string
+        confirmPassword: string
+    } = {
+        username: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+    }
+
     const [shouldShake, setShouldShake] = useState(false)
     const [message, setMessage] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const {
-        values: formData,
+        values,
         errors,
         formIsValid,
+        fieldIsValid,
         isTouched,
         handleChange
     } = useUserInputForm(
-        {
-            username: '',
-            email: '',
-            password: '',
-            confirmPassword: ''
-        },
+        initialValues,
         validations
     )
+    const router = useRouter()
 
     const triggerErrorShake = (): void => {
         setShouldShake(true)
@@ -113,21 +125,16 @@ const Signup = (): ReactElement => {
         }, 500)
     }
 
-    const goToLogin = () => {
-        router.push('/login')
-            .catch((error) => {
-                console.error('Router push error:', error)
-            })
-    }
-
     const handleSubmit = (e: { preventDefault: () => void }): void => {
         e.preventDefault()
         setIsLoading(true)
         setMessage('')
-
-        axios.post(API_V1_URL, formData)
+        console.log(values)
+        axios.post(API_V1_URL, values)
             .then(response => {
                 setMessage(response.data.message)
+                setUser(response.data.user)
+                goToDashboard()
             })
             .catch(error => {
                 triggerErrorShake()
@@ -142,6 +149,20 @@ const Signup = (): ReactElement => {
             })
     }
 
+    const goToLogin = (): void => {
+        router.push('/login')
+            .catch((error) => {
+                console.error('Router push error:', error)
+            })
+    }
+
+    const goToDashboard = (): void => {
+        router.push('/dashboard')
+            .catch((error) => {
+                console.error('Router push error:', error)
+            })
+    }
+
     return (
         <div className={styles.container}>
             <form onSubmit={handleSubmit} className={styles.form}>
@@ -152,14 +173,14 @@ const Signup = (): ReactElement => {
                         name={input.name}
                         label={input.label}
                         autoComplete={input.autoComplete}
-                        value={formData[input.name]}
+                        value={values[input.name] as string}
                         onChange={handleChange}
                         errorMessage={
                             isTouched[input.name]
                                 ? errors[input.name]
                                 : ''
                         }
-                        color="red"
+                        fieldIsValid={fieldIsValid[input.name] || !isTouched[input.name]}
                     />
                 ))}
                 <button
@@ -184,8 +205,19 @@ const Signup = (): ReactElement => {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
-    // Check if user is already logged in or other server-side tasks
-    // For now, let's return an empty props
+    const parsedCookies = cookie.parse(context.req.headers.cookie ?? '')
+    const token = parsedCookies.token
+
+    // If the user has a token (indicating they're logged in), redirect them to the dashboard
+    if (token !== null && token !== undefined && token !== '') {
+        return {
+            redirect: {
+                destination: '/dashboard',
+                permanent: false
+            }
+        }
+    }
+
     return { props: {} }
 }
 

@@ -2,8 +2,8 @@
 import React, { type FormEvent, useState } from 'react'
 import axios from 'axios'
 import validator from 'validator'
-import Link from 'next/link'
 import cookie from 'cookie'
+import { useRouter } from 'next/router'
 
 // Local Modules
 import styles from './userInput.module.scss'
@@ -11,18 +11,21 @@ import InputField from '../components/inputField'
 import useUserInputForm from '../hooks/useUserInputForm'
 import { useUser } from '../contexts/UserContext'
 import { type GetServerSideProps, type GetServerSidePropsContext } from 'next'
-import { useRouter } from 'next/router'
 
 const API_V1_URL = process.env.NEXT_PUBLIC_API_V1_URL ?? ''
 
 const validations = {
     email: {
-        validate: (value: string): true | JSX.Element =>
-            validator.isEmail(value) ? true : <> Please enter a valid email </>
+        isValid: (values: Record<string, string | boolean>): boolean => validator.isEmail(values.email as string),
+        errors: (values: Record<string, string | boolean>) => !validator.isEmail(values.email as string) ? 'Please enter a valid email' : null
     },
     password: {
-        validate: (value: string): true | JSX.Element =>
-            value !== '' ? true : <> Please enter your password </>
+        isValid: (values: Record<string, string | boolean>): boolean => (values.password as string) !== '',
+        errors: (values: Record<string, string | boolean>) => (values.password as string) === '' ? 'Please enter your password' : null
+    },
+    stayLoggedIn: {
+        isValid: (values: Record<string, string | boolean>): boolean => true,
+        errors: (values: Record<string, string | boolean>) => null
     }
 }
 
@@ -41,22 +44,30 @@ const inputConfigs = [
     }
 ]
 
+const initialValues: {
+    email: string
+    password: string
+    stayLoggedIn: boolean
+} = {
+    email: '',
+    password: '',
+    stayLoggedIn: false
+}
+
 function Login (): JSX.Element {
     const { setUser } = useUser()
     const [message, setMessage] = useState<string>('')
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [shouldShake, setShouldShake] = useState<boolean>(false)
     const {
-        values: formData,
+        values,
         errors,
         formIsValid,
+        fieldIsValid,
+        isTouched,
         handleChange
     } = useUserInputForm(
-        {
-            email: '',
-            password: '',
-            stayLoggedIn: false
-        },
+        initialValues,
         validations
     )
     const router = useRouter()
@@ -73,10 +84,11 @@ function Login (): JSX.Element {
         setIsLoading(true)
         setMessage('')
 
-        axios.post(API_V1_URL, formData)
+        axios.post(API_V1_URL, values)
             .then(response => {
                 setMessage(response.data.message)
                 setUser(response.data.user)
+                goToDashboard()
             }).catch((error) => {
                 console.error('Post error:', error)
                 setMessage('There was a problem with the server logging you in! Please try again later...')
@@ -87,14 +99,21 @@ function Login (): JSX.Element {
             })
     }
 
-    const goToSignup = () => {
+    const goToDashboard = (): void => {
+        router.push('/dashboard')
+            .catch((error) => {
+                console.error('Router push error:', error)
+            })
+    }
+
+    const goToSignup = (): void => {
         router.push('/signup')
             .catch((error) => {
                 console.error('Router push error:', error)
             })
     }
 
-    const goToNewPassword = () => {
+    const goToNewPassword = (): void => {
         router.push('/new-password')
             .catch((error) => {
                 console.error('Router push error:', error)
@@ -111,16 +130,21 @@ function Login (): JSX.Element {
                         name={input.name}
                         label={input.label}
                         autoComplete={input.autoComplete}
-                        value={formData[input.name]}
+                        value={values[input.name] as string} // Always an input field
                         onChange={handleChange}
-                        errorMessage={errors[input.name]}
+                        errorMessage={
+                            isTouched[input.name]
+                                ? errors[input.name]
+                                : ''
+                        }
+                        fieldIsValid={fieldIsValid[input.name] || !isTouched[input.name]}
                     />
                 ))}
                 <div className={styles.checkboxContainer}>
                     <input
                         type="checkbox"
                         name="stayLoggedIn"
-                        checked={formData.stayLoggedIn}
+                        checked={values.stayLoggedIn as boolean} // Always a checkbox
                         onChange={handleChange}
                     />
                     <label htmlFor="stayLoggedIn">Stay logged in</label>
@@ -136,7 +160,7 @@ function Login (): JSX.Element {
                 </button>
             </form>
             <p className={styles.redirectPrompt}>
-                Don't have an account?{' '}
+                Don&apos;t have an account?{' '}
                 <span className={styles.redirectLink} onClick={goToSignup}>
                     Sign Up
                 </span>
