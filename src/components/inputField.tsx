@@ -8,8 +8,12 @@ interface Props {
     autoComplete: string
     value: string
     onChange: (event: ChangeEvent<HTMLInputElement>) => void
-    errorMessage?: string
-    color?: string
+    errorMessage: string | null
+    fieldIsValid: boolean
+}
+interface inputFieldCssProperties extends React.CSSProperties {
+    '--input-border-color'?: string
+    '--input-focus-border-color'?: string
 }
 
 const InputField: FC<Props> = ({
@@ -20,8 +24,12 @@ const InputField: FC<Props> = ({
     value,
     onChange,
     errorMessage,
-    color
+    fieldIsValid
 }): ReactElement => {
+    const inputStyle: inputFieldCssProperties = {
+        '--input-border-color': !fieldIsValid ? 'red' : undefined,
+        '--input-focus-border-color': !fieldIsValid ? 'brightred' : undefined
+    }
     return (
         <div className={styles.labelContainer}>
             <label className={styles.label}>{label}</label>
@@ -33,14 +41,13 @@ const InputField: FC<Props> = ({
                     autoComplete={autoComplete}
                     value={value}
                     onChange={onChange}
+                    style={inputStyle}
                 />
-                <div className={styles.errorContainer}>
-                    {(errorMessage !== null && errorMessage !== '') && (
-                        <span className={styles.error} style={{ color }}>
-                            {errorMessage}
-                        </span>
-                    )}
-                </div>
+                {(errorMessage !== null && errorMessage !== '') && (
+                    <span className={styles.error}>
+                        {errorMessage}
+                    </span>
+                )}
             </div>
         </div>
     )
