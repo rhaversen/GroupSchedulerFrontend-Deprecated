@@ -7,10 +7,12 @@ function Landing (): JSX.Element {
         <div>
             <div className="container">
                 <Image
-                    className="background-image"
-                    src="landing_lake.webp"
+                    src="/landing_lake.webp"
                     alt="Whoops, looks like something went wrong, please reload the page. If the problem persists, please contact support."
                     draggable="false"
+                    className="background-image"
+                    width={1756}
+                    height={1024}
                 />
                 <div className="overlay-text">Your Text Here</div>
             </div>
