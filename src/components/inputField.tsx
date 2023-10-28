@@ -48,8 +48,16 @@ const InputField: FC<Props> = ({
                 />
                 {(errorMessage !== null && errorMessage !== '') && (
                     <span className={styles.error}>
-                        {errorMessage}
+                        {errorMessage.split('\n').map((str, index, array) => // Creating JSX elements with new lines for every \n
+                            array.length - 1 === index
+                                ? str
+                                : <>
+                                    {str}
+                                    <br />
+                                </>
+                        )}
                     </span>
+
                 )}
             </div>
         </div>
