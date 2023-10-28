@@ -34,13 +34,15 @@ const inputConfigs = [
         type: 'email',
         name: 'email',
         label: 'Email',
-        autoComplete: 'email'
+        autoComplete: 'email',
+        id: 'email'
     },
     {
         type: 'password',
         name: 'password',
         label: 'Password',
-        autoComplete: 'current-password'
+        autoComplete: 'current-password',
+        id: 'password'
     }
 ]
 
@@ -138,12 +140,14 @@ function Login (): JSX.Element {
                                 : ''
                         }
                         fieldIsValid={fieldIsValid[input.name] || !isTouched[input.name]}
+                        id={input.id}
                     />
                 ))}
                 <div className={styles.checkboxContainer}>
                     <input
                         type="checkbox"
                         name="stayLoggedIn"
+                        id="stayLoggedIn"
                         checked={values.stayLoggedIn as boolean} // Always a checkbox
                         onChange={handleChange}
                     />

@@ -10,6 +10,7 @@ interface Props {
     onChange: (event: ChangeEvent<HTMLInputElement>) => void
     errorMessage: string | null
     fieldIsValid: boolean
+    id: string
 }
 interface inputFieldCssProperties extends React.CSSProperties {
     '--input-border-color'?: string
@@ -24,15 +25,16 @@ const InputField: FC<Props> = ({
     value,
     onChange,
     errorMessage,
-    fieldIsValid
+    fieldIsValid,
+    id
 }): ReactElement => {
     const inputStyle: inputFieldCssProperties = {
-        '--input-border-color': !fieldIsValid ? 'red' : undefined,
-        '--input-focus-border-color': !fieldIsValid ? 'brightred' : undefined
+        '--input-border-color': !fieldIsValid ? 'OrangeRed' : undefined,
+        '--input-focus-border-color': !fieldIsValid ? 'Orange' : undefined
     }
     return (
         <div className={styles.labelContainer}>
-            <label className={styles.label}>{label}</label>
+            <label htmlFor={id} className={styles.label}>{label}</label>
             <div className={styles.inputContainer}>
                 <input
                     className={styles.input}
@@ -42,6 +44,7 @@ const InputField: FC<Props> = ({
                     value={value}
                     onChange={onChange}
                     style={inputStyle}
+                    id={id}
                 />
                 {(errorMessage !== null && errorMessage !== '') && (
                     <span className={styles.error}>

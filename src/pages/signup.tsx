@@ -66,25 +66,30 @@ const inputConfigs = [
         type: 'text',
         name: 'username',
         label: 'Username',
-        autoComplete: 'name'
+        autoComplete: 'name',
+        id: 'username'
     },
     {
         type: 'email',
         name: 'email',
         label: 'Email',
-        autoComplete: 'email'
+        autoComplete: 'email',
+        id: 'email'
     },
     {
         type: 'password',
         name: 'password',
         label: 'Password',
-        autoComplete: 'new-password'
+        autoComplete: 'new-password',
+        id: 'password'
+
     },
     {
         type: 'password',
         name: 'confirmPassword',
         label: 'Confirm Password',
-        autoComplete: 'new-password'
+        autoComplete: 'new-password',
+        id: 'confirmPassword'
     }
 ]
 
@@ -181,6 +186,7 @@ const Signup = (): ReactElement => {
                                 : ''
                         }
                         fieldIsValid={fieldIsValid[input.name] || !isTouched[input.name]}
+                        id={input.id}
                     />
                 ))}
                 <button

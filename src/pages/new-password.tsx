@@ -24,7 +24,8 @@ const inputConfigs = [
         type: 'email',
         name: 'email',
         label: 'Please enter your email:',
-        autoComplete: 'email'
+        autoComplete: 'email',
+        id: 'email'
     }
 ]
 
@@ -108,6 +109,7 @@ function NewPassword (): JSX.Element {
                                 : ''
                         }
                         fieldIsValid={fieldIsValid[input.name] || !isTouched[input.name]}
+                        id={input.id}
                     />
                 ))}
                 <button
