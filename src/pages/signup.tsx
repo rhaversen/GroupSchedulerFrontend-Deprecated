@@ -68,7 +68,7 @@ const validations = {
 
                 output += result.crackTimesDisplay.offlineSlowHashing1e4PerSecond
 
-                if (result.feedback.warning) {
+                if (result.feedback.warning !== null) {
                     output += `\n\nWarning: ${result.feedback.warning}`
                 }
                 if (result.feedback.suggestions.length > 0) {
