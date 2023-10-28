@@ -13,7 +13,7 @@
     "@types/node": "20.7.2",
     "@types/react": "18.2.23",
 
-    "@types/react-dom": "18.2.7",
+    "@types/react-dom": "18.2.11",
     "@zxcvbn-ts/core": "^3.0.3",
     "@zxcvbn-ts/language-common": "^3.0.3",
     "@zxcvbn-ts/language-en": "^3.0.1",
