@@ -24,8 +24,8 @@
             }
         },
         "rules": {
+          "indent": ["error", 4, { "SwitchCase": 1 }],
           "@typescript-eslint/strict-boolean-expressions": ["error"],
-          "indent": ["error", 4], // Standard ESLint indent rule
           "@typescript-eslint/indent": ["error", 4] // TypeScript-specific indent rule
         }
       }
