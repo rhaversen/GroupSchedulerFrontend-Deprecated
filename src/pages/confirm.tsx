@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import axios from 'axios'
-import Link from 'next/link'
 import styles from './userInput.module.scss'
 
 const API_V1_URL = process.env.NEXT_PUBLIC_API_V1_URL ?? ''
@@ -57,9 +56,9 @@ function Confirm (): JSX.Element {
                 {!isSuccess && (
                     <p className={styles.redirectPrompt}>
                     Having trouble?{' '}
-                    <span className={styles.redirectLink} onClick={goToSupport}>
+                        <span className={styles.redirectLink} onClick={goToSupport}>
                     Contact support
-                    </span>
+                        </span>
                     </p>
                 )}
                 {isSuccess && (
