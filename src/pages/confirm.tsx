@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import axios from 'axios'
-import Link from 'next/link'
 import styles from './userInput.module.scss'
 
 const API_V1_URL = process.env.NEXT_PUBLIC_API_V1_URL ?? ''
@@ -36,13 +35,17 @@ function Confirm (): JSX.Element {
             })
     }
 
-    const handleRedirectToLogin = (): void => {
+    const goToLogin = (): void => {
         router.push('/login')
-            .then(() => {
-            // handle success if needed
+            .catch((error) => {
+                console.error('Router push error:', error)
             })
-            .catch(error => {
-                console.error('Navigation error:', error)
+    }
+
+    const goToSupport = (): void => {
+        router.push('/support')
+            .catch((error) => {
+                console.error('Router push error:', error)
             })
     }
 
@@ -52,18 +55,16 @@ function Confirm (): JSX.Element {
                 <p className={styles.message}>{message}</p>
                 {!isSuccess && (
                     <p className={styles.redirectPrompt}>
-                        Having trouble?{' '}
-                        <Link href="/support">
-                            <span className={styles.redirectLink}>
-                                Contact support
-                            </span>
-                        </Link>
+                    Having trouble?{' '}
+                        <span className={styles.redirectLink} onClick={goToSupport}>
+                    Contact support
+                        </span>
                     </p>
                 )}
                 {isSuccess && (
                     <button
                         className={styles.submitButton}
-                        onClick={handleRedirectToLogin}
+                        onClick={goToLogin}
                     >
                         Proceed to Login
                     </button>

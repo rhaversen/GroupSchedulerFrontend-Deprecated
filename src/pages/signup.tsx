@@ -44,10 +44,38 @@ const validations = {
         },
         errors: (values: Record<string, string | boolean>) => {
             const result = zxcvbn(values.password as string)
-            let output = `Hackers can crack your password in ${result.crackTimesDisplay.onlineNoThrottling10PerSecond}.\n`
-            if (result.feedback.suggestions.length > 0) {
-                output += `Password suggestions: \n ${result.feedback.suggestions.join('\n')}`
+
+            let output = 'Your password is '
+            switch (result.score) {
+                case 0:
+                    output += 'too guessable.'
+                    break
+                case 1:
+                    output += 'very guessable.'
+                    break
+                case 2:
+                    output += 'somewhat guessable.'
+                    break
+                case 3:
+                    output += 'accepted and safely unguessable.'
+                    break
+                case 4:
+                    output += 'accepted and very unguessable.'
             }
+
+            if (result.score <= 2) {
+                output += '\n\nHackers can crack your password in '
+
+                output += result.crackTimesDisplay.offlineSlowHashing1e4PerSecond
+
+                if (result.feedback.warning !== null) {
+                    output += `\n\nWarning: ${result.feedback.warning}`
+                }
+                if (result.feedback.suggestions.length > 0) {
+                    output += `\n\nPassword suggestions: \n ${result.feedback.suggestions.join('\n')}`
+                }
+            }
+
             return output
         }
     },
@@ -66,25 +94,30 @@ const inputConfigs = [
         type: 'text',
         name: 'username',
         label: 'Username',
-        autoComplete: 'name'
+        autoComplete: 'name',
+        id: 'username'
     },
     {
         type: 'email',
         name: 'email',
         label: 'Email',
-        autoComplete: 'email'
+        autoComplete: 'email',
+        id: 'email'
     },
     {
         type: 'password',
         name: 'password',
         label: 'Password',
-        autoComplete: 'new-password'
+        autoComplete: 'new-password',
+        id: 'password'
+
     },
     {
         type: 'password',
         name: 'confirmPassword',
         label: 'Confirm Password',
-        autoComplete: 'new-password'
+        autoComplete: 'new-password',
+        id: 'confirmPassword'
     }
 ]
 
@@ -181,6 +214,7 @@ const Signup = (): ReactElement => {
                                 : ''
                         }
                         fieldIsValid={fieldIsValid[input.name] || !isTouched[input.name]}
+                        id={input.id}
                     />
                 ))}
                 <button
