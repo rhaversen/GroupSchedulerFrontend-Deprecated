@@ -5,18 +5,21 @@
 # Use an official Node.js runtime as the base image
 FROM --platform=linux/arm64 node:20.8.1-bookworm-slim
 
-# Create a user within the container
-RUN useradd -m frontend_user
-
-# Switch to user for subsequent commands
-USER frontend_user
-
 # Set working directory
 WORKDIR /app
+
+# Create a user within the container
+RUN useradd -m frontend_user
 
 # Copy the `.next` dist directory and package.json
 COPY .next/ ./.next/
 COPY package*.json ./
+
+# Make sure the directory belongs to the non-root user
+RUN chown -R frontend_user:frontend_user /app
+
+# Switch to user for subsequent commands
+USER frontend_user
 
 # Install production dependencies
 RUN npm install --omit=dev
