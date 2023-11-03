@@ -8,6 +8,9 @@ FROM --platform=linux/arm64 node:20.8.1-bookworm-slim
 # Create a user within the container
 RUN useradd -m frontend_user
 
+# Make sure the directory belongs to the non-root user
+RUN chown -R frontend_user /app
+
 # Switch to user for subsequent commands
 USER frontend_user
 
