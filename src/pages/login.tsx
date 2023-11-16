@@ -86,7 +86,7 @@ function Login (): JSX.Element {
         setIsLoading(true)
         setMessage('')
 
-        axios.post(API_V1_URL, values)
+        axios.post(API_V1_URL + 'users/login-local', values)
             .then(response => {
                 setMessage(response.data.message)
                 setUser(response.data.user)

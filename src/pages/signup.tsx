@@ -163,7 +163,7 @@ const Signup = (): ReactElement => {
         setIsLoading(true)
         setMessage('')
         console.log(values)
-        axios.post(API_V1_URL, values)
+        axios.post(API_V1_URL + 'users/', values)
             .then(response => {
                 setMessage(response.data.message)
                 setUser(response.data.user)
