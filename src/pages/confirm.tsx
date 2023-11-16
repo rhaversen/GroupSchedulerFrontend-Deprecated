@@ -20,7 +20,7 @@ function Confirm (): JSX.Element {
     const confirmEmail = (userCode: string): void => {
         setMessage('Confirming your email...')
 
-        axios.post(`${API_V1_URL}/api/v1/users/confirm/${userCode}`)
+        axios.post(API_V1_URL + 'users/confirm/' + userCode)
             .then(response => {
                 if (response?.data?.message !== '') {
                     setMessage(response.data.message)
