@@ -1,5 +1,5 @@
 // External Packages
-import React, { useState, type ReactElement } from 'react'
+import React, { useState, type ReactElement, type FormEvent } from 'react'
 import axios from 'axios'
 import validator from 'validator'
 import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
@@ -158,24 +158,23 @@ const Signup = (): ReactElement => {
         }, 500)
     }
 
-    const handleSubmit = (e: { preventDefault: () => void }): void => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault()
         setIsLoading(true)
         setMessage('')
-        console.log(values)
-        axios.post(API_V1_URL + 'users/', values)
+
+        axios.post(`${API_V1_URL}users/`, values)
             .then(response => {
                 setMessage(response.data.message)
                 setUser(response.data.user)
                 goToDashboard()
             })
             .catch(error => {
+                console.error('Post error:', error)
+                // Use optional chaining and nullish coalescing to provide a fallback error message
+                const serverError = error.response?.data?.error ?? 'There was a problem with the server logging you in! Please try again later...'
+                setMessage(serverError)
                 triggerErrorShake()
-                setMessage(
-                    error.response?.data.error !== null && error.response?.data.error !== undefined
-                        ? error.response.data.error
-                        : 'There was a problem with the server signing you up! Please try again later...'
-                )
             })
             .finally(() => {
                 setIsLoading(false)

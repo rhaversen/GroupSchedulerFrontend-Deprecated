@@ -1,5 +1,5 @@
 // External Packages
-import React, { type FormEvent, useState } from 'react'
+import React, { useState, type ReactElement, type FormEvent } from 'react'
 import axios from 'axios'
 import validator from 'validator'
 import cookie from 'cookie'
@@ -56,7 +56,7 @@ const initialValues: {
     stayLoggedIn: false
 }
 
-function Login (): JSX.Element {
+function Login (): ReactElement {
     const { setUser } = useUser()
     const [message, setMessage] = useState<string>('')
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -81,19 +81,22 @@ function Login (): JSX.Element {
         }, 500)
     }
 
-    const handleSubmit = (e: FormEvent): void => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault()
         setIsLoading(true)
         setMessage('')
 
-        axios.post(API_V1_URL + 'users/login-local', values)
+        axios.post(`${API_V1_URL}users/login-local`, values)
             .then(response => {
                 setMessage(response.data.message)
                 setUser(response.data.user)
                 goToDashboard()
-            }).catch((error) => {
+            })
+            .catch(error => {
                 console.error('Post error:', error)
-                setMessage('There was a problem with the server logging you in! Please try again later...')
+                // Use optional chaining and nullish coalescing to provide a fallback error message
+                const serverError = error.response?.data?.error ?? 'There was a problem with the server logging you in! Please try again later...'
+                setMessage(serverError)
                 triggerErrorShake()
             })
             .finally(() => {
