@@ -96,10 +96,6 @@ function Login (): ReactElement {
                 console.error('Post error:', error)
                 // Use optional chaining and nullish coalescing to provide a fallback error message
                 const serverError = error?.response?.data?.error ?? 'There was a problem with the server logging you in! Please try again later...'
-                console.log(error)
-                console.log(error?.response)
-                console.log(error?.response?.data)
-                console.log(error?.response?.data?.error)
 
                 setMessage(serverError)
                 triggerErrorShake()
