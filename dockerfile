@@ -13,7 +13,7 @@ RUN useradd -m frontend_user
 
 # Copy .next, public and package.json
 COPY .next/ ./.next/
-COPY .public/ ./public/
+COPY public/ ./public/
 COPY package*.json ./
 
 # Make sure the directory belongs to the non-root user
