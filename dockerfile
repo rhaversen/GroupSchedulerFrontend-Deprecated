@@ -11,8 +11,9 @@ WORKDIR /app
 # Create a user within the container
 RUN useradd -m frontend_user
 
-# Copy the `.next` dist directory and package.json
+# Copy .next, public and package.json
 COPY .next/ ./.next/
+COPY .public/ ./public/
 COPY package*.json ./
 
 # Make sure the directory belongs to the non-root user
