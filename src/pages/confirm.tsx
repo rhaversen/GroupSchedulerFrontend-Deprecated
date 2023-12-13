@@ -25,16 +25,18 @@ function Confirm (): JSX.Element {
 
         axios.post(API_V1_URL + 'users/confirm/' + encodedConfirmationCode)
             .then(response => {
-                if (response?.data?.message !== '') {
-                    setMessage(response.data.message)
-                } else {
-                    setMessage('Confirmation successful! Your account has been activated.')
-                }
+                console.info(response)
+
+                const serverMessage = response?.data?.message ?? 'Confirmation successful! Your account has been activated.'
+                setMessage(serverMessage)
+
                 setIsSuccess(true)
             })
             .catch(error => {
-                console.error('Error confirming email:', error)
-                setMessage('Confirmation unsuccessful. Please try again.')
+                console.error('Error confirming user:', error)
+
+                const serverError = error.response?.data?.error ?? 'Confirmation unsuccessful. Please try again.'
+                setMessage(serverError)
             })
     }
 
