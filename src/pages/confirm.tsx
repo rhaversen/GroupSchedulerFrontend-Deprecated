@@ -20,7 +20,10 @@ function Confirm (): JSX.Element {
     const confirmEmail = (confirmationCode: string): void => {
         setMessage('Confirming your email...')
 
-        axios.post(API_V1_URL + 'users/confirm/' + confirmationCode)
+        // Encode URI component by escaping special characters
+        const encodedConfirmationCode = encodeURIComponent(confirmationCode)
+
+        axios.post(API_V1_URL + 'users/confirm/' + encodedConfirmationCode)
             .then(response => {
                 if (response?.data?.message !== '') {
                     setMessage(response.data.message)
