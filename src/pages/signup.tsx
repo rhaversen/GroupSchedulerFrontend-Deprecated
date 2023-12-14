@@ -165,16 +165,20 @@ const Signup = (): ReactElement => {
 
         axios.post(`${API_V1_URL}users/`, values)
             .then(response => {
-                setMessage(response.data.message)
+                console.info(response)
+
+                const serverMessage = response?.data?.message ?? 'Signup successful!'
+                setMessage(serverMessage)
+
                 setUser(response.data.user)
                 goToDashboard()
             })
             .catch(error => {
                 console.error('Post error:', error)
-                // Use optional chaining and nullish coalescing to provide a fallback error message
-                const serverError = error.response?.data?.error ?? 'There was a problem with the server logging you in! Please try again later...'
 
+                const serverError = error.response?.data?.error ?? 'There was a problem with the server logging you in! Please try again later...'
                 setMessage(serverError)
+
                 triggerErrorShake()
             })
             .finally(() => {
