@@ -8,7 +8,7 @@ function Landing (): JSX.Element {
             <div className="container">
             <div className="black-bar"></div>
                 <Image
-                    src="/landing_lake.webp"
+                src="/landing/landing_lake.webp"
                     alt="Whoops, looks like something went wrong, please reload the page. If the problem persists, please contact support."
                     draggable="false"
                     className="background-image"
