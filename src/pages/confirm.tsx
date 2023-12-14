@@ -23,7 +23,7 @@ function Confirm (): JSX.Element {
         // Encode URI component by escaping special characters
         const encodedConfirmationCode = encodeURIComponent(confirmationCode)
 
-        axios.post(API_V1_URL + 'users/confirm/' + encodedConfirmationCode)
+        axios.post(API_V1_URL + 'users/confirm?confirmationCode=' + encodedConfirmationCode)
             .then(response => {
                 console.info(response)
 
