@@ -15,7 +15,7 @@
 .inputContainer {
     @include flex-column-start;
     width: 100%;
-    position: relative;  // Make sure this is set
+    position: relative; // Make sure this is set
 }
 
 .label {
@@ -37,7 +37,7 @@
     border: {
         width: 1px;
         style: solid;
-        color: var(--input-border-color, #ccc);  // default to #ccc
+        color: var(--input-border-color, #ccc); // default to #ccc
         radius: 10px;
     }
     box-sizing: border-box;
@@ -61,18 +61,18 @@
     }
     line-height: 18px;
     position: absolute; // Important for floating effect
-    top: 50%;  
-    left: 100%;  // Position to the right of the input
-    z-index: 1;  
-    transform: translateY(-50%);  // Center vertically
-    margin-left: 10px;  // Some space between the error and the input field
-    
+    top: 50%;
+    left: 100%; // Position to the right of the input
+    z-index: 1;
+    transform: translateY(-50%); // Center vertically
+    margin-left: 10px; // Some space between the error and the input field
+
     @media (max-width: 900px) {
         width: 95%;
-        position: static;  // Resets to normal flow
-        transform: none;  // Removes previous transform
-        margin-left: 0;  // Resets margin
-        margin-top: 5px;  // Adds a bit of margin above
+        position: static; // Resets to normal flow
+        transform: none; // Removes previous transform
+        margin-left: 0; // Resets margin
+        margin-top: 5px; // Adds a bit of margin above
     }
 
 }

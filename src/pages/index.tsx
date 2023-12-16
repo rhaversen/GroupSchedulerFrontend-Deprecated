@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import axios from 'axios'
 import cookie from 'cookie'
-import { type GetServerSidePropsContext, type GetServerSideProps } from 'next'
+import { type GetServerSideProps, type GetServerSidePropsContext } from 'next'
 import React from 'react'
 
 const API_V1_URL = process.env.NEXT_PUBLIC_API_V1_URL ?? ''
@@ -13,7 +13,7 @@ function Index (): JSX.Element {
         <div>
             <Head>
                 <title>Rain Date</title>
-                <link rel="canonical" href="https://www.raindate.net" />
+                <link rel="canonical" href="https://www.raindate.net"/>
                 <meta
                     name="description"
                     content="Your Event Planning App is a one-stop shop for all your event planning needs. With our app, you can view all your upcoming events, create and manage calendars, and see when other users are available. Plus, our event pages let you see more info about events, such as descriptions, dates, and locations."

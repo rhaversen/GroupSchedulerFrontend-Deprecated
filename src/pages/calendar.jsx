@@ -1,4 +1,4 @@
-import React, { Component, useState, ChangeEvent } from 'react'
+import React, { Component } from 'react'
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
@@ -47,7 +47,7 @@ class App extends Component {
     }
 
     onSelectEvent = (event) => {
-    // Code to confirm and handle deletion of the clicked event
+        // Code to confirm and handle deletion of the clicked event
         if (
             window.confirm(`Are you sure you want to delete "${event.title}"?`)
         ) {

@@ -1,5 +1,5 @@
 // External Packages
-import React, { useState, type ReactElement, type FormEvent } from 'react'
+import React, { type FormEvent, type ReactElement, useState } from 'react'
 import axios from 'axios'
 import validator from 'validator'
 import cookie from 'cookie'

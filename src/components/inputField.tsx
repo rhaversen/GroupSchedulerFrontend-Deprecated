@@ -1,4 +1,4 @@
-import React, { type ReactElement, type ChangeEvent, type FC } from 'react'
+import React, { type ChangeEvent, type FC, type ReactElement } from 'react'
 import styles from './InputField.module.scss'
 
 interface Props {
@@ -12,6 +12,7 @@ interface Props {
     fieldIsValid: boolean
     id: string
 }
+
 interface inputFieldCssProperties extends React.CSSProperties {
     '--input-border-color'?: string
     '--input-focus-border-color'?: string
@@ -53,7 +54,7 @@ const InputField: FC<Props> = ({
                                 ? str
                                 : <>
                                     {str}
-                                    <br />
+                                    <br/>
                                 </>
                         )}
                     </span>

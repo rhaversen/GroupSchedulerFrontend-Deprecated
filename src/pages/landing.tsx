@@ -7,7 +7,7 @@ function Landing (): JSX.Element {
     return (
         <div className="container">
             <div className="logo">
-                <RaindateLogo />
+                <RaindateLogo/>
             </div>
             <div className="black-bar"></div>
             <Image
