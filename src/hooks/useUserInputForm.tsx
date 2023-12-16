@@ -5,7 +5,7 @@ interface Validation {
     errors: (values: Record<string, string | boolean>) => string | null
 }
 
-  type Validations = Record<string, Validation>
+type Validations = Record<string, Validation>
 
 interface UseUserInputFormReturnType {
     values: Record<string, string | boolean>

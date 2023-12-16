@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import styles from './userInput.module.scss'
@@ -60,9 +60,9 @@ function Confirm (): JSX.Element {
                 <p className={styles.message}>{message}</p>
                 {!isSuccess && (
                     <p className={styles.redirectPrompt}>
-                    Having trouble?{' '}
+                        Having trouble?{' '}
                         <span className={styles.redirectLink} onClick={goToSupport}>
-                    Contact support
+                        Contact support
                         </span>
                     </p>
                 )}

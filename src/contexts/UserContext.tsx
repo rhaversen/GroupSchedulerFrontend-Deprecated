@@ -1,10 +1,4 @@
-import React, {
-    createContext,
-    useContext,
-    useState,
-    type ReactNode,
-    type FC
-} from 'react'
+import React, { createContext, type FC, type ReactNode, useContext, useState } from 'react'
 
 interface UserContextType {
     user: null | any // Replace 'any' with the type of your user object, if available.
