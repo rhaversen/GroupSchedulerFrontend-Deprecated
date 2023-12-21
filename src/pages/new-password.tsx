@@ -64,7 +64,7 @@ function NewPassword (): JSX.Element {
         setIsLoading(true)
         setMessage('')
 
-        axios.post(API_V1_URL + 'users/request-reset-password-email', values)
+        axios.post(API_V1_URL + 'users/request-password-reset-email', values)
             .then(() => {
                 setMessage('If you have signed up with this email, a password reset link has been sent to your email inbox')
             })
