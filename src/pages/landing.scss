@@ -19,11 +19,11 @@ body, html {
     overflow: hidden;
     object-fit: cover;
     z-index: -2;
-    
+
     img {
-      object-fit: cover;
-      width: 100%;
-      height: 100%;
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
     }
 }
 
@@ -37,8 +37,8 @@ body, html {
             rgba(0, 0, 0, 1) 0%,
             rgba(0, 0, 0, 1) 50%,
             rgba(0, 0, 0, 0) 100%);
-            //url('/noise.svg');
-    z-index: -1;  
+    //url('/noise.svg');
+    z-index: -1;
 }
 
 .logo {
@@ -91,6 +91,7 @@ h1 {
     position: absolute;
     top: 50%;
     width: 100%;
+
     button {
         font-size: 15px;
         font-family: 'Fredoka One', cursive;
@@ -105,6 +106,7 @@ h1 {
             background-color: #0F3B6E; // Replace with actual color code
             color: #fff;
         }
+
         &#login {
             background-color: #0F3B6E; // Replace with actual color code
             color: #fff;
