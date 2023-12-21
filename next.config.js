@@ -17,14 +17,14 @@ const nextConfig = {
             issuer: /\.[jt]sx?$/,
             test: /\.svg$/,
             use: ['@svgr/webpack'],
-          });
-      
-          config.module.rules.push({
+        });
+
+        config.module.rules.push({
             issuer: /\.scss$/,
             test: /\.svg$/,
             use: ['url-loader'],
-          });
-      
+        });
+
         return config;
     },
 

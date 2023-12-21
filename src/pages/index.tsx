@@ -1,10 +1,7 @@
 import Head from 'next/head'
-import axios from 'axios'
 import cookie from 'cookie'
 import { type GetServerSideProps, type GetServerSidePropsContext } from 'next'
 import React from 'react'
-
-const API_V1_URL = process.env.NEXT_PUBLIC_API_V1_URL ?? ''
 
 function Index (): JSX.Element {
     // This will be a static page on the client side, so there's no client-side logic required.

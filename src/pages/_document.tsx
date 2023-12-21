@@ -1,4 +1,4 @@
-import Document, { Html, Head, Main, NextScript, type DocumentContext } from 'next/document'
+import Document, { type DocumentContext, Head, Html, Main, NextScript } from 'next/document'
 import React from 'react'
 
 class MyDocument extends Document {
@@ -31,8 +31,8 @@ class MyDocument extends Document {
                     />
                 </Head>
                 <body>
-                    <Main />
-                    <NextScript />
+                    <Main/>
+                    <NextScript/>
                 </body>
             </Html>
         )
