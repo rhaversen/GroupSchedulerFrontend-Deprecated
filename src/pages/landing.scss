@@ -12,20 +12,19 @@ body, html {
 
 .background-image {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
     top: 0;
     left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    object-fit: cover;
     z-index: -2;
-}
-
-.overlay-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
+    
+    img {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
 }
 
 .black-bar {
@@ -33,18 +32,19 @@ body, html {
     top: 0;
     left: 0;
     width: 100%;
-    height: 150px;
-    background: linear-gradient(to bottom,
+    height: 100px;
+    background-image: linear-gradient(to bottom,
             rgba(0, 0, 0, 1) 0%,
             rgba(0, 0, 0, 1) 50%,
             rgba(0, 0, 0, 0) 100%);
-    z-index: -1;
+            //url('/noise.svg');
+    z-index: -1;  
 }
 
 .logo {
     display: block;
     margin: 0 auto;
-    width: 400px;
+    width: 250px;
     max-width: 100%;
     height: auto; /* Maintain aspect ratio */
     z-index: 100;
@@ -52,4 +52,62 @@ body, html {
     top: 10px;
     left: 50%;
     transform: translateX(-50%);
+}
+
+h1 {
+    /* Typography */
+    font-family: 'Caveat', cursive;
+    color: #103A6E;
+    font-size: 45px; /* Adjusted font size */
+    text-overflow: ellipsis; /* Hide truncated text */
+    white-space: nowrap; /* Prevent natural word wrapping */
+
+    /* Box-model */
+    margin-bottom: 20px;
+    max-width: 100%;
+
+    /* Flexbox for centering */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* Positioning */
+    position: relative;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Media query for larger screens */
+@media (min-width: 500px) {
+    h1 br {
+        display: none; /* Hide the `br` on large screens */
+    }
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    button {
+        font-size: 15px;
+        font-family: 'Fredoka One', cursive;
+        padding: 10px 50px;
+        margin: 0 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        &#signup {
+            background-color: #0F3B6E; // Replace with actual color code
+            color: #fff;
+        }
+        &#login {
+            background-color: #0F3B6E; // Replace with actual color code
+            color: #fff;
+        }
+    }
 }
