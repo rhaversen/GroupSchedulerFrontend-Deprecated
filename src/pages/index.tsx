@@ -44,18 +44,8 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
 
     try {
         const parsedCookies = cookie.parse(context.req.headers.cookie ?? '')
-        const token = parsedCookies.token
 
-        if (token === null || token === undefined || token === '') {
-            return redirectTo('landing')
-        }
-
-        const response = await axios.post(
-            `${API_V1_URL}/api/v1/validate-token`,
-            { token }
-        )
-
-        if (response.data.valid === true) {
+        if ('connect.sid' in parsedCookies) {
             return redirectTo('dashboard')
         } else {
             return redirectTo('landing')
