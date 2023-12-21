@@ -13,12 +13,18 @@ const nextConfig = {
             return rule;
         });
 
-        // Add the rule to handle SVGs as React components
         config.module.rules.push({
-            test: /\.svg$/i,
+            issuer: /\.[jt]sx?$/,
+            test: /\.svg$/,
             use: ['@svgr/webpack'],
-        });
-
+          });
+      
+          config.module.rules.push({
+            issuer: /\.scss$/,
+            test: /\.svg$/,
+            use: ['url-loader'],
+          });
+      
         return config;
     },
 
