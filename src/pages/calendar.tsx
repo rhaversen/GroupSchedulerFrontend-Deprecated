@@ -1,13 +1,46 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import Head from 'next/head'
+import axios from 'axios'
 
 const localizer = momentLocalizer(moment)
 
+const API_V1_URL = process.env.NEXT_PUBLIC_API_V1_URL ?? ''
+
 function CalendarPage (): JSX.Element {
     const [blockedDates, setBlockedDates] = useState<Date[]>([])
+
+    // Fetch blocked dates from the server on component mount
+    useEffect(() => {
+        axios.get(`${API_V1_URL}users/current-user`)
+            .then(response => {
+                // Convert the dates from the server format to Date objects
+                const dates = response.data.blockedDates.map((dateString: string) => new Date(dateString))
+                setBlockedDates(dates)
+            })
+            .catch(error => {
+                // Handle errors here
+                console.error('Error fetching blocked dates:', error)
+            })
+    }, [])
+
+    async function createDateRangeBackend (startDate: Date, endDate: Date) {
+        try {
+            await axios.put(`${API_V1_URL}users/blockedDates/${startDate.toISOString()}/${endDate.toISOString()}`)
+        } catch (err) {
+            console.log('Error saving date range: ' + err)
+        }
+    }
+
+    async function deleteDateRangeBackend (startDate: Date, endDate: Date) {
+        try {
+            await axios.delete(`${API_V1_URL}users/blockedDates/${startDate.toISOString()}/${endDate.toISOString()}`)
+        } catch (err) {
+            console.log('Error deleting date range: ' + err)
+        }
+    }
 
     const handleSelect = ({ start, end }: { start: Date, end: Date }) => {
         const range = getDatesInRange(start, end)
@@ -22,6 +55,7 @@ function CalendarPage (): JSX.Element {
             newBlockedDates = newBlockedDates.filter(
                 blockedDate => !range.some(date => isSameDay(date, blockedDate))
             )
+            deleteDateRangeBackend(start, end)
         } else {
             // If at least one date is not blocked, block all unblocked dates
             range.forEach(date => {
@@ -29,6 +63,7 @@ function CalendarPage (): JSX.Element {
                     newBlockedDates.push(date)
                 }
             })
+            createDateRangeBackend(start, end)
         }
 
         setBlockedDates(newBlockedDates)
