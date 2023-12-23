@@ -4,8 +4,6 @@ import { type GetServerSideProps, type GetServerSidePropsContext } from 'next'
 import React from 'react'
 
 function Index (): JSX.Element {
-    // This will be a static page on the client side, so there's no client-side logic required.
-
     return (
         <div>
             <Head>
@@ -30,25 +28,23 @@ function Index (): JSX.Element {
 export default Index
 
 export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
-    const redirectTo = (destination: string): { redirect: { destination: string, permanent: boolean } } => {
+    const parsedCookies = cookie.parse(context.req.headers.cookie ?? '')
+    const isLoggedIn = 'connect.sid' in parsedCookies
+
+    // Redirect based on the login status
+    if (isLoggedIn) {
         return {
             redirect: {
-                destination: `/${destination}`,
-                permanent: false // Makes browsers and SE's not cache the response
+                destination: '/dashboard',
+                permanent: false // Temporary redirect
             }
         }
-    }
-
-    try {
-        const parsedCookies = cookie.parse(context.req.headers.cookie ?? '')
-
-        if ('connect.sid' in parsedCookies) {
-            return redirectTo('dashboard')
-        } else {
-            return redirectTo('landing')
+    } else {
+        return {
+            redirect: {
+                destination: '/landing',
+                permanent: false
+            }
         }
-    } catch (error) {
-        console.error('Error validating token:', error)
-        return redirectTo('landing')
     }
 }

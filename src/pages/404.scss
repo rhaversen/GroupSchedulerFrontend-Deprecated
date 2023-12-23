@@ -64,59 +64,35 @@ body, html {
     transform: translateX(-50%);
 }
 
-h1 {
-    /* Typography */
-    font-family: 'Caveat', cursive;
-    color: #103A6E;
-    font-size: 45px;
-    text-align: center; /* Center the text */
+$font-family: 'Caveat', cursive;
+$primary-color: #103A6E;
+$secondary-color: #021731;
+$centered: relative 35% 50% translate(-50%, -50%);
 
-    /* Box-model */
+@mixin centered-text($size) {
+    font-family: $font-family;
+    color: $primary-color;
+    font-size: $size;
+    text-align: center; // Center the text
     margin-bottom: 20px;
     max-width: 100%;
-
-    /* Positioning */
-    position: relative;
-    top: 35%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: nth($centered, 1);
+    top: nth($centered, 2);
+    left: nth($centered, 3);
+    transform: nth($centered, 4);
 }
 
-/* Media query for larger screens */
-@media (min-width: 560px) {
-    h1 {
-        white-space: pre-line; /* Allow natural line breaks and preserve line breaks in the source code */
-    }
-    h1 br {
-        display: none; /* Hide the `br` on large screens */
-    }
+h1 {
+    @include centered-text(60px);
 }
 
-.buttons {
-    display: flex;
-    justify-content: center;
-    position: absolute;
-    top: 50%;
-    width: 100%;
+h2 {
+    @include centered-text(35px);
+    white-space: pre-line;
+}
 
-    button {
-        font-size: 15px;
-        font-family: 'Fredoka One', cursive;
-        padding: 10px 50px;
-        margin: 0 10px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-
-        &#signup {
-            background-color: #0F3B6E; // Replace with actual color code
-            color: #fff;
-        }
-
-        &#login {
-            background-color: #0F3B6E; // Replace with actual color code
-            color: #fff;
-        }
-    }
+h3 {
+    @include centered-text(30px);
+    color: $secondary-color;
+    white-space: pre-line;
 }
