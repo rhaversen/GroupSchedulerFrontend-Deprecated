@@ -11,16 +11,25 @@ function CalendarPage (): JSX.Element {
 
     const handleSelect = ({ start, end }) => {
         const range = getDatesInRange(start, end)
-        const newBlockedDates = [...blockedDates]
+        const rangeIsBlocked = range.every(date =>
+            blockedDates.some(d => isSameDay(d, date))
+        )
 
-        range.forEach(date => {
-            const index = newBlockedDates.findIndex(d => isSameDay(d, date))
-            if (index > -1) {
-                newBlockedDates.splice(index, 1) // Remove if already blocked
-            } else {
-                newBlockedDates.push(date) // Add if not blocked
-            }
-        })
+        let newBlockedDates = [...blockedDates]
+
+        if (rangeIsBlocked) {
+            // If all dates are blocked, unblock them
+            newBlockedDates = newBlockedDates.filter(
+                blockedDate => !range.some(date => isSameDay(date, blockedDate))
+            )
+        } else {
+            // If at least one date is not blocked, block all unblocked dates
+            range.forEach(date => {
+                if (!newBlockedDates.some(d => isSameDay(d, date))) {
+                    newBlockedDates.push(date)
+                }
+            })
+        }
 
         setBlockedDates(newBlockedDates)
     }
