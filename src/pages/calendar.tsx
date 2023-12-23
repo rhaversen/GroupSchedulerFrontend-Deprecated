@@ -7,9 +7,9 @@ import Head from 'next/head'
 const localizer = momentLocalizer(moment)
 
 function CalendarPage (): JSX.Element {
-    const [blockedDates, setBlockedDates] = useState([])
+    const [blockedDates, setBlockedDates] = useState<Date[]>([])
 
-    const handleSelect = ({ start, end }) => {
+    const handleSelect = ({ start, end }: { start: Date, end: Date }) => {
         const range = getDatesInRange(start, end)
         const rangeIsBlocked = range.every(date =>
             blockedDates.some(d => isSameDay(d, date))
@@ -42,7 +42,7 @@ function CalendarPage (): JSX.Element {
     }))
 
     // Utility function to get an array of dates between start and end
-    function getDatesInRange (startDate, endDate) {
+    function getDatesInRange (startDate: Date, endDate: Date) {
         const date = new Date(startDate.getTime())
         const dates = []
 
