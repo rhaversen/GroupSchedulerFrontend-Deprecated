@@ -4,7 +4,7 @@ import Image from 'next/image'
 import RaindateLogo from '../assets/svg/raindate.svg'
 import Head from 'next/head'
 
-function NotFound() {
+function NotFound () {
     return (
         <div className="container">
             <Head>
