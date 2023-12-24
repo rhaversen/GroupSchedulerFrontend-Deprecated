@@ -6,6 +6,7 @@ import Head from 'next/head'
 import axios from 'axios'
 
 const localizer = momentLocalizer(moment)
+
 const API_V1_URL = process.env.NEXT_PUBLIC_API_V1_URL ?? ''
 
 function CalendarPage (): JSX.Element {
@@ -18,51 +19,43 @@ function CalendarPage (): JSX.Element {
                 // Convert the dates from the server format to Date objects
                 const dates = response.data.blockedDates.map((dateString: string) => new Date(dateString))
                 setBlockedDates(dates)
-                console.log(dates)
             })
-            .catch(error => { console.error('Error fetching blocked dates:', error) })
+            .catch(error => {
+                // Handle errors here
+                console.error('Error fetching blocked dates:', error)
+            })
     }, [])
 
-    async function updateDateRangeBackend (startDate: Date, endDate: Date, isDeleting = false): Promise<boolean> {
-        const method = isDeleting ? 'delete' : 'put'
-        console.log(method)
-        console.log(startDate)
-        console.log(endDate)
+    async function createDateRangeBackend (startDate: Date, endDate: Date) {
         try {
-            await axios[method](`${API_V1_URL}users/blockedDates/${startDate.toISOString()}/${endDate.toISOString()}`)
-            return true // Operation successful
+            await axios.put(`${API_V1_URL}users/blockedDates/${startDate.toISOString()}/${endDate.toISOString()}`)
         } catch (err) {
-            console.log(`Error ${isDeleting ? 'deleting' : 'saving'} date range: ${err}`)
-            return false // Operation failed
+            console.log('Error saving date range: ' + err)
         }
     }
 
-    const handleSelect = async ({ start, end }: { start: Date, end: Date }) => {
-        const adjustedEnd = new Date(end)
-        adjustedEnd.setDate(end.getDate() - 1)
+    async function deleteDateRangeBackend (startDate: Date, endDate: Date) {
+        try {
+            await axios.delete(`${API_V1_URL}users/blockedDates/${startDate.toISOString()}/${endDate.toISOString()}`)
+        } catch (err) {
+            console.log('Error deleting date range: ' + err)
+        }
+    }
 
-        console.log('select')
-        console.log(start)
-        console.log(adjustedEnd)
-
-        const range = getDatesInRange(start, adjustedEnd)
-        const rangeIsBlocked = range.every(dateInRange => blockedDates.some(blockedDate => isSameDay(blockedDate, dateInRange)))
-
+    const handleSelect = ({ start, end }: { start: Date, end: Date }) => {
+        const range = getDatesInRange(start, end)
+        const rangeIsBlocked = range.every(date =>
+            blockedDates.some(d => isSameDay(d, date))
+        )
 
         let newBlockedDates = [...blockedDates]
-        let updateSuccess = false
-
-        console.info('Range')
-        console.log(range)
-        console.info('newBlockedDates before')
-        console.log(newBlockedDates)
-        console.log(rangeIsBlocked)
 
         if (rangeIsBlocked) {
-            newBlockedDates = newBlockedDates.filter(blockedDate => !range.some(dateInRange => isSameDay(blockedDate, dateInRange)))
-            console.info('newBlockedDates during')
-            console.log(newBlockedDates)
-            updateSuccess = await updateDateRangeBackend(start, adjustedEnd, true)
+            // If all dates are blocked, unblock them
+            newBlockedDates = newBlockedDates.filter(
+                blockedDate => !range.some(date => isSameDay(date, blockedDate))
+            )
+            deleteDateRangeBackend(start, range[range.length-1])
         } else {
             // If at least one date is not blocked, block all unblocked dates
             range.forEach(date => {
@@ -70,13 +63,10 @@ function CalendarPage (): JSX.Element {
                     newBlockedDates.push(date)
                 }
             })
-            updateSuccess = await updateDateRangeBackend(start, adjustedEnd, false)
+            createDateRangeBackend(start, range[range.length-1])
         }
-        console.info('newBlockedDates after')
-        console.log(newBlockedDates)
-        if (updateSuccess) {
-            setBlockedDates(newBlockedDates)
-        }
+
+        setBlockedDates(newBlockedDates)
     }
 
     const calendarEvents = blockedDates.map(date => ({
@@ -88,15 +78,25 @@ function CalendarPage (): JSX.Element {
 
     // Utility function to get an array of dates between start and end
     function getDatesInRange (startDate: Date, endDate: Date) {
+        const date = new Date(startDate.getTime())
         const dates = []
-        for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
+
+        // Check if start and end dates are the same
+        const isSingleDay = isSameDay(startDate, endDate)
+
+        while (date < endDate || (isSingleDay && date <= endDate)) {
             dates.push(new Date(date))
+            date.setDate(date.getDate() + 1)
         }
+
         return dates
     }
 
+    // Utility function to check if two dates are the same day
     function isSameDay (date1: Date, date2: Date) {
-        return date1.toISOString() === date2.toISOString()
+        return date1.getDate() === date2.getDate() &&
+          date1.getMonth() === date2.getMonth() &&
+          date1.getFullYear() === date2.getFullYear()
     }
 
     return (
@@ -114,6 +114,7 @@ function CalendarPage (): JSX.Element {
                 onSelectSlot={handleSelect}
                 views={['month']}
             />
+
         </div>
     )
 }
