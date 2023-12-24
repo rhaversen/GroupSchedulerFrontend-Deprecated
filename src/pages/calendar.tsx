@@ -18,12 +18,16 @@ function CalendarPage (): JSX.Element {
                 // Convert the dates from the server format to Date objects
                 const dates = response.data.blockedDates.map((dateString: string) => new Date(dateString))
                 setBlockedDates(dates)
+                console.log(dates)
             })
             .catch(error => { console.error('Error fetching blocked dates:', error) })
     }, [])
 
-    async function updateDateRangeBackend (startDate: { toISOString: () => string }, endDate: Date, isDeleting = false): Promise<boolean> {
+    async function updateDateRangeBackend (startDate: Date, endDate: Date, isDeleting = false): Promise<boolean> {
         const method = isDeleting ? 'delete' : 'put'
+        console.log(method)
+        console.log(startDate)
+        console.log(endDate)
         try {
             await axios[method](`${API_V1_URL}users/blockedDates/${startDate.toISOString()}/${endDate.toISOString()}`)
             return true // Operation successful
@@ -37,14 +41,27 @@ function CalendarPage (): JSX.Element {
         const adjustedEnd = new Date(end)
         adjustedEnd.setDate(end.getDate() - 1)
 
+        console.log('select')
+        console.log(start)
+        console.log(adjustedEnd)
+
         const range = getDatesInRange(start, adjustedEnd)
-        const rangeIsBlocked = range.every(date => blockedDates.some(d => isSameDay(d, date)))
+        const rangeIsBlocked = range.every(dateInRange => blockedDates.some(blockedDate => isSameDay(blockedDate, dateInRange)))
+
 
         let newBlockedDates = [...blockedDates]
         let updateSuccess = false
 
+        console.info('Range')
+        console.log(range)
+        console.info('newBlockedDates before')
+        console.log(newBlockedDates)
+        console.log(rangeIsBlocked)
+
         if (rangeIsBlocked) {
-            newBlockedDates = newBlockedDates.filter(blockedDate => !range.some(date => isSameDay(date, blockedDate)))
+            newBlockedDates = newBlockedDates.filter(blockedDate => !range.some(dateInRange => isSameDay(blockedDate, dateInRange)))
+            console.info('newBlockedDates during')
+            console.log(newBlockedDates)
             updateSuccess = await updateDateRangeBackend(start, adjustedEnd, true)
         } else {
             // If at least one date is not blocked, block all unblocked dates
@@ -55,7 +72,8 @@ function CalendarPage (): JSX.Element {
             })
             updateSuccess = await updateDateRangeBackend(start, adjustedEnd, false)
         }
-
+        console.info('newBlockedDates after')
+        console.log(newBlockedDates)
         if (updateSuccess) {
             setBlockedDates(newBlockedDates)
         }
