@@ -22,16 +22,18 @@ function CalendarPage (): JSX.Element {
             .catch(error => { console.error('Error fetching blocked dates:', error) })
     }, [])
 
-    async function updateDateRangeBackend (startDate: { toISOString: () => string }, endDate: Date, isDeleting = false) {
+    async function updateDateRangeBackend (startDate: { toISOString: () => string }, endDate: Date, isDeleting = false): Promise<boolean> {
         const method = isDeleting ? 'delete' : 'put'
         try {
             await axios[method](`${API_V1_URL}users/blockedDates/${startDate.toISOString()}/${endDate.toISOString()}`)
+            return true // Operation successful
         } catch (err) {
             console.log(`Error ${isDeleting ? 'deleting' : 'saving'} date range: ${err}`)
+            return false // Operation failed
         }
     }
 
-    const handleSelect = ({ start, end }: { start: Date, end: Date }) => {
+    const handleSelect = async ({ start, end }: { start: Date, end: Date }) => {
         const adjustedEnd = new Date(end)
         adjustedEnd.setDate(end.getDate() - 1)
 
@@ -39,10 +41,11 @@ function CalendarPage (): JSX.Element {
         const rangeIsBlocked = range.every(date => blockedDates.some(d => isSameDay(d, date)))
 
         let newBlockedDates = [...blockedDates]
+        let updateSuccess = false
 
         if (rangeIsBlocked) {
             newBlockedDates = newBlockedDates.filter(blockedDate => !range.some(date => isSameDay(date, blockedDate)))
-            updateDateRangeBackend(start, adjustedEnd, true)
+            updateSuccess = await updateDateRangeBackend(start, adjustedEnd, true)
         } else {
             // If at least one date is not blocked, block all unblocked dates
             range.forEach(date => {
@@ -50,10 +53,12 @@ function CalendarPage (): JSX.Element {
                     newBlockedDates.push(date)
                 }
             })
-            updateDateRangeBackend(start, adjustedEnd, false)
+            updateSuccess = await updateDateRangeBackend(start, adjustedEnd, false)
         }
 
-        setBlockedDates(newBlockedDates)
+        if (updateSuccess) {
+            setBlockedDates(newBlockedDates)
+        }
     }
 
     const calendarEvents = blockedDates.map(date => ({
