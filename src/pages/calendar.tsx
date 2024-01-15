@@ -55,7 +55,7 @@ function CalendarPage (): JSX.Element {
             newBlockedDates = newBlockedDates.filter(
                 blockedDate => !range.some(date => isSameDay(date, blockedDate))
             )
-            deleteDateRangeBackend(start, range[range.length-1])
+            deleteDateRangeBackend(start, range[range.length - 1])
         } else {
             // If at least one date is not blocked, block all unblocked dates
             range.forEach(date => {
@@ -63,7 +63,7 @@ function CalendarPage (): JSX.Element {
                     newBlockedDates.push(date)
                 }
             })
-            createDateRangeBackend(start, range[range.length-1])
+            createDateRangeBackend(start, range[range.length - 1])
         }
 
         setBlockedDates(newBlockedDates)
@@ -114,7 +114,6 @@ function CalendarPage (): JSX.Element {
                 onSelectSlot={handleSelect}
                 views={['month']}
             />
-
         </div>
     )
 }
