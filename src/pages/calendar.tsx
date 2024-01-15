@@ -41,7 +41,7 @@ function CalendarPage (): JSX.Element {
         try {
             await axios.put(`${API_V1_URL}users/blockedDates/${toUTCDate(startDate).toISOString()}/${toUTCDate(endDate).toISOString()}`)
         } catch (err) {
-            console.log('Error saving date range: ' + err)
+            console.error('Error saving date range: ' + err)
         }
     }
 
@@ -49,7 +49,7 @@ function CalendarPage (): JSX.Element {
         try {
             await axios.delete(`${API_V1_URL}users/blockedDates/${toUTCDate(startDate).toISOString()}/${toUTCDate(endDate).toISOString()}`)
         } catch (err) {
-            console.log('Error deleting date range: ' + err)
+            console.error('Error deleting date range: ' + err)
         }
     }
 
