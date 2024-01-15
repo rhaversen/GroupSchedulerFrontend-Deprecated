@@ -41,8 +41,6 @@ const CalendarPage: React.FC = () => {
         const adjustedEnd = new Date(end)
         adjustedEnd.setDate(end.getDate() - 1)
 
-        console.log(start)
-        console.log(adjustedEnd)
         const range = getDatesInRange(start, adjustedEnd)
         const rangeIsBlocked = range.every(date => blockedDates.some(d => isSameDay(d, date)))
         const newBlockedDates = rangeIsBlocked
@@ -96,8 +94,6 @@ const fromUTCDate = (dateString: string): Date => {
 const toUTCDate = (date: Date): Date => new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
 
 const createDateRangeBackend = async (startDate: Date, endDate: Date) => {
-    console.log(startDate)
-    console.log(endDate)
     try {
         await axios.put(`${API_V1_URL}users/blockedDates/${toUTCDate(startDate).toISOString()}/${toUTCDate(endDate).toISOString()}`)
     } catch (err) {
@@ -106,8 +102,6 @@ const createDateRangeBackend = async (startDate: Date, endDate: Date) => {
 }
 
 const deleteDateRangeBackend = async (startDate: Date, endDate: Date) => {
-    console.log(startDate)
-    console.log(endDate)
     try {
         await axios.delete(`${API_V1_URL}users/blockedDates/${toUTCDate(startDate).toISOString()}/${toUTCDate(endDate).toISOString()}`)
     } catch (err) {
