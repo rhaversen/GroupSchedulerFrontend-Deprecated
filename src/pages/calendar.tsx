@@ -44,20 +44,29 @@ const CalendarPage: React.FC = () => {
         const range = getDatesInRange(start, adjustedEnd)
         const rangeIsBlocked = range.every(date => blockedDates.some(d => isSameDay(d, date)))
 
+        // Store the current state to revert back in case of failure
+        const previousBlockedDates = [...blockedDates]
+
+        // Optimistic update
+        let updatedBlockedDates
         if (rangeIsBlocked) {
-            // If all dates in the range are blocked, unblock them in the backend
-            const success = await deleteDateRangeBackend(start, range[range.length - 1])
-            if (success) {
-                // Update state only if backend update is successful
-                setBlockedDates(unblockDates(range))
-            }
+            updatedBlockedDates = unblockDates(range)
         } else {
-            // If at least one date is not blocked, block all unblocked dates in the backend
-            const success = await createDateRangeBackend(start, range[range.length - 1])
-            if (success) {
-                // Update state only if backend update is successful
-                setBlockedDates(blockDates(range))
-            }
+            updatedBlockedDates = blockDates(range)
+        }
+        setBlockedDates(updatedBlockedDates)
+
+        // Attempt backend update
+        let success: boolean = false
+        if (rangeIsBlocked) {
+            success = await deleteDateRangeBackend(start, range[range.length - 1])
+        } else {
+            success = await createDateRangeBackend(start, range[range.length - 1])
+        }
+
+        if (!success) {
+            // Revert to previous state in case of error
+            setBlockedDates(previousBlockedDates)
         }
     }
 
