@@ -9,6 +9,18 @@ const localizer = momentLocalizer(moment)
 
 const API_V1_URL = process.env.NEXT_PUBLIC_API_V1_URL ?? ''
 
+interface DateRange {
+    start: Date
+    end: Date
+}
+
+interface CalendarEvent {
+    start: Date
+    end: Date
+    title: string
+    allDay: boolean
+}
+
 function CalendarPage (): JSX.Element {
     const [blockedDates, setBlockedDates] = useState<Date[]>([])
 
@@ -80,12 +92,45 @@ function CalendarPage (): JSX.Element {
         setBlockedDates(newBlockedDates)
     }
 
-    const calendarEvents = blockedDates.map(date => ({
-        start: date,
-        end: date,
+    const calendarEvents: CalendarEvent[] = mergeConsecutiveDates(blockedDates).map(({ start, end }) => ({
+        start,
+        end,
         title: 'Blocked',
         allDay: true
     }))
+
+    // Utility function to merge consecutive dates into ranges
+    function mergeConsecutiveDates (dates: Date[]): DateRange[] {
+        const sortedDates = dates.toSorted((a, b) => a.getTime() - b.getTime())
+        const merged: DateRange[] = []
+        let rangeStart: Date | null = null
+        let rangeEnd: Date | null = null
+
+        sortedDates.forEach((date, i) => {
+            if (!rangeStart) {
+                rangeStart = date
+                rangeEnd = date
+            } else if (rangeEnd && isNextDay(rangeEnd, date)) {
+                rangeEnd = date
+            } else {
+                if (rangeStart && rangeEnd) {
+                    merged.push({ start: new Date(rangeStart), end: new Date(rangeEnd) })
+                }
+                rangeStart = date
+                rangeEnd = date
+            }
+
+            if (i === sortedDates.length - 1 && rangeStart && rangeEnd) {
+                merged.push({ start: new Date(rangeStart), end: new Date(rangeEnd) })
+            }
+        })
+
+        return merged.map(range => {
+            const adjustedEnd = new Date(range.end)
+            adjustedEnd.setDate(adjustedEnd.getDate() + 1)
+            return { ...range, end: adjustedEnd }
+        })
+    }
 
     // Utility function to get an array of dates between start and end
     function getDatesInRange (startDate: Date, endDate: Date) {
@@ -108,6 +153,13 @@ function CalendarPage (): JSX.Element {
         return date1.getDate() === date2.getDate() &&
           date1.getMonth() === date2.getMonth() &&
           date1.getFullYear() === date2.getFullYear()
+    }
+
+    // Utility function to check if the second date is the next day of the first
+    function isNextDay (date1: Date, date2: Date) {
+        const nextDay = new Date(date1)
+        nextDay.setDate(nextDay.getDate() + 1)
+        return isSameDay(nextDay, date2)
     }
 
     return (
