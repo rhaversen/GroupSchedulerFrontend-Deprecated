@@ -17,7 +17,7 @@ function CalendarPage (): JSX.Element {
         axios.get(`${API_V1_URL}users/current-user`)
             .then(response => {
                 // Convert the dates from the server format to Date objects
-                const dates = response.data.blockedDates.map((dateString: string) => new Date(dateString))
+                const dates = response.data.blockedDates.map((dateString: string) => fromUTCDate(dateString))
                 setBlockedDates(dates)
             })
             .catch(error => {
@@ -26,9 +26,20 @@ function CalendarPage (): JSX.Element {
             })
     }, [])
 
+    // Converting to UTC before sending to the backend
+    const toUTCDate = (date: Date) => {
+        return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
+    }
+
+    // Converting from UTC after receiving from the backend
+    const fromUTCDate = (dateString: string) => {
+        const date = new Date(dateString)
+        return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())
+    }
+
     async function createDateRangeBackend (startDate: Date, endDate: Date) {
         try {
-            await axios.put(`${API_V1_URL}users/blockedDates/${startDate.toISOString()}/${endDate.toISOString()}`)
+            await axios.put(`${API_V1_URL}users/blockedDates/${toUTCDate(startDate).toISOString()}/${toUTCDate(endDate).toISOString()}`)
         } catch (err) {
             console.log('Error saving date range: ' + err)
         }
@@ -36,7 +47,7 @@ function CalendarPage (): JSX.Element {
 
     async function deleteDateRangeBackend (startDate: Date, endDate: Date) {
         try {
-            await axios.delete(`${API_V1_URL}users/blockedDates/${startDate.toISOString()}/${endDate.toISOString()}`)
+            await axios.delete(`${API_V1_URL}users/blockedDates/${toUTCDate(startDate).toISOString()}/${toUTCDate(endDate).toISOString()}`)
         } catch (err) {
             console.log('Error deleting date range: ' + err)
         }
