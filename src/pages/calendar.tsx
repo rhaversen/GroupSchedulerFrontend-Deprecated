@@ -86,9 +86,33 @@ const CalendarPage: React.FC = () => {
                 style={{ height: '80vh' }}
                 onSelectSlot={handleSelect}
                 views={['month']}
+                eventPropGetter={eventStyleGetter}
             />
         </div>
     )
+}
+
+const eventStyleGetter = (event: { title: string }) => {
+    const defaultStyle = {
+        fontFamily: 'Verdana',
+        fontSize: '16px'
+        // Add other default styles here
+    }
+
+    if (event.title === 'Blocked') {
+        // Merge styles for 'Blocked' events
+        return {
+            style: {
+                ...defaultStyle,
+                backgroundColor: 'darkred'
+            }
+        }
+    } else {
+        // Return default styles for other events
+        return {
+            style: defaultStyle
+        }
+    }
 }
 
 const fromUTCDate = (dateString: string): Date => {
