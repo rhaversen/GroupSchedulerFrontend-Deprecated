@@ -37,23 +37,28 @@ const CalendarPage: React.FC = () => {
         }
     }
 
-    const handleSelect = ({ start, end }: { start: Date, end: Date }) => {
+    const handleSelect = async ({ start, end }: { start: Date, end: Date }) => {
         const adjustedEnd = new Date(end)
         adjustedEnd.setDate(end.getDate() - 1)
 
         const range = getDatesInRange(start, adjustedEnd)
         const rangeIsBlocked = range.every(date => blockedDates.some(d => isSameDay(d, date)))
-        const newBlockedDates = rangeIsBlocked
-            // If all dates are blocked, unblock them
-            ? unblockDates(range)
-            : blockDates(range)
 
-        rangeIsBlocked
-            // If at least one date is not blocked, block all unblocked dates
-            ? deleteDateRangeBackend(start, range[range.length - 1])
-            : createDateRangeBackend(start, range[range.length - 1])
-
-        setBlockedDates(newBlockedDates)
+        if (rangeIsBlocked) {
+            // If all dates in the range are blocked, unblock them in the backend
+            const success = await deleteDateRangeBackend(start, range[range.length - 1])
+            if (success) {
+                // Update state only if backend update is successful
+                setBlockedDates(unblockDates(range))
+            }
+        } else {
+            // If at least one date is not blocked, block all unblocked dates in the backend
+            const success = await createDateRangeBackend(start, range[range.length - 1])
+            if (success) {
+                // Update state only if backend update is successful
+                setBlockedDates(blockDates(range))
+            }
+        }
     }
 
     const unblockDates = (range: Date[]) => blockedDates.filter(
@@ -93,19 +98,23 @@ const fromUTCDate = (dateString: string): Date => {
 
 const toUTCDate = (date: Date): Date => new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
 
-const createDateRangeBackend = async (startDate: Date, endDate: Date) => {
+const createDateRangeBackend = async (startDate: Date, endDate: Date): Promise<boolean> => {
     try {
         await axios.put(`${API_V1_URL}users/blockedDates/${toUTCDate(startDate).toISOString()}/${toUTCDate(endDate).toISOString()}`)
+        return true
     } catch (err) {
         console.error('Error saving date range: ' + err)
+        return false
     }
 }
 
-const deleteDateRangeBackend = async (startDate: Date, endDate: Date) => {
+const deleteDateRangeBackend = async (startDate: Date, endDate: Date): Promise<boolean> => {
     try {
         await axios.delete(`${API_V1_URL}users/blockedDates/${toUTCDate(startDate).toISOString()}/${toUTCDate(endDate).toISOString()}`)
+        return true
     } catch (err) {
         console.error('Error deleting date range: ' + err)
+        return false
     }
 }
 
