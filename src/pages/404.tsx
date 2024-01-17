@@ -20,8 +20,8 @@ function NotFound () {
                 alt="A rough, wide ocean."
                 draggable="false"
                 className="background-image"
-                layout="fill"
-                objectFit="cover"
+                width='1920'
+                height='1080'
                 quality={100}
             />
             <h1>404</h1>

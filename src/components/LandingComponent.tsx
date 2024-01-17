@@ -32,8 +32,8 @@ const Landing: React.FC = () => {
                 alt="A calm lake with rain and a golden stone creating ripples, against hills and a cloudy sky."
                 draggable="false"
                 className="background-image"
-                layout="fill"
-                objectFit="cover"
+                width='1920'
+                height='1080'
                 quality={100}
             />
             <h1>Find the Time <br></br> to Do Some Things</h1>
