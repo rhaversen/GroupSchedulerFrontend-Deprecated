@@ -1,7 +1,7 @@
 import React from 'react'
 import './404.scss'
 import Image from 'next/image'
-import RaindateLogo from '../assets/svg/raindate.svg'
+import RaindateLogo from 'src/assets/svg/raindate.svg'
 import Head from 'next/head'
 
 function NotFound () {
@@ -20,8 +20,8 @@ function NotFound () {
                 alt="A rough, wide ocean."
                 draggable="false"
                 className="background-image"
-                layout="fill"
-                objectFit="cover"
+                width='1920'
+                height='1080'
                 quality={100}
             />
             <h1>404</h1>
