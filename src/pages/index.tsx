@@ -8,8 +8,6 @@ import LandingComponent from '@/components/LandingComponent'
 // Import utility functions
 import checkAuthentication from '@/utils/isUserAuthenticated'
 
-const API_V1_URL = process.env.NEXT_PUBLIC_API_V1_URL ?? ''
-
 function Index (): JSX.Element {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
 
@@ -46,7 +44,7 @@ function Index (): JSX.Element {
             {/* Use internal links to link to other pages on your website. */}
             {/* Optimize your images for SEO. */}
             {/* Conditionally render components based on login status */}
-            {isLoggedIn ? <DashboardComponent /> : <LandingComponent />}
+            {true ? <DashboardComponent /> : <LandingComponent />}
         </div>
     )
 }
