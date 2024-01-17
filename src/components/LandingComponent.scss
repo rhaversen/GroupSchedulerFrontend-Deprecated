@@ -8,7 +8,7 @@ body, html {
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-  }
+}
 
 .background-image {
     object-fit: cover;
@@ -58,24 +58,25 @@ h1 {
     font-family: 'Caveat', cursive;
     color: #103A6E;
     font-size: 45px;
-    text-align: center; /* Center the text */
+    text-align: center;
 
     /* Box-model */
     margin-bottom: 20px;
     max-width: 100%;
 
     /* Positioning */
-    position: relative;
+    position: absolute;
     top: 35%;
     left: 50%;
     transform: translate(-50%, -50%);
+    z-index: 1;
+
+    /* Prevent line breaks on larger screens */
+    white-space: nowrap; /* This ensures no breaks except for <br> */
 }
 
 /* Media query for larger screens */
 @media (min-width: 560px) {
-    h1 {
-        white-space: pre-line; /* Allow natural line breaks and preserve line breaks in the source code */
-    }
     h1 br {
         display: none; /* Hide the `br` on large screens */
     }
@@ -86,6 +87,8 @@ h1 {
     justify-content: center;
     position: absolute;
     top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 100%;
 
     button {
