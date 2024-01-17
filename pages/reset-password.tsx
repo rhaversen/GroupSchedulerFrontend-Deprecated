@@ -1,15 +1,13 @@
 // External Packages
-import React, { type FormEvent, type ReactElement, useState } from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
 import validator from 'validator'
-import cookie from 'cookie'
 import { useRouter } from 'next/router'
 
 // Local Modules
 import styles from './userInput.module.scss'
-import InputField from '../components/inputField'
-import useUserInputForm from '../hooks/useUserInputForm'
-import { useUser } from '../contexts/UserContext'
+import InputField from '../src/components/inputField'
+import useUserInputForm from '../src/hooks/useUserInputForm'
 import { type GetServerSideProps, type GetServerSidePropsContext } from 'next'
 
 const API_V1_URL = process.env.NEXT_PUBLIC_API_V1_URL ?? ''
@@ -18,14 +16,6 @@ const validations = {
     email: {
         isValid: (values: Record<string, string | boolean>): boolean => validator.isEmail(values.email as string),
         errors: (values: Record<string, string | boolean>) => !validator.isEmail(values.email as string) ? 'Please enter a valid email' : null
-    },
-    password: {
-        isValid: (values: Record<string, string | boolean>): boolean => (values.password as string) !== '',
-        errors: (values: Record<string, string | boolean>) => (values.password as string) === '' ? 'Please enter your password' : null
-    },
-    stayLoggedIn: {
-        isValid: (values: Record<string, string | boolean>): boolean => true,
-        errors: (values: Record<string, string | boolean>) => null
     }
 }
 
@@ -33,34 +23,22 @@ const inputConfigs = [
     {
         type: 'email',
         name: 'email',
-        label: 'Email',
+        label: 'Please enter your email:',
         autoComplete: 'email',
         id: 'email'
-    },
-    {
-        type: 'password',
-        name: 'password',
-        label: 'Password',
-        autoComplete: 'current-password',
-        id: 'password'
     }
 ]
 
 const initialValues: {
     email: string
-    password: string
-    stayLoggedIn: boolean
 } = {
-    email: '',
-    password: '',
-    stayLoggedIn: false
+    email: ''
 }
 
-function Login (): ReactElement {
-    const { setUser } = useUser()
-    const [message, setMessage] = useState<string>('')
-    const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [shouldShake, setShouldShake] = useState<boolean>(false)
+function NewPassword (): JSX.Element {
+    const [message, setMessage] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
+    const [shouldShake, setShouldShake] = useState(false)
     const {
         values,
         errors,
@@ -81,38 +59,21 @@ function Login (): ReactElement {
         }, 500)
     }
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
+    const handleSubmit = (e: { preventDefault: () => void }): void => {
         e.preventDefault()
         setIsLoading(true)
         setMessage('')
 
-        axios.post(`${API_V1_URL}users/login-local`, values)
-            .then(response => {
-                console.info(response)
-
-                const serverMessage = response?.data?.message ?? 'Login successful!'
-                setMessage(serverMessage)
-
-                setUser(response.data.user)
-                goToDashboard()
+        axios.post(API_V1_URL + 'users/request-password-reset-email', values)
+            .then(() => {
+                setMessage('If you have signed up with this email, a password reset link has been sent to your email inbox')
             })
-            .catch(error => {
-                console.error('Post error:', error)
-
-                const serverError = error.response?.data?.error ?? 'There was a problem with the server logging you in! Please try again later...'
-                setMessage(serverError)
-
+            .catch(() => {
+                setMessage('There was a problem with the server! Please try again later...')
                 triggerErrorShake()
             })
             .finally(() => {
                 setIsLoading(false)
-            })
-    }
-
-    const goToDashboard = (): void => {
-        router.push('/dashboard')
-            .catch((error) => {
-                console.error('Router push error:', error)
             })
     }
 
@@ -123,8 +84,8 @@ function Login (): ReactElement {
             })
     }
 
-    const goToNewPassword = (): void => {
-        router.push('/new-password')
+    const goToLogin = (): void => {
+        router.push('/login')
             .catch((error) => {
                 console.error('Router push error:', error)
             })
@@ -151,16 +112,6 @@ function Login (): ReactElement {
                         id={input.id}
                     />
                 ))}
-                <div className={styles.checkboxContainer}>
-                    <input
-                        type="checkbox"
-                        name="stayLoggedIn"
-                        id="stayLoggedIn"
-                        checked={values.stayLoggedIn as boolean} // Always a checkbox
-                        onChange={handleChange}
-                    />
-                    <label htmlFor="stayLoggedIn">Stay logged in</label>
-                </div>
                 <button
                     type="submit"
                     disabled={!formIsValid || isLoading}
@@ -168,7 +119,7 @@ function Login (): ReactElement {
                         shouldShake ? styles.shake : ''
                     }`}
                 >
-                    {isLoading ? 'Logging in...' : 'Log In'}
+                    {'Request New Password'}
                 </button>
             </form>
             <p className={styles.redirectPrompt}>
@@ -178,9 +129,9 @@ function Login (): ReactElement {
                 </span>
             </p>
             <p className={styles.redirectPrompt}>
-                Forgot your password?{' '}
-                <span className={styles.redirectLink} onClick={goToNewPassword}>
-                    Set New Password
+                Remember your password?{' '}
+                <span className={styles.redirectLink} onClick={goToLogin}>
+                    Log in
                 </span>
             </p>
             {message !== '' && <p className={styles.message}>{message}</p>}
@@ -189,20 +140,9 @@ function Login (): ReactElement {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
-    const parsedCookies = cookie.parse(context.req.headers.cookie ?? '')
-    const token = parsedCookies.token
-
-    // If the user has a token (indicating they're logged in), redirect them to the dashboard
-    if (token !== null && token !== undefined && token !== '') {
-        return {
-            redirect: {
-                destination: '/dashboard',
-                permanent: false
-            }
-        }
-    }
-
+    // Check if user is logged in here
+    // For now, let's return an empty props
     return { props: {} }
 }
 
-export default Login
+export default NewPassword

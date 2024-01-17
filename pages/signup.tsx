@@ -10,9 +10,9 @@ import cookie from 'cookie'
 
 // Local Modules
 import styles from './userInput.module.scss'
-import InputField from '../components/inputField'
-import useUserInputForm from '../hooks/useUserInputForm'
-import { useUser } from '../contexts/UserContext'
+import InputField from '../src/components/inputField'
+import useUserInputForm from '../src/hooks/useUserInputForm'
+import { useUser } from '../src/contexts/UserContext'
 import { type GetServerSideProps, type GetServerSidePropsContext } from 'next'
 
 // Setting up zxcvbn options

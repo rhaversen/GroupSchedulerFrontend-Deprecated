@@ -1,7 +1,7 @@
 import React from 'react'
 import './404.scss'
 import Image from 'next/image'
-import RaindateLogo from '../assets/svg/raindate.svg'
+import RaindateLogo from 'src/assets/svg/raindate.svg'
 import Head from 'next/head'
 
 function NotFound () {
