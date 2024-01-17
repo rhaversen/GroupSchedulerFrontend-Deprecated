@@ -1,14 +1,6 @@
 <xml version="1.0" encoding="UTF-8">
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
         <url>
-            <loc>https://www.raindate.net/landing</loc>
-            <lastmod>2024-01-16</lastmod>
-        </url>
-        <url>
-            <loc>https://www.raindate.net/dashboard</loc>
-            <lastmod>2024-01-16</lastmod>
-        </url>
-        <url>
             <loc>https://www.raindate.net/login</loc>
             <lastmod>2024-01-16</lastmod>
         </url>
@@ -17,15 +9,7 @@
             <lastmod>2024-01-16</lastmod>
         </url>
         <url>
-            <loc>https://www.raindate.net/confirm</loc>
-            <lastmod>2024-01-16</lastmod>
-        </url>
-        <url>
             <loc>https://www.raindate.net/calendar</loc>
-            <lastmod>2024-01-16</lastmod>
-        </url>
-        <url>
-            <loc>https://www.raindate.net/new-password</loc>
             <lastmod>2024-01-16</lastmod>
         </url>
         <url>
