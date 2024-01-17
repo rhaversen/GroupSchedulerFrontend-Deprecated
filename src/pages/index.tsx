@@ -44,7 +44,7 @@ function Index (): JSX.Element {
             {/* Use internal links to link to other pages on your website. */}
             {/* Optimize your images for SEO. */}
             {/* Conditionally render components based on login status */}
-            {true ? <DashboardComponent /> : <LandingComponent />}
+            {isLoggedIn ? <DashboardComponent /> : <LandingComponent />}
         </div>
     )
 }
