@@ -15,14 +15,9 @@ function Index (): JSX.Element {
     useEffect(() => {
         // Define an asynchronous function inside the effect
         const authenticate = async () => {
-            try {
-                const authenticated = await checkAuthentication()
-                console.info('User is authenticated?' + authenticated)
-                setIsLoggedIn(authenticated)
-            } catch (error) {
-                console.info('User is authenticated?' + error)
-                setIsLoggedIn(false)
-            }
+            const authenticated = await checkAuthentication()
+            console.info('User is authenticated? ' + authenticated)
+            setIsLoggedIn(authenticated)
         }
 
         // Call the asynchronous function
@@ -32,7 +27,7 @@ function Index (): JSX.Element {
     return (
         <div>
             {/* Conditionally render components based on login status */}
-            {true ? <DashboardComponent /> : <LandingComponent />}
+            {isLoggedIn ? <DashboardComponent /> : <LandingComponent />}
         </div>
     )
 }
