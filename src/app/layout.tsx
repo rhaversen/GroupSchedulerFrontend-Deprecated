@@ -2,6 +2,17 @@ import React, { type ReactElement } from 'react'
 import Head from 'next/head'
 import { UserProvider } from '@/contexts/UserContext'
 import { Html } from 'next/document'
+import { Caveat, Fredoka } from 'next/font/google'
+
+const caveat = Caveat({
+    subsets: ['latin'],
+    weight: ['400', '700']
+})
+
+const fredoka = Fredoka({
+    subsets: ['latin'],
+    weight: ['400', '700']
+})
 
 interface RootLayoutProps {
     readonly children: React.ReactNode
@@ -25,26 +36,6 @@ export default function RootLayout ({
                 <meta
                     name="keywords"
                     content="event, planning, calendar, events, dashboard, availability, group scheduler, friends, holiday, vacation, plans, rally, RainDate, reindate, schedule, social gatherings, time, date, ocean, rain"
-                />
-                {/* Preload fonts */}
-                <link
-                    rel="preload"
-                    href="https://fonts.googleapis.com/css2?family=Caveat&display=swap"
-                    as="style"
-                />
-                <link
-                    rel="preload"
-                    href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap"
-                    as="style"
-                />
-                {/* Fonts */}
-                <link
-                    href="https://fonts.googleapis.com/css2?family=Caveat&display=swap"
-                    rel="stylesheet"
-                />
-                <link
-                    href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap"
-                    rel="stylesheet"
                 />
             </Head>
             <body>
