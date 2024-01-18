@@ -16,8 +16,10 @@ function Index (): JSX.Element {
         const authenticate = async () => {
             try {
                 const authenticated = await checkAuthentication()
+                console.info(authenticated)
                 setIsLoggedIn(authenticated)
             } catch (error) {
+                console.info(error)
                 setIsLoggedIn(false)
             }
         }
