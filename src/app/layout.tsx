@@ -1,7 +1,5 @@
 import React, { type ReactElement } from 'react'
-import Head from 'next/head'
 import { UserProvider } from '@/contexts/UserContext'
-import { Html } from 'next/document'
 import { Caveat, Fredoka } from 'next/font/google'
 
 const caveat = Caveat({
@@ -22,8 +20,8 @@ export default function RootLayout ({
     children
 }: RootLayoutProps): ReactElement {
     return (
-        <Html lang="en">
-            <Head>
+        <html lang="en">
+            <head>
                 <title>Rain Date</title>
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
                 <meta charSet="utf-8" />
@@ -37,12 +35,12 @@ export default function RootLayout ({
                     name="keywords"
                     content="event, planning, calendar, events, dashboard, availability, group scheduler, friends, holiday, vacation, plans, rally, RainDate, reindate, schedule, social gatherings, time, date, ocean, rain"
                 />
-            </Head>
+            </head>
             <body>
                 <UserProvider>
                     {children}
                 </UserProvider>
             </body>
-        </Html>
+        </html>
     )
 }
