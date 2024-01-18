@@ -1,6 +1,6 @@
-import React, { type ReactElement } from 'react';
+import React, { type ReactElement } from 'react'
 
-export default function RootLayout({
+export default function RootLayout ({
     children
 }: Readonly<{
     children: React.ReactNode
@@ -10,7 +10,7 @@ export default function RootLayout({
             <head>
                 <meta charSet="utf-8" />
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-                
+
                 {/* Favicon */}
                 <link rel="icon" href="/favicon.ico" />
 
@@ -28,5 +28,5 @@ export default function RootLayout({
             </head>
             <body>{children}</body>
         </html>
-    );
+    )
 }
