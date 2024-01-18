@@ -1,14 +1,15 @@
+'use client'
+
 // External Packages
 import React, { useState } from 'react'
 import axios from 'axios'
 import validator from 'validator'
-import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 // Local Modules
-import styles from './userInput.module.scss'
-import InputField from '../components/inputField'
-import useUserInputForm from '../hooks/useUserInputForm'
-import { type GetServerSideProps, type GetServerSidePropsContext } from 'next'
+import styles from '@/styles/userInput.module.scss'
+import InputField from '@/components/inputField'
+import useUserInputForm from '@/hooks/useUserInputForm'
 
 const API_V1_URL = process.env.NEXT_PUBLIC_API_V1_URL ?? ''
 
@@ -50,7 +51,6 @@ function NewPassword (): JSX.Element {
         initialValues,
         validations
     )
-    const router = useRouter()
 
     const triggerErrorShake = (): void => {
         setShouldShake(true)
@@ -74,20 +74,6 @@ function NewPassword (): JSX.Element {
             })
             .finally(() => {
                 setIsLoading(false)
-            })
-    }
-
-    const goToSignup = (): void => {
-        router.push('/signup')
-            .catch((error) => {
-                console.error('Router push error:', error)
-            })
-    }
-
-    const goToLogin = (): void => {
-        router.push('/login')
-            .catch((error) => {
-                console.error('Router push error:', error)
             })
     }
 
@@ -124,25 +110,19 @@ function NewPassword (): JSX.Element {
             </form>
             <p className={styles.redirectPrompt}>
                 Don&apos;t have an account?{' '}
-                <span className={styles.redirectLink} onClick={goToSignup}>
+                <Link href="/signup" className={styles.redirectLink}>
                     Sign Up
-                </span>
+                </Link>
             </p>
             <p className={styles.redirectPrompt}>
                 Remember your password?{' '}
-                <span className={styles.redirectLink} onClick={goToLogin}>
+                <Link href="/login" className={styles.redirectLink}>
                     Log in
-                </span>
+                </Link>
             </p>
             {message !== '' && <p className={styles.message}>{message}</p>}
         </div>
     )
-}
-
-export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
-    // Check if user is logged in here
-    // For now, let's return an empty props
-    return { props: {} }
 }
 
 export default NewPassword

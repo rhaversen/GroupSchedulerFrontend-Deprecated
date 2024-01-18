@@ -1,16 +1,11 @@
 import React from 'react'
-import './404.scss'
 import Image from 'next/image'
-import RaindateLogo from 'src/assets/svg/raindate.svg'
-import Head from 'next/head'
+import RaindateLogo from '@/components/ui/RaindateLogo'
+import './404.scss'
 
-function NotFound () {
+function Custom404 () {
     return (
         <div className="container">
-            <Head>
-                <title>Raindate - 404</title>
-            </Head>
-
             <div className="logo">
                 <RaindateLogo/>
             </div>
@@ -31,4 +26,4 @@ function NotFound () {
     )
 }
 
-export default NotFound
+export default Custom404

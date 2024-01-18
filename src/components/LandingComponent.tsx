@@ -1,22 +1,13 @@
 'use client'
+
 import React from 'react'
 import './LandingComponent.scss'
-import { useRouter } from 'next/router'
 import Image from 'next/image'
-import RaindateLogo from '../assets/svg/raindate.svg' // Adjust the path as necessary
+import RaindateLogo from '@/components/ui/RaindateLogo'
 import Head from 'next/head'
+import Link from 'next/link'
 
 const Landing: React.FC = () => {
-    const router = useRouter()
-
-    const goToSignup = (): void => {
-        router.push('/signup').catch((error) => { console.error('Router push error:', error) })
-    }
-
-    const goToLogin = (): void => {
-        router.push('/login').catch((error) => { console.error('Router push error:', error) })
-    }
-
     return (
         <div className="container">
             <Head>
@@ -38,8 +29,12 @@ const Landing: React.FC = () => {
             />
             <h1>Find the Time <br></br> to Do Some Things</h1>
             <div className="buttons">
-                <button className="btn" id="signup" onClick={goToSignup}>Sign up</button>
-                <button className="btn" id="login" onClick={goToLogin}>Log in</button>
+                <Link href="/signup">
+                    <button className="btn" id="signup">Sign up</button>
+                </Link>
+                <Link href="/login">
+                    <button className="btn" id="login">Log in</button>
+                </Link>
             </div>
         </div>
     )

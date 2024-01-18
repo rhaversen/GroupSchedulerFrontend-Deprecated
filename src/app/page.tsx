@@ -1,4 +1,5 @@
-import Head from 'next/head'
+'use client'
+
 import React, { useEffect, useState } from 'react'
 
 // Import components
@@ -16,10 +17,10 @@ function Index (): JSX.Element {
         const authenticate = async () => {
             try {
                 const authenticated = await checkAuthentication()
-                console.info(authenticated)
+                console.info('User is authenticated?' + authenticated)
                 setIsLoggedIn(authenticated)
             } catch (error) {
-                console.info(error)
+                console.info('User is authenticated?' + error)
                 setIsLoggedIn(false)
             }
         }
@@ -31,7 +32,7 @@ function Index (): JSX.Element {
     return (
         <div>
             {/* Conditionally render components based on login status */}
-            {isLoggedIn ? <DashboardComponent /> : <LandingComponent />}
+            {true ? <DashboardComponent /> : <LandingComponent />}
         </div>
     )
 }

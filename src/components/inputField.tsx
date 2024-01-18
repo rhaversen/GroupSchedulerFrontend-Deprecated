@@ -13,7 +13,7 @@ interface Props {
     id: string
 }
 
-interface inputFieldCssProperties extends React.CSSProperties {
+interface InputFieldCssProperties extends React.CSSProperties {
     '--input-border-color'?: string
     '--input-focus-border-color'?: string
 }
@@ -29,7 +29,7 @@ const InputField: FC<Props> = ({
     fieldIsValid,
     id
 }): ReactElement => {
-    const inputStyle: inputFieldCssProperties = {
+    const inputStyle: InputFieldCssProperties = {
         '--input-border-color': !fieldIsValid ? 'OrangeRed' : undefined,
         '--input-focus-border-color': !fieldIsValid ? 'Orange' : undefined
     }

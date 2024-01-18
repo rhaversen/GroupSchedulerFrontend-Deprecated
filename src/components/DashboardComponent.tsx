@@ -1,4 +1,5 @@
 'use client'
+
 import React, { useEffect, useState } from 'react'
 
 import fetchUserEvents from '@/utils/fetchUserEvents'
