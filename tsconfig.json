@@ -4,6 +4,9 @@
         "paths": {
             "@/components/*": ["src/components/*"],
             "@/utils/*": ["src/utils/*"],
+            "@/contexts/*": ["src/contexts/*"],
+            "@/styles/*": ["src/styles/*"],
+            "@/hooks/*": ["src/hooks/*"],
             // ... other path aliases ...
         },
         "target": "es5",

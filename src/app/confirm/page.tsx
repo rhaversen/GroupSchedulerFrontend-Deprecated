@@ -1,21 +1,23 @@
-import React, { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
+'use client'
+import React, { Suspense, useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import axios from 'axios'
-import styles from './userInput.module.scss'
+import styles from '@/styles/userInput.module.scss'
+import Link from 'next/link'
 
 const API_V1_URL = process.env.NEXT_PUBLIC_API_V1_URL ?? ''
 
-function Confirm (): JSX.Element {
+const ConfirmEmail = (): JSX.Element => {
     const [message, setMessage] = useState<string>('Confirmation missing')
     const [isSuccess, setIsSuccess] = useState<boolean>(false)
-    const router = useRouter()
+    const searchParams = useSearchParams()
+    const confirmationCode = searchParams ? searchParams.get('confirmationCode') : null
 
     useEffect(() => {
-        const confirmationCode = router.query.confirmationCode as string | undefined
-        if (!router.isReady || confirmationCode === '' || confirmationCode == null) return
+        if (confirmationCode === null) return
 
         confirmEmail(confirmationCode)
-    }, [router.isReady, router.query.confirmationCode])
+    }, [confirmationCode])
 
     const confirmEmail = (confirmationCode: string): void => {
         setMessage('Confirming your email...')
@@ -40,43 +42,31 @@ function Confirm (): JSX.Element {
             })
     }
 
-    const goToLogin = (): void => {
-        router.push('/login')
-            .catch((error) => {
-                console.error('Router push error:', error)
-            })
-    }
-
-    const goToSupport = (): void => {
-        router.push('/support')
-            .catch((error) => {
-                console.error('Router push error:', error)
-            })
-    }
-
     return (
         <div className={styles.container}>
             <div className={styles.form}>
+                <Suspense fallback={<p>Loading...</p>}>
+                    <ConfirmEmail />
+                </Suspense>
                 <p className={styles.message}>{message}</p>
                 {!isSuccess && (
                     <p className={styles.redirectPrompt}>
                         Having trouble?{' '}
-                        <span className={styles.redirectLink} onClick={goToSupport}>
-                        Contact support
-                        </span>
+                        <Link href="/support" className={styles.redirectLink}>
+                            Contact support
+                        </Link>
                     </p>
                 )}
                 {isSuccess && (
-                    <button
-                        className={styles.submitButton}
-                        onClick={goToLogin}
-                    >
-                        Proceed to Login
-                    </button>
+                    <p className={styles.redirectPrompt}>
+                        <Link href="/reset-password" className={styles.redirectLink}>
+                            Proceed to Login
+                        </Link>
+                    </p>
                 )}
             </div>
         </div>
     )
 }
 
-export default Confirm
+export default ConfirmEmail

@@ -3,32 +3,30 @@ import axios from 'axios'
 const API_V1_URL = process.env.NEXT_PUBLIC_API_V1_URL ?? ''
 
 // Function to get the user and then fetch each event by ID
-const fetchUserEvents = () => {
-    axios.get(API_V1_URL + 'users/current-user')
-        .then(response => {
-            // Assuming the response data's structure is { user: { events: [id1, id2, ...] } }
-            const { user } = response.data
-            console.info('User fetched:', user)
+const fetchUserEvents = async (): Promise<any[]> => {
+    try {
+        const userResponse = await axios.get(`${API_V1_URL}users`)
+        const { events } = userResponse.data
 
-            // If the user has event IDs, fetch each event
-            if (user.events && user.events.length > 0) {
-                user.events.forEach((eventId: string) => {
-                    axios.get(API_V1_URL + 'events/' + eventId)
-                        .then(eventResponse => {
-                            console.info('Event fetched:', eventResponse.data)
-                            // Process each event data as needed
-                        })
-                        .catch(eventError => {
-                            console.error('Error fetching event:', eventError)
-                            // Handle errors for each event fetch
-                        })
-                })
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching user:', error)
-            // Handle error for user fetch
-        })
+        console.info('Events fetched:', events)
+
+        if (events && events.length > 0) {
+            const eventsPromises = events.map(async (eventId: string) =>
+                await axios.get(`${API_V1_URL}events/${eventId}`)
+            )
+
+            const eventsResponses = await Promise.all(eventsPromises)
+            const eventsData = eventsResponses.map(res => res.data)
+
+            console.info('Event details fetched:', eventsData)
+            return eventsData // Return the events data
+        }
+
+        return [] // Return empty array if no events
+    } catch (error) {
+        console.error('Error occurred:', error)
+        throw error // Rethrow the error for further handling
+    }
 }
 
 export default fetchUserEvents

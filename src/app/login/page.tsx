@@ -1,16 +1,17 @@
+'use client'
+
 // External Packages
 import React, { type FormEvent, type ReactElement, useState } from 'react'
 import axios from 'axios'
 import validator from 'validator'
-import cookie from 'cookie'
-import { useRouter } from 'next/router'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 // Local Modules
-import styles from './userInput.module.scss'
-import InputField from '../components/inputField'
-import useUserInputForm from '../hooks/useUserInputForm'
-import { useUser } from '../contexts/UserContext'
-import { type GetServerSideProps, type GetServerSidePropsContext } from 'next'
+import styles from '@/styles/userInput.module.scss'
+import InputField from '@/components/inputField'
+import useUserInputForm from '@/hooks/useUserInputForm'
+import { useUser } from '@/contexts/UserContext'
 
 const API_V1_URL = process.env.NEXT_PUBLIC_API_V1_URL ?? ''
 
@@ -94,7 +95,7 @@ function Login (): ReactElement {
                 setMessage(serverMessage)
 
                 setUser(response.data.user)
-                goToDashboard()
+                router.push('/')
             })
             .catch(error => {
                 console.error('Post error:', error)
@@ -106,27 +107,6 @@ function Login (): ReactElement {
             })
             .finally(() => {
                 setIsLoading(false)
-            })
-    }
-
-    const goToDashboard = (): void => {
-        router.push('/dashboard')
-            .catch((error) => {
-                console.error('Router push error:', error)
-            })
-    }
-
-    const goToSignup = (): void => {
-        router.push('/signup')
-            .catch((error) => {
-                console.error('Router push error:', error)
-            })
-    }
-
-    const goToNewPassword = (): void => {
-        router.push('/new-password')
-            .catch((error) => {
-                console.error('Router push error:', error)
             })
     }
 
@@ -173,36 +153,19 @@ function Login (): ReactElement {
             </form>
             <p className={styles.redirectPrompt}>
                 Don&apos;t have an account?{' '}
-                <span className={styles.redirectLink} onClick={goToSignup}>
+                <Link href="/signup" className={styles.redirectLink}>
                     Sign Up
-                </span>
+                </Link>
             </p>
             <p className={styles.redirectPrompt}>
                 Forgot your password?{' '}
-                <span className={styles.redirectLink} onClick={goToNewPassword}>
+                <Link href="/reset-password" className={styles.redirectLink}>
                     Set New Password
-                </span>
+                </Link>
             </p>
             {message !== '' && <p className={styles.message}>{message}</p>}
         </div>
     )
-}
-
-export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
-    const parsedCookies = cookie.parse(context.req.headers.cookie ?? '')
-    const token = parsedCookies.token
-
-    // If the user has a token (indicating they're logged in), redirect them to the dashboard
-    if (token !== null && token !== undefined && token !== '') {
-        return {
-            redirect: {
-                destination: '/dashboard',
-                permanent: false
-            }
-        }
-    }
-
-    return { props: {} }
 }
 
 export default Login
