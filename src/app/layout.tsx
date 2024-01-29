@@ -1,6 +1,7 @@
 import React, { type ReactElement } from 'react'
 import { UserProvider } from '@/contexts/UserContext'
 import { Caveat, Fredoka } from 'next/font/google'
+import '@/styles/globals.scss'
 
 const caveat = Caveat({
     subsets: ['latin'],

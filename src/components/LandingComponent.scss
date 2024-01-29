@@ -1,21 +1,3 @@
-body, html {
-    margin: 0;
-    padding: 0;
-}
-
-.container {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-}
-
-.background-image {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;  
-}
-
 .black-bar {
     position: absolute;
     width: 100%;
@@ -44,75 +26,9 @@ body, html {
     z-index: -1;
 }
 
-.logo {
-    display: block;
-    margin: 0 auto;
-    width: 250px;
-    max-width: 100%;
-    height: auto; /* Maintain aspect ratio */
-    z-index: 100;
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-h1 {
-    /* Typography */
-    font-family: 'Caveat', cursive;
-    color: #103A6E;
-    font-size: 45px;
-    text-align: center;
-
-    /* Box-model */
-    margin-bottom: 20px;
-    max-width: 100%;
-
-    /* Positioning */
-    position: absolute;
-    top: 35%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1;
-
-    /* Prevent line breaks on larger screens */
-    white-space: nowrap; /* This ensures no breaks except for <br> */
-}
-
 /* Media query for larger screens */
 @media (min-width: 560px) {
     h1 br {
         display: none; /* Hide the `br` on large screens */
-    }
-}
-
-.buttons {
-    display: flex;
-    justify-content: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-
-    button {
-        font-size: 15px;
-        font-family: 'Fredoka One', cursive;
-        padding: 10px 50px;
-        margin: 0 10px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-
-        &#signup {
-            background-color: #0F3B6E; // Replace with actual color code
-            color: #fff;
-        }
-
-        &#login {
-            background-color: #0F3B6E; // Replace with actual color code
-            color: #fff;
-        }
     }
 }

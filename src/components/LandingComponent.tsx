@@ -9,31 +9,37 @@ import Link from 'next/link'
 
 const Landing: React.FC = () => {
     return (
-        <div className="container">
+        <div className="relative w-screen h-screen overflow-hidden">
             <Head>
                 <title>Raindate - Find the Time to Do Some Things</title>
             </Head>
 
-            <div className="logo">
+            <div className="block m-auto w-62 h-auto z-40 absolute top-5 left-1/2 transform -translate-x-1/2">
                 <RaindateLogo />
             </div>
-            <div className="black-bar"></div>
+            <div className="black-bar"></div> {/* Retain SCSS for complex gradient */}
             <Image
                 src="/landing/landing_lake.webp"
                 alt="A calm lake with rain and a golden stone creating ripples, against hills and a cloudy sky."
                 draggable="false"
-                className="background-image"
+                className="object-cover w-full h-full"
                 width='1920'
                 height='1080'
                 quality={100}
             />
-            <h1>Find the Time <br></br> to Do Some Things</h1>
-            <div className="buttons">
+            <h1 className="font-caveat text-4xl text-center text-blue-800 mb-5 max-w-full absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 whitespace-nowrap">
+                Find the Time <br/> to Do Some Things
+            </h1>
+            <div className="flex justify-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full">
                 <Link href="/signup">
-                    <button className="btn" id="signup">Sign up</button>
+                    <button className="text-lg font-fredoka bg-blue-800 text-white py-2.5 px-12 m-2.5 rounded-lg cursor-pointer transition duration-300">
+                        Sign up
+                    </button>
                 </Link>
                 <Link href="/login">
-                    <button className="btn" id="login">Log in</button>
+                    <button className="text-lg font-fredoka bg-blue-800 text-white py-2.5 px-12 m-2.5 rounded-lg cursor-pointer transition duration-300">
+                        Log in
+                    </button>
                 </Link>
             </div>
         </div>
