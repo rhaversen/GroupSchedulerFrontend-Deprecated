@@ -7,8 +7,8 @@ import Link from 'next/link'
 
 const API_V1_URL = process.env.NEXT_PUBLIC_API_V1_URL ?? ''
 
-const ConfirmEmail = (): JSX.Element => {
-    const [message, setMessage] = useState<string>('Confirmation missing')
+const ConfirmEmailContent = (): JSX.Element => {
+    const [message, setMessage] = useState<string>('The confirmation code is missing, please follow the link again og paste it directly into your browser')
     const [isSuccess, setIsSuccess] = useState<boolean>(false)
     const searchParams = useSearchParams()
     const confirmationCode = searchParams ? searchParams.get('confirmationCode') : null
@@ -16,54 +16,53 @@ const ConfirmEmail = (): JSX.Element => {
     useEffect(() => {
         if (confirmationCode === null) return
 
+        const confirmEmail = async (confirmationCode: string): Promise<void> => {
+            setMessage('Confirming your email...')
+            try {
+                // Encode URI component by escaping special characters
+                const encodedConfirmationCode = encodeURIComponent(confirmationCode)
+                const response = await axios.post(`${API_V1_URL}users/confirm?confirmationCode=${encodedConfirmationCode}`)
+
+                setMessage(response?.data?.message ?? 'Confirmation successful! Your account has been activated.')
+                setIsSuccess(true)
+            } catch (error: any) {
+                console.error('Error confirming user:', error)
+                setMessage(error.response?.data?.error ?? 'Confirmation unsuccessful. Please try again.')
+            }
+        }
+
         confirmEmail(confirmationCode)
     }, [confirmationCode])
 
-    const confirmEmail = (confirmationCode: string): void => {
-        setMessage('Confirming your email...')
+    return (
+        <div>
+            <p className={styles.message}>{message}</p>
+            {!isSuccess && (
+                <p className={styles.redirectPrompt}>
+          Having trouble?{' '}
+                    <Link href="/support">
+                        <button className={styles.redirectLink}>Contact support</button>
+                    </Link>
+                </p>
+            )}
+            {isSuccess && (
+                <p className={styles.redirectPrompt}>
+                    <Link href="/login">
+                        <button className={styles.redirectLink}>Proceed to Login</button>
+                    </Link>
+                </p>
+            )}
+        </div>
+    )
+}
 
-        // Encode URI component by escaping special characters
-        const encodedConfirmationCode = encodeURIComponent(confirmationCode)
-
-        axios.post(API_V1_URL + 'users/confirm?confirmationCode=' + encodedConfirmationCode)
-            .then(response => {
-                console.info(response)
-
-                const serverMessage = response?.data?.message ?? 'Confirmation successful! Your account has been activated.'
-                setMessage(serverMessage)
-
-                setIsSuccess(true)
-            })
-            .catch(error => {
-                console.error('Error confirming user:', error)
-
-                const serverError = error.response?.data?.error ?? 'Confirmation unsuccessful. Please try again.'
-                setMessage(serverError)
-            })
-    }
-
+const ConfirmEmail = (): JSX.Element => {
     return (
         <div className={styles.container}>
             <div className={styles.form}>
-                <Suspense fallback={<p>Loading...</p>}>
-                    <ConfirmEmail />
+                <Suspense fallback={<div/>}>
+                    <ConfirmEmailContent />
                 </Suspense>
-                <p className={styles.message}>{message}</p>
-                {!isSuccess && (
-                    <p className={styles.redirectPrompt}>
-                        Having trouble?{' '}
-                        <Link href="/support" className={styles.redirectLink}>
-                            Contact support
-                        </Link>
-                    </p>
-                )}
-                {isSuccess && (
-                    <p className={styles.redirectPrompt}>
-                        <Link href="/reset-password" className={styles.redirectLink}>
-                            Proceed to Login
-                        </Link>
-                    </p>
-                )}
             </div>
         </div>
     )
