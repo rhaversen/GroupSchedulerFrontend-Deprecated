@@ -1,17 +1,6 @@
 import React, { type ReactElement } from 'react'
 import { UserProvider } from '@/contexts/UserContext'
-import { Caveat, Fredoka } from 'next/font/google'
 import '@/styles/globals.scss'
-
-const caveat = Caveat({
-    subsets: ['latin'],
-    weight: ['400', '700']
-})
-
-const fredoka = Fredoka({
-    subsets: ['latin'],
-    weight: ['400', '700']
-})
 
 interface RootLayoutProps {
     readonly children: React.ReactNode
