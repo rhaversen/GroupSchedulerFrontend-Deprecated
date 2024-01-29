@@ -14,7 +14,7 @@ const Landing: React.FC = () => {
                 <title>Raindate - Find the Time to Do Some Things</title>
             </Head>
 
-            <div className="block m-auto w-62 h-auto z-40 absolute top-5 left-1/2 transform -translate-x-1/2">
+            <div className="block m-auto w-[250px] h-auto z-50 absolute top-5 left-1/2 transform -translate-x-1/2">
                 <RaindateLogo />
             </div>
             <div className="black-bar"></div> {/* Retain SCSS for complex gradient */}
