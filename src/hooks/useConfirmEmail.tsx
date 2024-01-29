@@ -4,11 +4,14 @@ import { useEffect, useState } from 'react'
 const API_V1_URL = process.env.NEXT_PUBLIC_API_V1_URL ?? ''
 
 export const useConfirmEmail = (confirmationCode: string | null) => {
-    const [message, setMessage] = useState<string>('The confirmation code is missing, please follow the link again or paste it directly into your browser')
+    const [message, setMessage] = useState<string>('Confirming your email...')
     const [isSuccess, setIsSuccess] = useState<boolean>(false)
 
     useEffect(() => {
-        if (!confirmationCode) return
+        if (!confirmationCode) {
+            setMessage('The confirmation code is missing, please follow the link again or paste it directly into your browser')
+            return
+        }
 
         const confirmEmail = async () => {
             setMessage('Confirming your email...')
