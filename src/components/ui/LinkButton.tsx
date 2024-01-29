@@ -1,13 +1,14 @@
-import Link from 'next/link'
-import styles from '@/styles/userInput.module.scss'
+import Link from 'next/link';
 
 const LinkButton = ({ href, buttonText, prefixText }: { href: string, buttonText: string, prefixText?: string | null }) => (
-    <p className={styles.redirectPrompt}>
+    <p className="text-center text-base mt-2.5">
         {prefixText ?? ''}{' '}
         <Link href={href}>
-            <button className={styles.redirectLink}>{buttonText}</button>
+            <button className="text-blue-500 cursor-pointer underline transition-color duration-300 hover:text-blue-700">
+                {buttonText}
+            </button>
         </Link>
     </p>
-)
+);
 
-export default LinkButton
+export default LinkButton;
