@@ -7,7 +7,6 @@ import validator from 'validator'
 import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
 import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
 // Local Modules
@@ -15,6 +14,7 @@ import styles from '@/styles/userInput.module.scss'
 import InputField from '@/components/inputField'
 import useUserInputForm from '@/hooks/useUserInputForm'
 import { useUser } from '@/contexts/UserContext'
+import LinkButton from '@/components/ui/LinkButton'
 
 // Setting up zxcvbn options
 const zxcvbnConfigs = {
@@ -218,12 +218,7 @@ const Signup = (): ReactElement => {
                     {isLoading ? 'Signing up...' : 'Sign Up'}
                 </button>
             </form>
-            <p className={styles.redirectPrompt}>
-                Already have an account?{' '}
-                <Link href="/login" className={styles.redirectLink}>
-                    Log in
-                </Link>
-            </p>
+            <LinkButton href="/login" prefixText="Already have an account?" buttonText="Log in" />
             {(message !== '') && <p className={styles.message}>{message}</p>}
         </div>
     )

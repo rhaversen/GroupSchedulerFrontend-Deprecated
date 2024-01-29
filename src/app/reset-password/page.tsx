@@ -4,12 +4,12 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import validator from 'validator'
-import Link from 'next/link'
 
 // Local Modules
 import styles from '@/styles/userInput.module.scss'
 import InputField from '@/components/inputField'
 import useUserInputForm from '@/hooks/useUserInputForm'
+import LinkButton from '@/components/ui/LinkButton'
 
 const API_V1_URL = process.env.NEXT_PUBLIC_API_V1_URL ?? ''
 
@@ -108,18 +108,8 @@ function NewPassword (): JSX.Element {
                     {'Request New Password'}
                 </button>
             </form>
-            <p className={styles.redirectPrompt}>
-                Don&apos;t have an account?{' '}
-                <Link href="/signup" className={styles.redirectLink}>
-                    Sign Up
-                </Link>
-            </p>
-            <p className={styles.redirectPrompt}>
-                Remember your password?{' '}
-                <Link href="/login" className={styles.redirectLink}>
-                    Log in
-                </Link>
-            </p>
+            <LinkButton href="/signup" prefixText="Don't have an account?" buttonText="Sign Up" />
+            <LinkButton href="/login" prefixText="Remember your password?" buttonText="Log in" />
             {message !== '' && <p className={styles.message}>{message}</p>}
         </div>
     )
