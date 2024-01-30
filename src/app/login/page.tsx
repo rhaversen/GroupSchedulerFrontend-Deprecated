@@ -4,7 +4,6 @@
 import React, { type FormEvent, type ReactElement, useState } from 'react'
 import axios from 'axios'
 import validator from 'validator'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
 // Local Modules
@@ -12,6 +11,7 @@ import styles from '@/styles/userInput.module.scss'
 import InputField from '@/components/inputField'
 import useUserInputForm from '@/hooks/useUserInputForm'
 import { useUser } from '@/contexts/UserContext'
+import LinkText from '@/components/ui/LinkText'
 
 const API_V1_URL = process.env.NEXT_PUBLIC_API_V1_URL ?? ''
 
@@ -151,18 +151,8 @@ function Login (): ReactElement {
                     {isLoading ? 'Logging in...' : 'Log In'}
                 </button>
             </form>
-            <p className={styles.redirectPrompt}>
-                Don&apos;t have an account?{' '}
-                <Link href="/signup" className={styles.redirectLink}>
-                    Sign Up
-                </Link>
-            </p>
-            <p className={styles.redirectPrompt}>
-                Forgot your password?{' '}
-                <Link href="/reset-password" className={styles.redirectLink}>
-                    Set New Password
-                </Link>
-            </p>
+            <LinkText href="/signup" prefixText="Don't have an account?" buttonText="Sign Up" />
+            <LinkText href="/reset-password" prefixText="Forgot your password?" buttonText="Set New Password" />
             {message !== '' && <p className={styles.message}>{message}</p>}
         </div>
     )

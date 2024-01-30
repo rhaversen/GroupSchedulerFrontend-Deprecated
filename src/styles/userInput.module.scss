@@ -72,43 +72,6 @@ $color-background-light: #f2f4f8;
             transform: scale(1.02);
         }
     }
-
-    .redirectPrompt {
-        text-align: center;
-        font-size: 16px;
-        margin-top: 10px;
-    }
-
-    .redirectLink {
-        color: $color-primary;
-        cursor: pointer;
-        text-decoration: underline;
-        transition: color 0.3s;
-
-        &:hover {
-            color: $color-primary-hover;
-        }
-    }
-
-    .message {
-        font: {
-            size: 16px;
-            weight: 500;
-        }
-        color: $color-primary;
-        text-align: center;
-        border: 2px solid $color-primary;
-        border-radius: 5px;
-        padding: 5px 10px;
-        margin-top: 10px;
-        margin-left: auto;
-        margin-right: auto;
-        max-width: 250px;
-        background-color: $color-background-light;
-        word-wrap: break-word;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
 }
 
 @keyframes shake {

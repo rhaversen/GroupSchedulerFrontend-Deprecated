@@ -31,7 +31,7 @@ const CalendarPage: React.FC = () => {
 
     const fetchBlockedDates = async () => {
         try {
-            const response = await axios.get(`${API_V1_URL}users/current-user`)
+            const response = await axios.get(`${API_V1_URL}users`)
             const dates = response.data.blockedDates.map(fromUTCDate)
             setBlockedDates(dates)
         } catch (error) {
