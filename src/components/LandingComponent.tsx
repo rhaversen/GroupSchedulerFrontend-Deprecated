@@ -3,7 +3,7 @@
 import React from 'react'
 import './LandingComponent.scss'
 import Image from 'next/image'
-import RaindateLogo from '@/components/ui/RaindateLogo'
+import RaindateLogo from '@/components/ui/svg/RaindateLogo'
 import Head from 'next/head'
 import Link from 'next/link'
 import { caveat, fredoka } from '@/fonts'

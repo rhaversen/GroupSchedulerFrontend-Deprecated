@@ -1,6 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
-import RaindateLogo from '@/components/ui/RaindateLogo'
+import RaindateLogo from '@/components/ui/svg/RaindateLogo'
 import './404.scss'
 
 function Custom404 () {
