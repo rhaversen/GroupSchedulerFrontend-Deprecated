@@ -15,6 +15,7 @@ import InputField from '@/components/inputField'
 import useUserInputForm from '@/hooks/useUserInputForm'
 import { useUser } from '@/contexts/UserContext'
 import LinkText from '@/components/ui/LinkText'
+import MessageDisplay from '@/components/ui/MessageDisplay'
 
 // Setting up zxcvbn options
 const zxcvbnConfigs = {
@@ -219,7 +220,7 @@ const Signup = (): ReactElement => {
                 </button>
             </form>
             <LinkText href="/login" prefixText="Already have an account?" buttonText="Log in" />
-            {(message !== '') && <p className={styles.message}>{message}</p>}
+            {message !== '' && <MessageDisplay message={message} />}
         </div>
     )
 }

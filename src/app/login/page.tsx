@@ -12,6 +12,7 @@ import InputField from '@/components/inputField'
 import useUserInputForm from '@/hooks/useUserInputForm'
 import { useUser } from '@/contexts/UserContext'
 import LinkText from '@/components/ui/LinkText'
+import MessageDisplay from '@/components/ui/MessageDisplay'
 
 const API_V1_URL = process.env.NEXT_PUBLIC_API_V1_URL ?? ''
 
@@ -153,7 +154,7 @@ function Login (): ReactElement {
             </form>
             <LinkText href="/signup" prefixText="Don't have an account?" buttonText="Sign Up" />
             <LinkText href="/reset-password" prefixText="Forgot your password?" buttonText="Set New Password" />
-            {message !== '' && <p className={styles.message}>{message}</p>}
+            {message !== '' && <MessageDisplay message={message} />}
         </div>
     )
 }

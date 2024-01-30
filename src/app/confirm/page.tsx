@@ -13,7 +13,7 @@ const ConfirmEmailContent = (): JSX.Element => {
 
     return (
         <div>
-            <MessageDisplay message={message} />
+            {message !== '' && <MessageDisplay message={message} />}
             {!isSuccess
                 ? (
                     <LinkText href="/support" prefixText='Having trouble?' buttonText="Contact support" />
