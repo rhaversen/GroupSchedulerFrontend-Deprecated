@@ -34,11 +34,11 @@ const Dashboard: React.FC = () => {
                 </div>
             </div>
             <div className="max-w-md mx-auto">
-                <CreateCard 
-                    title={'Create an Event'} 
+                <CreateCard
+                    title={'Create an Event'}
                     description={
                         <>
-                            Let RainDate discover the perfect time for your plans. 
+                            Let RainDate discover the perfect time for your plans.
                             <br/><br/>
                             From one-on-one dates to large group gatherings, every kind of day can be planned to perfection
                         </>

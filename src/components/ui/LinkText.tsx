@@ -1,6 +1,7 @@
-import Link from 'next/link';
+import Link from 'next/link'
 
-const LinkText = ({ href, buttonText, prefixText }: { href: string, buttonText: string, prefixText?: string | null }) => (
+const LinkText = ({ href, buttonText, prefixText }:
+{ href: string, buttonText: string, prefixText?: string | null }) => (
     <p className="text-center text-base mt-2.5">
         {prefixText ?? ''}{' '}
         <Link href={href}>
@@ -9,6 +10,6 @@ const LinkText = ({ href, buttonText, prefixText }: { href: string, buttonText: 
             </button>
         </Link>
     </p>
-);
+)
 
-export default LinkText;
+export default LinkText
