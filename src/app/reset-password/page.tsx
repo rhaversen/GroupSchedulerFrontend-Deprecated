@@ -9,7 +9,7 @@ import validator from 'validator'
 import styles from '@/styles/userInput.module.scss'
 import InputField from '@/components/inputField'
 import useUserInputForm from '@/hooks/useUserInputForm'
-import LinkButton from '@/components/ui/LinkButton'
+import LinkText from '@/components/ui/LinkText'
 
 const API_V1_URL = process.env.NEXT_PUBLIC_API_V1_URL ?? ''
 
@@ -108,8 +108,8 @@ function NewPassword (): JSX.Element {
                     {'Request New Password'}
                 </button>
             </form>
-            <LinkButton href="/signup" prefixText="Don't have an account?" buttonText="Sign Up" />
-            <LinkButton href="/login" prefixText="Remember your password?" buttonText="Log in" />
+            <LinkText href="/signup" prefixText="Don't have an account?" buttonText="Sign Up" />
+            <LinkText href="/login" prefixText="Remember your password?" buttonText="Log in" />
             {message !== '' && <p className={styles.message}>{message}</p>}
         </div>
     )

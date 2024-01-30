@@ -14,7 +14,7 @@ import styles from '@/styles/userInput.module.scss'
 import InputField from '@/components/inputField'
 import useUserInputForm from '@/hooks/useUserInputForm'
 import { useUser } from '@/contexts/UserContext'
-import LinkButton from '@/components/ui/LinkButton'
+import LinkText from '@/components/ui/LinkText'
 
 // Setting up zxcvbn options
 const zxcvbnConfigs = {
@@ -218,7 +218,7 @@ const Signup = (): ReactElement => {
                     {isLoading ? 'Signing up...' : 'Sign Up'}
                 </button>
             </form>
-            <LinkButton href="/login" prefixText="Already have an account?" buttonText="Log in" />
+            <LinkText href="/login" prefixText="Already have an account?" buttonText="Log in" />
             {(message !== '') && <p className={styles.message}>{message}</p>}
         </div>
     )

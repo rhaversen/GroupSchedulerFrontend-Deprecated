@@ -3,7 +3,7 @@ import React, { Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import styles from '@/styles/userInput.module.scss'
 import useConfirmEmail from '@/hooks/useConfirmEmail'
-import LinkButton from '@/components/ui/LinkButton'
+import LinkText from '@/components/ui/LinkText'
 import MessageDisplay from '@/components/ui/MessageDisplay'
 
 const ConfirmEmailContent = (): JSX.Element => {
@@ -16,10 +16,10 @@ const ConfirmEmailContent = (): JSX.Element => {
             <MessageDisplay message={message} />
             {!isSuccess
                 ? (
-                    <LinkButton href="/support" prefixText='Having trouble?' buttonText="Contact support" />
+                    <LinkText href="/support" prefixText='Having trouble?' buttonText="Contact support" />
                 )
                 : (
-                    <LinkButton href="/login" buttonText="Proceed to Login" />
+                    <LinkText href="/login" buttonText="Proceed to Login" />
                 )}
         </div>
     )
