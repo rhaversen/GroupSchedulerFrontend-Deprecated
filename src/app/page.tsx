@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 // Import components
-import LandingComponent from '@/components/LandingComponent'
+import LandingComponent from '@/components/landing/LandingComponent'
 
 // Import utility functions
 import checkAuthentication from '@/utils/isUserAuthenticated'
