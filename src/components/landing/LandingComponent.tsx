@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import './LandingComponent.scss'
+import '@/styles/LandingComponent.scss'
 import Image from 'next/image'
 import RaindateLogo from '@/components/ui/svg/RaindateLogo'
 import Head from 'next/head'
