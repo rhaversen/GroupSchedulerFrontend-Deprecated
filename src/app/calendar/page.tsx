@@ -6,6 +6,7 @@ import moment from 'moment'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import Head from 'next/head'
 import axios from 'axios'
+import Header from '@/components/header/Header'
 
 const localizer = momentLocalizer(moment)
 const API_V1_URL = process.env.NEXT_PUBLIC_API_V1_URL ?? ''
@@ -89,6 +90,7 @@ const CalendarPage: React.FC = () => {
                 <title>Calendar | RainDate</title>
                 <link rel="canonical" href={'https://www.raindate.net/calendar'} />
             </Head>
+            <Header/>
             <div className="calendar-container">
 
                 <Calendar

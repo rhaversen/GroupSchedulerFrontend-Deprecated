@@ -6,6 +6,7 @@ import fetchUserEvents from '@/utils/fetchUserEvents'
 import CreateCard from '@/components/dashboard/CreateCard'
 import RaindateLogo from '@/components/ui/svg/RaindateLogo'
 import Head from 'next/head'
+import Header from '@/components/header/Header'
 
 const Dashboard: React.FC = () => {
     const [userEvents, setUserEvents] = useState<any[]>([])
@@ -31,6 +32,7 @@ const Dashboard: React.FC = () => {
                 <link rel="canonical" href={'https://www.raindate.net/dashboard'} />
             </Head>
             <div>
+                <Header/>
                 <div className="flex items-center justify-center">
                     <div className="flex items-center space-x-4">
                         <div className="w-20 h-20">
