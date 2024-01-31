@@ -5,7 +5,7 @@ const LinkText = ({ href, buttonText, prefixText }:
     <p className="text-center text-base mt-2.5">
         {prefixText ?? ''}{' '}
         <Link href={href}>
-            <button className="text-blue-500 cursor-pointer underline transition-color duration-300 hover:text-blue-700">
+            <button type="button" className="text-blue-500 cursor-pointer underline transition-color duration-300 hover:text-blue-700">
                 {buttonText}
             </button>
         </Link>
