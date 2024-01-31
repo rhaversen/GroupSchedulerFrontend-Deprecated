@@ -1,4 +1,5 @@
 import React, { type ReactElement } from 'react'
+import Head from 'next/head'
 import { UserProvider } from '@/contexts/UserContext'
 import '@/styles/globals.scss'
 
@@ -10,9 +11,9 @@ export default function RootLayout ({
     children
 }: RootLayoutProps): ReactElement {
     return (
-        <html lang="en">
-            <head>
-                <title>Rain Date</title>
+        <>
+            <Head>
+                <title>RainDate</title>
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
                 <meta charSet="utf-8" />
                 <link rel="icon" href="/favicon.ico" />
@@ -25,12 +26,10 @@ export default function RootLayout ({
                     name="keywords"
                     content="event, planning, calendar, events, dashboard, availability, group scheduler, friends, holiday, vacation, plans, rally, RainDate, reindate, schedule, social gatherings, time, date, ocean, rain"
                 />
-            </head>
-            <body>
-                <UserProvider>
-                    {children}
-                </UserProvider>
-            </body>
-        </html>
+            </Head>
+            <UserProvider>
+                {children}
+            </UserProvider>
+        </>
     )
 }

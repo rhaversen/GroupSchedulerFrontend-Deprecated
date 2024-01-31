@@ -4,10 +4,11 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 // Import components
-import LandingComponent from '@/components/LandingComponent'
+import LandingComponent from '@/components/landing/LandingComponent'
 
 // Import utility functions
 import checkAuthentication from '@/utils/isUserAuthenticated'
+import Head from 'next/head'
 
 function Index (): JSX.Element {
     const router = useRouter()
@@ -37,9 +38,15 @@ function Index (): JSX.Element {
     }
 
     return (
-        <div>
-            {!isAuthenticated && <LandingComponent />}
-        </div>
+        <>
+            <Head>
+                <title>Raindate | Find the Time to Do Some Things</title>
+                <link rel="canonical" href={'https://www.raindate.net'} />
+            </Head>
+            <div>
+                {!isAuthenticated && <LandingComponent />}
+            </div>
+        </>
     )
 }
 
