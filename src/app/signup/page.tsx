@@ -16,6 +16,7 @@ import useUserInputForm from '@/hooks/useUserInputForm'
 import { useUser } from '@/contexts/UserContext'
 import LinkText from '@/components/ui/LinkText'
 import MessageDisplay from '@/components/ui/MessageDisplay'
+import Head from 'next/head'
 
 // Setting up zxcvbn options
 const zxcvbnConfigs = {
@@ -189,39 +190,45 @@ const Signup = (): ReactElement => {
     }
 
     return (
-        <div className={styles.container}>
-            <form onSubmit={handleSubmit} className={styles.form}>
-                {inputConfigs.map((input) => (
-                    <InputField
-                        key={input.name}
-                        type={input.type}
-                        name={input.name}
-                        label={input.label}
-                        autoComplete={input.autoComplete}
-                        value={values[input.name] as string}
-                        onChange={handleChange}
-                        errorMessage={
-                            isTouched[input.name]
-                                ? errors[input.name]
-                                : ''
-                        }
-                        fieldIsValid={fieldIsValid[input.name] || !isTouched[input.name]}
-                        id={input.id}
-                    />
-                ))}
-                <button
-                    type="submit"
-                    disabled={!formIsValid || isLoading}
-                    className={`${styles.submitButton} ${
-                        shouldShake ? styles.shake : ''
-                    }`}
-                >
-                    {isLoading ? 'Signing up...' : 'Sign Up'}
-                </button>
-            </form>
-            <LinkText href="/login" prefixText="Already have an account?" buttonText="Log in" />
-            {message !== '' && <MessageDisplay message={message} />}
-        </div>
+        <>
+            <Head>
+                <title>Sign Up | RainDate</title>
+                <link rel="canonical" href={'https://www.raindate.net/signup'} />
+            </Head>
+            <div className={styles.container}>
+                <form onSubmit={handleSubmit} className={styles.form}>
+                    {inputConfigs.map((input) => (
+                        <InputField
+                            key={input.name}
+                            type={input.type}
+                            name={input.name}
+                            label={input.label}
+                            autoComplete={input.autoComplete}
+                            value={values[input.name] as string}
+                            onChange={handleChange}
+                            errorMessage={
+                                isTouched[input.name]
+                                    ? errors[input.name]
+                                    : ''
+                            }
+                            fieldIsValid={fieldIsValid[input.name] || !isTouched[input.name]}
+                            id={input.id}
+                        />
+                    ))}
+                    <button
+                        type="submit"
+                        disabled={!formIsValid || isLoading}
+                        className={`${styles.submitButton} ${
+                            shouldShake ? styles.shake : ''
+                        }`}
+                    >
+                        {isLoading ? 'Signing up...' : 'Sign Up'}
+                    </button>
+                </form>
+                <LinkText href="/login" prefixText="Already have an account?" buttonText="Log in" />
+                {message !== '' && <MessageDisplay message={message} />}
+            </div>
+        </>
     )
 }
 

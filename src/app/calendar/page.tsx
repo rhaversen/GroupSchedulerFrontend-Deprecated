@@ -84,22 +84,26 @@ const CalendarPage: React.FC = () => {
     const calendarEvents = mergeConsecutiveDates(blockedDates).map(dateRangeToEvent)
 
     return (
-        <div className="calendar-container">
+        <>
             <Head>
-                <title>Calendar - Blocked Dates</title>
+                <title>Calendar | RainDate</title>
+                <link rel="canonical" href={'https://www.raindate.net/calendar'} />
             </Head>
-            <Calendar
-                selectable
-                defaultDate={new Date()}
-                defaultView="month"
-                events={calendarEvents}
-                localizer={localizer}
-                style={{ height: '80vh' }}
-                onSelectSlot={handleSelect}
-                views={['month']}
-                eventPropGetter={eventStyleGetter}
-            />
-        </div>
+            <div className="calendar-container">
+
+                <Calendar
+                    selectable
+                    defaultDate={new Date()}
+                    defaultView="month"
+                    events={calendarEvents}
+                    localizer={localizer}
+                    style={{ height: '80vh' }}
+                    onSelectSlot={handleSelect}
+                    views={['month']}
+                    eventPropGetter={eventStyleGetter}
+                />
+            </div>
+        </>
     )
 }
 
