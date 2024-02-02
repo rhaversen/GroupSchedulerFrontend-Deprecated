@@ -14,10 +14,7 @@ export const metadata: Metadata = {
         canonical: 'https://www.raindate.net'
     },
     icons: {
-        icon: 'https://www.raindate.net/favicon.ico'
-    },
-    other: {
-        charset: 'utf-8'
+        icon: '/favicon.ico'
     }
 }
 
@@ -39,9 +36,11 @@ export default function RootLayout ({
 }: RootLayoutProps): ReactElement {
     return (
         <html lang="en">
-            <UserProvider>
-                {children}
-            </UserProvider>
+            <body>
+                <UserProvider>
+                    {children}
+                </UserProvider>
+            </body>
         </html>
     )
 }
