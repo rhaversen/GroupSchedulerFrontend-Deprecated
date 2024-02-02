@@ -5,7 +5,6 @@ import styles from '@/styles/userInput.module.scss'
 import useConfirmEmail from '@/hooks/useConfirmEmail'
 import LinkText from '@/components/ui/LinkText'
 import MessageDisplay from '@/components/ui/MessageDisplay'
-import Head from 'next/head'
 
 const ConfirmEmailContent = (): JSX.Element => {
     const searchParams = useSearchParams()
@@ -13,22 +12,16 @@ const ConfirmEmailContent = (): JSX.Element => {
     const { message, isSuccess } = useConfirmEmail(confirmationCode)
 
     return (
-        <>
-            <Head>
-                <title>Confirm | RainDate</title>
-                <link rel="canonical" href={'https://www.raindate.net/confirm'} />
-            </Head>
-            <div>
-                {message !== '' && <MessageDisplay message={message} />}
-                {!isSuccess
-                    ? (
-                        <LinkText href="/support" prefixText='Having trouble?' buttonText="Contact support" />
-                    )
-                    : (
-                        <LinkText href="/login" buttonText="Proceed to Login" />
-                    )}
-            </div>
-        </>
+        <div>
+            {message !== '' && <MessageDisplay message={message} />}
+            {!isSuccess
+                ? (
+                    <LinkText href="/support" prefixText='Having trouble?' buttonText="Contact support" />
+                )
+                : (
+                    <LinkText href="/login" buttonText="Proceed to Login" />
+                )}
+        </div>
     )
 }
 

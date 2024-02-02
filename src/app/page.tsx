@@ -8,7 +8,6 @@ import LandingComponent from '@/components/landing/LandingComponent'
 
 // Import utility functions
 import checkAuthentication from '@/utils/isUserAuthenticated'
-import Head from 'next/head'
 
 function Index (): JSX.Element {
     const router = useRouter()
@@ -38,15 +37,9 @@ function Index (): JSX.Element {
     }
 
     return (
-        <>
-            <Head>
-                <title>Raindate | Find the Time to Do Some Things</title>
-                <link rel="canonical" href={'https://www.raindate.net'} />
-            </Head>
-            <div>
-                {!isAuthenticated && <LandingComponent />}
-            </div>
-        </>
+        <div>
+            {!isAuthenticated && <LandingComponent />}
+        </div>
     )
 }
 
