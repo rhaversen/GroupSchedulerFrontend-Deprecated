@@ -14,10 +14,7 @@ export const metadata: Metadata = {
         canonical: 'https://www.raindate.net'
     },
     icons: {
-        icon: 'https://www.raindate.net/favicon.ico'
-    },
-    other: {
-        charset: 'utf-8'
+        icon: '/favicon.ico'
     }
 }
 
