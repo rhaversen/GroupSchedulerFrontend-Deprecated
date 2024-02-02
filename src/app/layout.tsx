@@ -36,9 +36,11 @@ export default function RootLayout ({
 }: RootLayoutProps): ReactElement {
     return (
         <html lang="en">
-            <UserProvider>
-                {children}
-            </UserProvider>
+            <body>
+                <UserProvider>
+                    {children}
+                </UserProvider>
+            </body>
         </html>
     )
 }
