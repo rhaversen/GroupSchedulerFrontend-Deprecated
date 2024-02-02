@@ -13,7 +13,6 @@ import useUserInputForm from '@/hooks/useUserInputForm'
 import { useUser } from '@/contexts/UserContext'
 import LinkText from '@/components/ui/LinkText'
 import MessageDisplay from '@/components/ui/MessageDisplay'
-import Head from 'next/head'
 
 const API_V1_URL = process.env.NEXT_PUBLIC_API_V1_URL ?? ''
 
@@ -113,56 +112,50 @@ function Login (): ReactElement {
     }
 
     return (
-        <>
-            <Head>
-                <title>Log In | RainDate</title>
-                <link rel="canonical" href={'https://www.raindate.net/login'} />
-            </Head>
-            <div className={styles.container}>
-                <form onSubmit={handleSubmit} className={styles.form}>
-                    {inputConfigs.map((input) => (
-                        <InputField
-                            key={input.name}
-                            type={input.type}
-                            name={input.name}
-                            label={input.label}
-                            autoComplete={input.autoComplete}
-                            value={values[input.name] as string} // Always an input field
-                            onChange={handleChange}
-                            errorMessage={
-                                isTouched[input.name]
-                                    ? errors[input.name]
-                                    : ''
-                            }
-                            fieldIsValid={fieldIsValid[input.name] || !isTouched[input.name]}
-                            id={input.id}
-                        />
-                    ))}
-                    <div className={styles.checkboxContainer}>
-                        <input
-                            type="checkbox"
-                            name="stayLoggedIn"
-                            id="stayLoggedIn"
-                            checked={values.stayLoggedIn as boolean} // Always a checkbox
-                            onChange={handleChange}
-                        />
-                        <label htmlFor="stayLoggedIn">Stay logged in</label>
-                    </div>
-                    <button
-                        type="submit"
-                        disabled={!formIsValid || isLoading}
-                        className={`${styles.submitButton} ${
-                            shouldShake ? styles.shake : ''
-                        }`}
-                    >
-                        {isLoading ? 'Logging in...' : 'Log In'}
-                    </button>
-                </form>
-                <LinkText href="/signup" prefixText="Don't have an account?" buttonText="Sign Up" />
-                <LinkText href="/reset-password" prefixText="Forgot your password?" buttonText="Set New Password" />
-                {message !== '' && <MessageDisplay message={message} />}
-            </div>
-        </>
+        <div className={styles.container}>
+            <form onSubmit={handleSubmit} className={styles.form}>
+                {inputConfigs.map((input) => (
+                    <InputField
+                        key={input.name}
+                        type={input.type}
+                        name={input.name}
+                        label={input.label}
+                        autoComplete={input.autoComplete}
+                        value={values[input.name] as string} // Always an input field
+                        onChange={handleChange}
+                        errorMessage={
+                            isTouched[input.name]
+                                ? errors[input.name]
+                                : ''
+                        }
+                        fieldIsValid={fieldIsValid[input.name] || !isTouched[input.name]}
+                        id={input.id}
+                    />
+                ))}
+                <div className={styles.checkboxContainer}>
+                    <input
+                        type="checkbox"
+                        name="stayLoggedIn"
+                        id="stayLoggedIn"
+                        checked={values.stayLoggedIn as boolean} // Always a checkbox
+                        onChange={handleChange}
+                    />
+                    <label htmlFor="stayLoggedIn">Stay logged in</label>
+                </div>
+                <button
+                    type="submit"
+                    disabled={!formIsValid || isLoading}
+                    className={`${styles.submitButton} ${
+                        shouldShake ? styles.shake : ''
+                    }`}
+                >
+                    {isLoading ? 'Logging in...' : 'Log In'}
+                </button>
+            </form>
+            <LinkText href="/signup" prefixText="Don't have an account?" buttonText="Sign Up" />
+            <LinkText href="/reset-password" prefixText="Forgot your password?" buttonText="Set New Password" />
+            {message !== '' && <MessageDisplay message={message} />}
+        </div>
     )
 }
 

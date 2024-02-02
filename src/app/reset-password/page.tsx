@@ -10,7 +10,6 @@ import styles from '@/styles/userInput.module.scss'
 import InputField from '@/components/inputField'
 import useUserInputForm from '@/hooks/useUserInputForm'
 import LinkText from '@/components/ui/LinkText'
-import Head from 'next/head'
 
 const API_V1_URL = process.env.NEXT_PUBLIC_API_V1_URL ?? ''
 
@@ -79,46 +78,40 @@ function NewPassword (): JSX.Element {
     }
 
     return (
-        <>
-            <Head>
-                <title>Reset Password | RainDate</title>
-                <link rel="canonical" href={'https://www.raindate.net/reset-password'} />
-            </Head>
-            <div className={styles.container}>
-                <form onSubmit={handleSubmit} className={styles.form}>
-                    {inputConfigs.map((input) => (
-                        <InputField
-                            key={input.name}
-                            type={input.type}
-                            name={input.name}
-                            label={input.label}
-                            autoComplete={input.autoComplete}
-                            value={values[input.name] as string} // Always an input field
-                            onChange={handleChange}
-                            errorMessage={
-                                isTouched[input.name]
-                                    ? errors[input.name]
-                                    : ''
-                            }
-                            fieldIsValid={fieldIsValid[input.name] || !isTouched[input.name]}
-                            id={input.id}
-                        />
-                    ))}
-                    <button
-                        type="submit"
-                        disabled={!formIsValid || isLoading}
-                        className={`${styles.submitButton} ${
-                            shouldShake ? styles.shake : ''
-                        }`}
-                    >
-                        {'Request New Password'}
-                    </button>
-                </form>
-                <LinkText href="/signup" prefixText="Don't have an account?" buttonText="Sign Up" />
-                <LinkText href="/login" prefixText="Remember your password?" buttonText="Log in" />
-                {message !== '' && <p className={styles.message}>{message}</p>}
-            </div>
-        </>
+        <div className={styles.container}>
+            <form onSubmit={handleSubmit} className={styles.form}>
+                {inputConfigs.map((input) => (
+                    <InputField
+                        key={input.name}
+                        type={input.type}
+                        name={input.name}
+                        label={input.label}
+                        autoComplete={input.autoComplete}
+                        value={values[input.name] as string} // Always an input field
+                        onChange={handleChange}
+                        errorMessage={
+                            isTouched[input.name]
+                                ? errors[input.name]
+                                : ''
+                        }
+                        fieldIsValid={fieldIsValid[input.name] || !isTouched[input.name]}
+                        id={input.id}
+                    />
+                ))}
+                <button
+                    type="submit"
+                    disabled={!formIsValid || isLoading}
+                    className={`${styles.submitButton} ${
+                        shouldShake ? styles.shake : ''
+                    }`}
+                >
+                    {'Request New Password'}
+                </button>
+            </form>
+            <LinkText href="/signup" prefixText="Don't have an account?" buttonText="Sign Up" />
+            <LinkText href="/login" prefixText="Remember your password?" buttonText="Log in" />
+            {message !== '' && <p className={styles.message}>{message}</p>}
+        </div>
     )
 }
 

@@ -1,7 +1,34 @@
 import React, { type ReactElement } from 'react'
-import Head from 'next/head'
 import { UserProvider } from '@/contexts/UserContext'
 import '@/styles/globals.scss'
+import { type Viewport, type Metadata } from 'next'
+
+export const metadata: Metadata = {
+    title: {
+        template: '%s | RainDate',
+        default: 'RainDate' // a default is required when creating a template
+    },
+    description: 'Find the Time to Do Some Things',
+    keywords: 'event, planning, calendar, events, dashboard, availability, group scheduler, friends, holiday, vacation, plans, rally, RainDate, reindate, schedule, social gatherings, time, date, ocean, rain',
+    alternates: {
+        canonical: 'https://www.raindate.net'
+    },
+    icons: {
+        icon: 'https://www.raindate.net/favicon.ico'
+    },
+    other: {
+        charset: 'utf-8'
+    }
+}
+
+export const viewport: Viewport = {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false
+    // Also supported by less commonly used
+    // interactiveWidget: 'resizes-visual',
+}
 
 interface RootLayoutProps {
     readonly children: React.ReactNode
@@ -11,25 +38,10 @@ export default function RootLayout ({
     children
 }: RootLayoutProps): ReactElement {
     return (
-        <>
-            <Head>
-                <title>RainDate</title>
-                <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-                <meta charSet="utf-8" />
-                <link rel="icon" href="/favicon.ico" />
-                <link rel="canonical" href="https://www.raindate.net" />
-                <meta
-                    name="description"
-                    content="Let RainDate discover the perfect time for your plans. From one-on-one dates to large group gatherings, the perfect day is just one click away."
-                />
-                <meta
-                    name="keywords"
-                    content="event, planning, calendar, events, dashboard, availability, group scheduler, friends, holiday, vacation, plans, rally, RainDate, reindate, schedule, social gatherings, time, date, ocean, rain"
-                />
-            </Head>
+        <html lang="en">
             <UserProvider>
                 {children}
             </UserProvider>
-        </>
+        </html>
     )
 }
