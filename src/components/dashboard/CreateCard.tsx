@@ -1,5 +1,5 @@
 import LinkButton from '@/components/ui/LinkButton'
-import PlusIcon from '@/components/ui/svg/PlusIcon'
+import PlusIcon from '@/components/ui/svg/dashboard/PlusIcon'
 import LinkText from '@/components/ui/LinkText'
 
 const CreateCard = ({ title, description, buttonText, buttonLink, linkText, linkUrl }:
