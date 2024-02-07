@@ -1,5 +1,4 @@
 import axios from 'axios'
-import Cookies from 'js-cookie'
 
 const API_V1_URL = process.env.NEXT_PUBLIC_API_V1_URL ?? ''
 
@@ -8,17 +7,6 @@ const API_V1_URL = process.env.NEXT_PUBLIC_API_V1_URL ?? ''
  * @returns {Promise<boolean>} True if the user is authenticated, otherwise false.
  */
 export default async function checkAuthentication (): Promise<boolean> {
-    const connectSid = Cookies.get('connect.sid')
-
-    if (process.env.NODE_ENV !== 'production') {
-        console.info('Checking authentication status...')
-    }
-
-    if (!connectSid) {
-        console.info('No connect.sid cookie found. User is not authenticated.')
-        return false
-    }
-
     try {
         const res = await axios.get(`${API_V1_URL}users/is-authenticated`)
         console.info('Authentication check response status:', res.status)
