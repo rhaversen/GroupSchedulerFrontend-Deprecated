@@ -15,7 +15,7 @@ RUN apt-get update && apt-get upgrade -y
 WORKDIR /app
 
 # Create a user within the container
-RUN useradd -m frontend_user
+RUN useradd -m group_scheduler_frontend_user
 
 # Copy .next, public and package.json
 COPY .next/ ./.next/
@@ -23,10 +23,10 @@ COPY public/ ./public/
 COPY package*.json ./
 
 # Make sure the directory belongs to the non-root user
-RUN chown -R frontend_user:frontend_user /app
+RUN chown -R group_scheduler_frontend_user:group_scheduler_frontend_user /app
 
 # Switch to user for subsequent commands
-USER frontend_user
+USER group_scheduler_frontend_user
 
 # Install production dependencies
 RUN npm install --omit=dev
