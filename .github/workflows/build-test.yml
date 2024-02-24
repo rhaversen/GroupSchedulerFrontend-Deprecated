@@ -1,4 +1,4 @@
-name: Frontend Test CI
+name: Group Scheduler Frontend Test CI
 
 on:
   push:

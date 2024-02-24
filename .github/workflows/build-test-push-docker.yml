@@ -1,4 +1,4 @@
-name: Frontend Docker Image CI
+name: Group Scheduler Frontend Docker Image CI
 
 on:
   push:
